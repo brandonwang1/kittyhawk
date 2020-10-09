@@ -1,0 +1,61 @@
+deploy_version: 0.1.22
+image_tag: latest
+
+applications:
+  - name: redis
+    image: redis
+    tag: "6.0"
+    port: 6379
+  - name: django-wgsi
+    image: pennlabs/penn-clubs-backend
+    secret: penn-clubs
+    replicas: 3
+    ingress:
+      hosts:
+        - host: pennclubs.com
+          paths: ["/api"]
+    extraEnv:
+      - name: DOMAIN
+        value: pennclubs.com
+      - name: DJANGO_SETTINGS_MODULE
+        value: pennclubs.settings.production
+  - name: django-asgi
+    image: pennlabs/penn-clubs-backend
+    secret: penn-clubs
+    cmd: ["/usr/local/bin/asgi-run"]
+    replicas: 2
+    ingress:
+      hosts:
+        - host: pennclubs.com
+          paths: ["/api/ws"]
+    extraEnv:
+      - name: DOMAIN
+        value: pennclubs.com
+      - name: DJANGO_SETTINGS_MODULE
+        value: pennclubs.settings.production
+  - name: react
+    image: pennlabs/penn-clubs-frontend
+    secret: penn-clubs
+    replicas: 2
+    ingress:
+      hosts:
+        - host: pennclubs.com
+          paths: ["/"]
+    extraEnv:
+      - name: PORT
+        value: 80
+      - name: DOMAIN
+        value: pennclubs.com
+
+cronjobs:
+  - name: rank-clubs
+    schedule: "0 8 * * *"
+    image: pennlabs/penn-clubs-backend
+    secret: penn-clubs
+    cmd: ["python", "manage.py", "rank"]
+  - name: daily-notifications
+    schedule: "0 13 * * *"
+    image: pennlabs/penn-clubs-backend
+    secret: penn-clubs
+    cmd: ["python", "manage.py", "daily_notifications"]
+

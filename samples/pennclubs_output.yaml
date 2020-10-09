@@ -1,0 +1,367 @@
+---
+# Source: icarus/templates/services.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: "penn-clubs-redis"
+spec:
+  type: ClusterIP
+  ports:
+    - port: 6379
+      targetPort: 6379
+  selector:
+    name: "penn-clubs-redis"
+---
+# Source: icarus/templates/services.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: "penn-clubs-django-wgsi"
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: 80
+  selector:
+    name: "penn-clubs-django-wgsi"
+---
+# Source: icarus/templates/services.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: "penn-clubs-django-asgi"
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: 80
+  selector:
+    name: "penn-clubs-django-asgi"
+---
+# Source: icarus/templates/services.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: "penn-clubs-react"
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: 80
+  selector:
+    name: "penn-clubs-react"
+---
+# Source: icarus/templates/deployments.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "penn-clubs-redis"
+  namespace: default
+  labels:
+    name: "penn-clubs-redis"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: "penn-clubs-redis"
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 3
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        name: "penn-clubs-redis"
+    spec:
+      containers:
+        - name: "worker"
+          image: "redis:6.0"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 6379
+---
+# Source: icarus/templates/deployments.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "penn-clubs-django-wgsi"
+  namespace: default
+  labels:
+    name: "penn-clubs-django-wgsi"
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      name: "penn-clubs-django-wgsi"
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 3
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        name: "penn-clubs-django-wgsi"
+    spec:
+      containers:
+        - name: "worker"
+          image: "pennlabs/penn-clubs-backend:be6853489244a6d527496d832132b51d1750be8d"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+          envFrom:
+            - secretRef:
+                name: penn-clubs
+          env:
+            - name: "DOMAIN"
+              value: "pennclubs.com"
+            - name: "DJANGO_SETTINGS_MODULE"
+              value: "pennclubs.settings.production"
+---
+# Source: icarus/templates/deployments.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "penn-clubs-django-asgi"
+  namespace: default
+  labels:
+    name: "penn-clubs-django-asgi"
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      name: "penn-clubs-django-asgi"
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 3
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        name: "penn-clubs-django-asgi"
+    spec:
+      containers:
+        - name: "worker"
+          image: "pennlabs/penn-clubs-backend:be6853489244a6d527496d832132b51d1750be8d"
+          imagePullPolicy: IfNotPresent
+          command:
+            - "/usr/local/bin/asgi-run"
+          ports:
+            - containerPort: 80
+          envFrom:
+            - secretRef:
+                name: penn-clubs
+          env:
+            - name: "DOMAIN"
+              value: "pennclubs.com"
+            - name: "DJANGO_SETTINGS_MODULE"
+              value: "pennclubs.settings.production"
+---
+# Source: icarus/templates/deployments.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "penn-clubs-react"
+  namespace: default
+  labels:
+    name: "penn-clubs-react"
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      name: "penn-clubs-react"
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 3
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        name: "penn-clubs-react"
+    spec:
+      containers:
+        - name: "worker"
+          image: "pennlabs/penn-clubs-frontend:be6853489244a6d527496d832132b51d1750be8d"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+          envFrom:
+            - secretRef:
+                name: penn-clubs
+          env:
+            - name: "PORT"
+              value: "80"
+            - name: "DOMAIN"
+              value: "pennclubs.com"
+---
+# Source: icarus/templates/crontabs.yaml
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: "penn-clubs-rank-clubs"
+  namespace: default
+  labels:
+    name: "penn-clubs-rank-clubs"
+spec:
+  schedule: "0 8 * * *"
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+            - name: "worker"
+              image: pennlabs/penn-clubs-backend:be6853489244a6d527496d832132b51d1750be8d
+              imagePullPolicy: IfNotPresent
+              command:
+                - "python"
+                - "manage.py"
+                - "rank"
+              envFrom:
+                - secretRef:
+                    name: penn-clubs
+---
+# Source: icarus/templates/crontabs.yaml
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: "penn-clubs-daily-notifications"
+  namespace: default
+  labels:
+    name: "penn-clubs-daily-notifications"
+spec:
+  schedule: "0 13 * * *"
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+            - name: "worker"
+              image: pennlabs/penn-clubs-backend:be6853489244a6d527496d832132b51d1750be8d
+              imagePullPolicy: IfNotPresent
+              command:
+                - "python"
+                - "manage.py"
+                - "daily_notifications"
+              envFrom:
+                - secretRef:
+                    name: penn-clubs
+---
+# Source: icarus/templates/ingresses.yaml
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: penn-clubs-django-wgsi
+  namespace: default
+spec:
+  rules:
+    - host: "pennclubs.com"
+      http:
+        paths:
+          - path: "/api"
+            backend:
+              serviceName: penn-clubs-django-wgsi
+              servicePort: 80
+  tls:
+    - hosts:
+        - "pennclubs.com"
+      secretName: pennclubs-com-tls
+---
+# Source: icarus/templates/ingresses.yaml
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: penn-clubs-django-asgi
+  namespace: default
+spec:
+  rules:
+    - host: "pennclubs.com"
+      http:
+        paths:
+          - path: "/api/ws"
+            backend:
+              serviceName: penn-clubs-django-asgi
+              servicePort: 80
+  tls:
+    - hosts:
+        - "pennclubs.com"
+      secretName: pennclubs-com-tls
+---
+# Source: icarus/templates/ingresses.yaml
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: penn-clubs-react
+  namespace: default
+spec:
+  rules:
+    - host: "pennclubs.com"
+      http:
+        paths:
+          - path: "/"
+            backend:
+              serviceName: penn-clubs-react
+              servicePort: 80
+  tls:
+    - hosts:
+        - "pennclubs.com"
+      secretName: pennclubs-com-tls
+---
+# Source: icarus/templates/certificates.yaml
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: pennclubs-com
+  annotations:
+    "helm.sh/resource-policy": keep
+spec:
+  secretName: pennclubs-com-tls
+  dnsNames:
+    - "pennclubs.com"
+    - "*.pennclubs.com"
+  issuerRef:
+    name: wildcard-letsencrypt-prod
+    kind: ClusterIssuer
+    group: cert-manager.io
+---
+# Source: icarus/templates/certificates.yaml
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: pennclubs-com
+  annotations:
+    "helm.sh/resource-policy": keep
+spec:
+  secretName: pennclubs-com-tls
+  dnsNames:
+    - "pennclubs.com"
+    - "*.pennclubs.com"
+  issuerRef:
+    name: wildcard-letsencrypt-prod
+    kind: ClusterIssuer
+    group: cert-manager.io
+---
+# Source: icarus/templates/certificates.yaml
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: pennclubs-com
+  annotations:
+    "helm.sh/resource-policy": keep
+spec:
+  secretName: pennclubs-com-tls
+  dnsNames:
+    - "pennclubs.com"
+    - "*.pennclubs.com"
+  issuerRef:
+    name: wildcard-letsencrypt-prod
+    kind: ClusterIssuer
+    group: cert-manager.io
