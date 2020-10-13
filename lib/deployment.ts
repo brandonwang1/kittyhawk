@@ -1,94 +1,58 @@
-import { Construct } from 'constructs';
-import { Deployment as DeploymentApiObject } from '../imports/k8s';
+import { Construct } from "constructs";
+import { Deployment as DeploymentApiObject } from "../imports/k8s";
+import { Container, ContainerOptions, Volume } from "./container";
 
+export interface DeploymentOptions extends ContainerOptions {
+  /**
+   * Number of replicas to start.
+   *
+   * @default 1
+   */
+  readonly replicas?: number;
 
-export interface DeploymentOptions {
-
-    /**
-      * The name of the application.
-      */
-    readonly name: string;
-
-    /**
-     * The Docker image to use for this service.
-     */
-    readonly image: string;
-
-    /**
-     * Number of replicas.
-     *
-     * @default 1
-     */
-    readonly replicas?: number;
-
-    /**
-     * Number of replicas.
-     *
-     * @default undefined
-     */
-    readonly secret?: string;
-
-    /**
-     * External port.
-     *
-     * @default 80
-     */
-    readonly port?: number;
-
-    /**
-     * Extra envs.
-     *
-     * @default []
-     */
-    readonly extraEnv?: { name: string, value: string | number }[];
-
-    /**
-     * Internal port.
-     *
-     * @default 8080
-     */
-    readonly containerPort?: number;
+  /**
+ * Secret mounts for deployment container.
+ *
+ * @default []
+ */
+  readonly secretMounts?: { name: string, mountPath: string, subPath: string }[]
 }
 
-
 export class Deployment extends Construct {
-    constructor(scope: Construct, appname : string, id: string, options: DeploymentOptions) {
-        super(scope, id);
+  constructor(scope: Construct, appname: string, options: DeploymentOptions) {
+    super(scope, `deployment-${appname}`);
 
-        // const name = options.name;
-        const port = options.port || 80;
-        const containerPort = options.containerPort || port;
-        const label = { name: appname };
-        const replicas = options.replicas ?? 1;
+    const label = { name: appname };
+    const replicas = options.replicas ?? 1;
+    const containers: Container[] = [new Container(options)];
+    const volumes: Volume[] | undefined = options.secretMounts && options.secretMounts.map(m => new Volume(m))
 
-
-        new DeploymentApiObject(this, id, {
-            spec: {
-                replicas: replicas,
-                selector: {
-                    matchLabels: label
-                },
-                strategy: {
-                    type: 'RollingUpdate',
-                    rollingUpdate:
-                    {
-                        maxSurge: 3,
-                        maxUnavailable: 0
-                    }
-                },
-                template: {
-                    metadata: { labels: label },
-                    spec: {
-                        containers: [
-                            {
-                                name: 'worker',
-                                image: options.image,
-                                ports: [{ containerPort }]
-                            }
-                        ]
-                    }
-                }
-            }
-        });
-    }
+    new DeploymentApiObject(this, `deployment-${appname}`, {
+      metadata: {
+        name: appname,
+        namespace: 'default',
+        labels: label
+      },
+      spec: {
+        replicas: replicas,
+        selector: {
+          matchLabels: label,
+        },
+        strategy: {
+          type: "RollingUpdate",
+          rollingUpdate: {
+            maxSurge: 3,
+            maxUnavailable: 0,
+          },
+        },
+        template: {
+          metadata: { labels: label },
+          spec: {
+            containers: containers,
+            volumes: volumes,
+          },
+        },
+      },
+    });
+  }
 }

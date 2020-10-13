@@ -1,10 +1,9 @@
-
-deploy_version: 0.1.14
+deploy_version: 0.1.22
 image_tag: latest
 
 applications:
   - name: flask
-    image: pennlabs/labs-api-serversadasd
+    image: pennlabs/labs-api-server
     secret: labs-api-server
     ingress:
       hosts:

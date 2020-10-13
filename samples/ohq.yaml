@@ -1,6 +1,5 @@
 deploy_version: 0.1.22
 image_tag: latest
-release_name: ohq
 
 applications:
   - name: django-asgi

@@ -1,0 +1,404 @@
+---
+# Source: icarus/templates/services.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: "RELEASE_NAME-django-asgi"
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: 80
+  selector:
+    name: "RELEASE_NAME-django-asgi"
+---
+# Source: icarus/templates/services.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: "RELEASE_NAME-django-wsgi"
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: 80
+  selector:
+    name: "RELEASE_NAME-django-wsgi"
+---
+# Source: icarus/templates/services.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: "RELEASE_NAME-react"
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: 80
+  selector:
+    name: "RELEASE_NAME-react"
+---
+# Source: icarus/templates/services.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: "RELEASE_NAME-redis"
+spec:
+  type: ClusterIP
+  ports:
+    - port: 6379
+      targetPort: 6379
+  selector:
+    name: "RELEASE_NAME-redis"
+---
+# Source: icarus/templates/services.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: "RELEASE_NAME-celery"
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: 80
+  selector:
+    name: "RELEASE_NAME-celery"
+---
+# Source: icarus/templates/deployments.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "RELEASE_NAME-django-asgi"
+  namespace: default
+  labels:
+    name: "RELEASE_NAME-django-asgi"
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      name: "RELEASE_NAME-django-asgi"
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 3
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        name: "RELEASE_NAME-django-asgi"
+    spec:
+      containers:
+        - name: "worker"
+          image: "pennlabs/office-hours-queue-backend:123456IMAGETAG"
+          imagePullPolicy: IfNotPresent
+          command:
+            - "/usr/local/bin/asgi-run"
+          ports:
+            - containerPort: 80
+          envFrom:
+            - secretRef:
+                name: office-hours-queue
+          env:
+            - name: "DOMAIN"
+              value: "ohq.io"
+            - name: "DJANGO_SETTINGS_MODULE"
+              value: "officehoursqueue.settings.production"
+            - name: "REDIS_URL"
+              value: "redis://office-hours-queue-redis:6379"
+---
+# Source: icarus/templates/deployments.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "RELEASE_NAME-django-wsgi"
+  namespace: default
+  labels:
+    name: "RELEASE_NAME-django-wsgi"
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      name: "RELEASE_NAME-django-wsgi"
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 3
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        name: "RELEASE_NAME-django-wsgi"
+    spec:
+      containers:
+        - name: "worker"
+          image: "pennlabs/office-hours-queue-backend:123456IMAGETAG"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+          envFrom:
+            - secretRef:
+                name: office-hours-queue
+          env:
+            - name: "DOMAIN"
+              value: "ohq.io"
+            - name: "DJANGO_SETTINGS_MODULE"
+              value: "officehoursqueue.settings.production"
+            - name: "REDIS_URL"
+              value: "redis://office-hours-queue-redis:6379"
+---
+# Source: icarus/templates/deployments.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "RELEASE_NAME-react"
+  namespace: default
+  labels:
+    name: "RELEASE_NAME-react"
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      name: "RELEASE_NAME-react"
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 3
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        name: "RELEASE_NAME-react"
+    spec:
+      containers:
+        - name: "worker"
+          image: "pennlabs/office-hours-queue-frontend:123456IMAGETAG"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+          env:
+            - name: "PORT"
+              value: "80"
+            - name: "DOMAIN"
+              value: "ohq.io"
+---
+# Source: icarus/templates/deployments.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "RELEASE_NAME-redis"
+  namespace: default
+  labels:
+    name: "RELEASE_NAME-redis"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: "RELEASE_NAME-redis"
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 3
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        name: "RELEASE_NAME-redis"
+    spec:
+      containers:
+        - name: "worker"
+          image: "redis:6.0"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 6379
+---
+# Source: icarus/templates/deployments.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "RELEASE_NAME-celery"
+  namespace: default
+  labels:
+    name: "RELEASE_NAME-celery"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: "RELEASE_NAME-celery"
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 3
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        name: "RELEASE_NAME-celery"
+    spec:
+      containers:
+        - name: "worker"
+          image: "pennlabs/office-hours-queue-backend:123456IMAGETAG"
+          imagePullPolicy: IfNotPresent
+          command:
+            - "celery"
+            - "-A"
+            - "officehoursqueue"
+            - "worker"
+            - "-lINFO"
+          ports:
+            - containerPort: 80
+          envFrom:
+            - secretRef:
+                name: office-hours-queue
+          env:
+            - name: "DJANGO_SETTINGS_MODULE"
+              value: "officehoursqueue.settings.production"
+            - name: "REDIS_URL"
+              value: "redis://office-hours-queue-redis:6379"
+---
+# Source: icarus/templates/crontabs.yaml
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: "RELEASE_NAME-calculate-waits"
+  namespace: default
+  labels:
+    name: "RELEASE_NAME-calculate-waits"
+spec:
+  schedule: "*/5 * * * *"
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+            - name: "worker"
+              image: pennlabs/office-hours-queue-backend:123456IMAGETAG
+              imagePullPolicy: IfNotPresent
+              command:
+                - "python"
+                - "manage.py"
+                - "calculatewaittimes"
+              envFrom:
+                - secretRef:
+                    name: office-hours-queue
+---
+# Source: icarus/templates/ingresses.yaml
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: RELEASE_NAME-django-asgi
+  namespace: default
+spec:
+  rules:
+    - host: "ohq.io"
+      http:
+        paths:
+          - path: "/api/ws"
+            backend:
+              serviceName: RELEASE_NAME-django-asgi
+              servicePort: 80
+  tls:
+    - hosts:
+        - "ohq.io"
+      secretName: ohq-io-tls
+---
+# Source: icarus/templates/ingresses.yaml
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: RELEASE_NAME-django-wsgi
+  namespace: default
+spec:
+  rules:
+    - host: "ohq.io"
+      http:
+        paths:
+          - path: "/api"
+            backend:
+              serviceName: RELEASE_NAME-django-wsgi
+              servicePort: 80
+          - path: "/admin"
+            backend:
+              serviceName: RELEASE_NAME-django-wsgi
+              servicePort: 80
+          - path: "/assets"
+            backend:
+              serviceName: RELEASE_NAME-django-wsgi
+              servicePort: 80
+  tls:
+    - hosts:
+        - "ohq.io"
+      secretName: ohq-io-tls
+---
+# Source: icarus/templates/ingresses.yaml
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: RELEASE_NAME-react
+  namespace: default
+spec:
+  rules:
+    - host: "ohq.io"
+      http:
+        paths:
+          - path: "/"
+            backend:
+              serviceName: RELEASE_NAME-react
+              servicePort: 80
+  tls:
+    - hosts:
+        - "ohq.io"
+      secretName: ohq-io-tls
+---
+# Source: icarus/templates/certificates.yaml
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: ohq-io
+  annotations:
+    "helm.sh/resource-policy": keep
+spec:
+  secretName: ohq-io-tls
+  dnsNames:
+    - "ohq.io"
+    - "*.ohq.io"
+  issuerRef:
+    name: wildcard-letsencrypt-prod
+    kind: ClusterIssuer
+    group: cert-manager.io
+---
+# Source: icarus/templates/certificates.yaml
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: ohq-io
+  annotations:
+    "helm.sh/resource-policy": keep
+spec:
+  secretName: ohq-io-tls
+  dnsNames:
+    - "ohq.io"
+    - "*.ohq.io"
+  issuerRef:
+    name: wildcard-letsencrypt-prod
+    kind: ClusterIssuer
+    group: cert-manager.io
+---
+# Source: icarus/templates/certificates.yaml
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: ohq-io
+  annotations:
+    "helm.sh/resource-policy": keep
+spec:
+  secretName: ohq-io-tls
+  dnsNames:
+    - "ohq.io"
+    - "*.ohq.io"
+  issuerRef:
+    name: wildcard-letsencrypt-prod
+    kind: ClusterIssuer
+    group: cert-manager.io

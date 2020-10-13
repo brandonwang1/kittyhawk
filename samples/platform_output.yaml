@@ -1,0 +1,110 @@
+---
+# Source: icarus/templates/services.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: "RELEASE_NAME-platform"
+spec:
+  type: ClusterIP
+  ports:
+    - port: 443
+      targetPort: 443
+  selector:
+    name: "RELEASE_NAME-platform"
+---
+# Source: icarus/templates/deployments.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "RELEASE_NAME-platform"
+  namespace: default
+  labels:
+    name: "RELEASE_NAME-platform"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: "RELEASE_NAME-platform"
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 3
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        name: "RELEASE_NAME-platform"
+    spec:
+      containers:
+        - name: "worker"
+          image: "pennlabs/platform:123456IMAGETAG"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 443
+          envFrom:
+            - secretRef:
+                name: platform
+          volumeMounts:
+            - name: "platform-shibboleth-cert"
+              mountPath: "/etc/shibboleth/sp-cert.pem"
+              subPath: "SHIBBOLETH_CERT"
+            - name: "platform-shibboleth-key"
+              mountPath: "/etc/shibboleth/sp-key.pem"
+              subPath: "SHIBBOLETH_KEY"
+          env:
+            - name: "DOMAIN"
+              value: "platform.pennlabs.org"
+            - name: "DJANGO_SETTINGS_MODULE"
+              value: "Platform.settings.production"
+      volumes:
+        - name: "platform-shibboleth-cert"
+          secret:
+            secretName: "platform"
+            items:
+              - key: "SHIBBOLETH_CERT"
+                path: "SHIBBOLETH_CERT"
+        - name: "platform-shibboleth-key"
+          secret:
+            secretName: "platform"
+            items:
+              - key: "SHIBBOLETH_KEY"
+                path: "SHIBBOLETH_KEY"
+---
+# Source: icarus/templates/ingresses.yaml
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: RELEASE_NAME-platform
+  namespace: default
+  annotations:
+    ingress.kubernetes.io/protocol: http
+spec:
+  rules:
+    - host: "platform.pennlabs.org"
+      http:
+        paths:
+          - path: "/"
+            backend:
+              serviceName: RELEASE_NAME-platform
+              servicePort: 443
+  tls:
+    - hosts:
+        - "platform.pennlabs.org"
+      secretName: pennlabs-org-tls
+---
+# Source: icarus/templates/certificates.yaml
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: pennlabs-org
+  annotations:
+    "helm.sh/resource-policy": keep
+spec:
+  secretName: pennlabs-org-tls
+  dnsNames:
+    - "pennlabs.org"
+    - "*.pennlabs.org"
+  issuerRef:
+    name: wildcard-letsencrypt-prod
+    kind: ClusterIssuer
+    group: cert-manager.io

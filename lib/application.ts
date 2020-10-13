@@ -2,34 +2,24 @@ import { Construct } from 'constructs';
 import { Deployment, DeploymentOptions } from "./deployment";
 import { Ingress, IngressOptions } from "./ingress";
 import { Service, ServiceOptions } from "./service"
-import { Certificate, CertificateOptions } from "./certificate";
+import { Certificate } from "./certificate";
 
 export interface ApplicationOptions extends IngressOptions, DeploymentOptions,
-  ServiceOptions, CertificateOptions {
-
-  /**
-  * The name of the application.
-  */
-  readonly name: string;
-
-}
+  ServiceOptions {}
 
 
-export class Application extends Construct {
+export class Application extends Construct { 
   constructor(scope: Construct, appname: string, options: ApplicationOptions) {
     super(scope, appname);
 
-    const name = options.name;
-    const ingress = options.ingress;
+    new Service(this, appname, options);
 
-    new Service(this, appname, `service-${name}`, options);
+    new Deployment(this, appname, options);
 
-    new Deployment(this, appname, `deployment-${name}`, options);
+    if (options.ingress) {
+      new Ingress(this, appname, options)
 
-    if (ingress !== undefined) {
-      new Ingress(this, appname, `ingress-${name}`, options)
-
-      new Certificate(this, appname, `certificate-${name}`, options)
+      new Certificate(this, appname, options)
     }
   }
 }

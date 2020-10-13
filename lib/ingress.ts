@@ -3,12 +3,6 @@ import { Ingress as IngressApiObject, IntOrString } from '../imports/k8s';
 
 
 export interface IngressOptions {
-
-    /**
-      * The name of the application.
-      */
-    readonly name: string;
-
     /**
      * External port.
      *
@@ -27,7 +21,7 @@ export interface IngressOptions {
 
 export interface HostsConfig {
     /**
-     * List of ingress hosts.
+     * List of ingress hosts. TODO: Flatten layout
      *
      * @default []
      */
@@ -36,28 +30,36 @@ export interface HostsConfig {
 
 
 export class Ingress extends Construct {
-    constructor(scope: Construct, appname: string, id: string, options: IngressOptions) {
-        super(scope, id);
+    constructor(scope: Construct, appname: string, options: IngressOptions) {
+        super(scope, `ingress-${appname}`);
 
         const port = options.port || 80;
         const ingress = options.ingress;
 
+        if (ingress) {
+            let tls = ingress.hosts.map(h => {
+                // Regex to compute the apex domain
+                const apex_domain = h.host.match(/[\w-]+\.[\w]+$/g)
+                if (apex_domain != null) {
+                    const host_string = apex_domain[0].split('.').join('-').concat("-tls");
+                    return { hosts: [h.host], secretName: host_string }
+                } else
+                    throw `Ingress construction failed: apex domain regex failed on ${h}`
+            })
 
-      // generate the objects in a nested loop
-        if (ingress !== undefined) {
-            new IngressApiObject(this, id, {
+            new IngressApiObject(this, `ingress-${appname}`, {
+                metadata: {
+                    name: appname,
+                    namespace: 'default'
+                },
                 spec: {
-                    tls:
-                        ingress.hosts.map(host => {
-                            // const regex = new RegExp("[\w-]+\.[\w]+$")
-                            return { hosts: [host.host], secretName: host.host + "-tls" }
-                        }),
+                    tls,
                     rules:
-                        ingress.hosts.map(host => {
+                        ingress.hosts.map(h => {
                             return {
-                                host: host.host,
+                                host: h.host,
                                 http: {
-                                    paths: host.paths.map(path => {
+                                    paths: h.paths.map(path => {
                                         return {
                                             path: path,
                                             backend: {

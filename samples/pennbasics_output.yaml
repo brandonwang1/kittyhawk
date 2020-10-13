@@ -1,0 +1,86 @@
+---
+# Source: icarus/templates/services.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: "RELEASE_NAME-react"
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: 80
+  selector:
+    name: "RELEASE_NAME-react"
+---
+# Source: icarus/templates/deployments.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "RELEASE_NAME-react"
+  namespace: default
+  labels:
+    name: "RELEASE_NAME-react"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: "RELEASE_NAME-react"
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 3
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        name: "RELEASE_NAME-react"
+    spec:
+      containers:
+        - name: "worker"
+          image: "pennlabs/penn-basics:123456IMAGETAG"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+          envFrom:
+            - secretRef:
+                name: penn-basics
+          env:
+            - name: "PORT"
+              value: "80"
+---
+# Source: icarus/templates/ingresses.yaml
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: RELEASE_NAME-react
+  namespace: default
+spec:
+  rules:
+    - host: "pennbasics.com"
+      http:
+        paths:
+          - path: "/"
+            backend:
+              serviceName: RELEASE_NAME-react
+              servicePort: 80
+  tls:
+    - hosts:
+        - "pennbasics.com"
+      secretName: pennbasics-com-tls
+---
+# Source: icarus/templates/certificates.yaml
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: pennbasics-com
+  annotations:
+    "helm.sh/resource-policy": keep
+spec:
+  secretName: pennbasics-com-tls
+  dnsNames:
+    - "pennbasics.com"
+    - "*.pennbasics.com"
+  issuerRef:
+    name: wildcard-letsencrypt-prod
+    kind: ClusterIssuer
+    group: cert-manager.io
