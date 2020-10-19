@@ -11,7 +11,7 @@ export interface IngressOptions {
     readonly port?: number;
 
     /**
-     * Ingresses. TODO: Rewrite this using IngressSpec?? so we get typechecking??
+     * Configuration options to define the ingress.
      *
      * @default undefined
      */
@@ -21,9 +21,7 @@ export interface IngressOptions {
 
 export interface HostsConfig {
     /**
-     * List of ingress hosts. TODO: Flatten layout
-     *
-     * @default []
+     * A list of host rules used to configure the Ingress.
      */
     readonly hosts: { host: string, paths: string[] }[];
 }
@@ -40,11 +38,11 @@ export class Ingress extends Construct {
             let tls = ingress.hosts.map(h => {
                 // Regex to compute the apex domain
                 const apex_domain = h.host.match(/[\w-]+\.[\w]+$/g)
-                if (apex_domain != null) {
+                if (apex_domain) {
                     const host_string = apex_domain[0].split('.').join('-').concat("-tls");
                     return { hosts: [h.host], secretName: host_string }
                 } else
-                    throw `Ingress construction failed: apex domain regex failed on ${h}`
+                    throw new Error(`Ingress construction failed: apex domain regex failed on ${h}`)
             })
 
             new IngressApiObject(this, `ingress-${appname}`, {

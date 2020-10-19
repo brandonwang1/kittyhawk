@@ -11,10 +11,10 @@ export interface DeploymentOptions extends ContainerOptions {
   readonly replicas?: number;
 
   /**
- * Secret mounts for deployment container.
- *
- * @default []
- */
+   * Secret volume mounts for deployment container.
+   *
+   * @default []
+   */
   readonly secretMounts?: { name: string, mountPath: string, subPath: string }[]
 }
 
@@ -25,7 +25,7 @@ export class Deployment extends Construct {
     const label = { name: appname };
     const replicas = options.replicas ?? 1;
     const containers: Container[] = [new Container(options)];
-    const volumes: Volume[] | undefined = options.secretMounts && options.secretMounts.map(m => new Volume(m))
+    const volumes: Volume[] | undefined = options.secretMounts?.map(m => new Volume(m))
 
     new DeploymentApiObject(this, `deployment-${appname}`, {
       metadata: {

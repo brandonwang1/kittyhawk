@@ -1,11 +1,35 @@
 import { Construct } from 'constructs';
 import { CronJob } from './lib/cronjob';
-import { Application } from './lib/application'
+import { Application, DjangoApplication } from './lib/application'
 
+
+const release_name = "RELEASE_NAME";
 
 export function buildChart(scope: Construct) {
 
-    const release_name = "RELEASE_NAME";
+    /** Probes test case **/
+    // new Application(scope, `${release_name}-serve`, {
+    //     image: 'pennlabs/website',
+    //     ingress: { hosts: [{ host: 'pennlabs.org', paths: ['/'] }] },
+    //     readinessProbe: { path: '/', delay: 5 },
+    //     livenessProbe: { command: ["test", "command"], period: 5 }
+    // })
+
+    /** OHQ (Part of it) - Checked! **/
+    new DjangoApplication(scope, `${release_name}-django-asgi`, {
+        image: 'pennlabs/office-hours-queue-backend',
+        secret: 'office-hours-queue',
+        cmd: ["/usr/local/bin/asgi-run"],
+        replicas: 2,
+        extraEnv: [{ name: 'DOMAIN', value: 'ohq.io' },
+        { name: 'DJANGO_SETTINGS_MODULE', value: 'officehoursqueue.settings.production' },
+        { name: 'REDIS_URL', value: 'redis://office-hours-queue-redis:6379' }],
+        ingress: { hosts: [{ host: 'ohq.io', paths: ['/api/ws'] }] }
+    })
+
+}
+
+export function buildProductChart(scope: Construct) {
 
     /** Penn Labs Website - Checked! **/
     new Application(scope, `${release_name}-serve`, {
@@ -22,7 +46,7 @@ export function buildChart(scope: Construct) {
     })
 
     /** OHQ (Part of it) - Checked! **/
-    new Application(scope, `${release_name}-django-asgi`, {
+    new DjangoApplication(scope, `${release_name}-django-asgi`, {
         image: 'pennlabs/office-hours-queue-backend',
         secret: 'office-hours-queue',
         cmd: ["/usr/local/bin/asgi-run"],
@@ -48,31 +72,26 @@ export function buildChart(scope: Construct) {
         replicas: 3,
         extraEnv: [{ name: 'PORT', value: '80' },
         { name: 'DJANGO_SETTINGS_MODULE', value: 'PennCourses.settings.production' }],
-        ingress: { hosts: [
-            { host: 'penncourseplan.com', paths: ["/api", "/admin", "/accounts", "/assets"] },
-            { host: 'penncoursealert.com', paths: ["/api", "/admin", "/accounts", "/assets", "/webhook"] },
-            { host: 'review.penncourses.org', paths: ["/api", "/admin", "/accounts", "/assets"]},
-        ] },
+        ingress: {
+            hosts: [
+                { host: 'penncourseplan.com', paths: ["/api", "/admin", "/accounts", "/assets"] },
+                { host: 'penncoursealert.com', paths: ["/api", "/admin", "/accounts", "/assets", "/webhook"] },
+                { host: 'review.penncourses.org', paths: ["/api", "/admin", "/accounts", "/assets"] },
+            ]
+        },
     })
 
     /** Platform - Checked! **/
-    new Application(scope, `${release_name}-platform`, {
+    new DjangoApplication(scope, `${release_name}-platform`, {
         image: 'pennlabs/platform',
         secret: 'platform',
         port: 443,
-        extraEnv: [
-            { name: 'DOMAIN', value: "platform.pennlabs.org" },
-            { name: "DJANGO_SETTINGS_MODULE", value: "Platform.settings.production" }
-        ],
-        ingress: 
-        {
-            hosts: [{ host: 'platform.pennlabs.org', paths: ["/"] }]
-        },
+        extraEnv: [{ name: 'DOMAIN', value: "platform.pennlabs.org" },
+        { name: "DJANGO_SETTINGS_MODULE", value: "Platform.settings.production" }],
+        ingress:
+            { hosts: [{ host: 'platform.pennlabs.org', paths: ["/"] }] },
         secretMounts: [{ name: 'platform', subPath: 'SHIBBOLETH_CERT', mountPath: '/etc/shibboleth/sp-cert.pem' },
         { name: 'platform', subPath: 'SHIBBOLETH_KEY', mountPath: '/etc/shibboleth/sp-key.pem' }]
     })
 
 }
-
-
-

@@ -5,10 +5,10 @@ import { Service, ServiceOptions } from "./service"
 import { Certificate } from "./certificate";
 
 export interface ApplicationOptions extends IngressOptions, DeploymentOptions,
-  ServiceOptions {}
+  ServiceOptions { }
 
 
-export class Application extends Construct { 
+export class Application extends Construct {
   constructor(scope: Construct, appname: string, options: ApplicationOptions) {
     super(scope, appname);
 
@@ -21,5 +21,32 @@ export class Application extends Construct {
 
       new Certificate(this, appname, options)
     }
+  }
+}
+
+
+export class DjangoApplication extends Application {
+  constructor(scope: Construct, appname: string, options: ApplicationOptions) {
+
+    // Check if the env variables contains DOMAIN
+    const env_domain = options.extraEnv?.filter(env => (env.name === "DOMAIN"));
+    if (env_domain?.length != 1) {
+      throw new Error("Django Application must define a DOMAIN enviroment variable.")
+    } else {
+      // Check if ingress contains a host that matches DOMAIN.
+      const ingress_domain = options.ingress?.hosts.filter(h => (h.host === env_domain[0].value))
+      if (!ingress_domain?.length) {
+        throw new Error("Ingress hosts must contain DOMAIN environment variable.")
+      }
+    }
+
+    // Check if the env variables contains DJANGO_SETTINGS_MODULE
+    const envSettingsModule = options.extraEnv?.filter(env => (env.name === "DJANGO_SETTINGS_MODULE"));
+    if (!envSettingsModule?.length) {
+      throw new Error("Django Application must define a DJANGO_SETTINGS_MODULE enviroment variable.")
+    }
+
+    // If everything looks right, construct the Application.
+    super(scope, appname, options);
   }
 }

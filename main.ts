@@ -5,7 +5,7 @@ import { buildChart } from "./sample-values";
 export class MyChart extends Chart {
   constructor(scope: Construct, name: string) {
     super(scope, name);
-    
+
     buildChart(this);
   }
 }

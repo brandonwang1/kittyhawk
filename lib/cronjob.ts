@@ -6,12 +6,12 @@ import { Container, ContainerOptions, Volume } from './container';
 export interface CronJobOptions extends ContainerOptions {
 
     /**
-     * CronJob schedule
+     * The schedule in Cron format.
      */
     readonly schedule: string;
 
     /**
-    * CronJob restart policy
+    * Restart policy for all containers.
     * 
     * @default "Never"
     * 
@@ -20,7 +20,7 @@ export interface CronJobOptions extends ContainerOptions {
     readonly restartPolicy?: "Always" | "OnFailure" | "Never";
 
     /**
-    * CronJob successLimit
+    * The number of successful finished jobs to retain. 
     * 
     * @default 1
     * 
@@ -28,7 +28,7 @@ export interface CronJobOptions extends ContainerOptions {
     readonly successLimit?: number;
 
     /**
-    * CronJob failureLimit
+    * The number of failed finished jobs to retain.
     * 
     * @default 1
     * 
@@ -36,9 +36,9 @@ export interface CronJobOptions extends ContainerOptions {
     readonly failureLimit?: number;
 
     /**
-    * Secret mounts for cronjob container.
+    * Secret volume mounts for cronjob container.
     *
-    * @default []
+    * @default undefined
     */
     readonly secretMounts?: { name: string, mountPath: string, subPath: string }[]
 
@@ -55,7 +55,7 @@ export class CronJob extends Construct {
         const failureLimit = options.failureLimit ?? 1;
         const successLimit = options.successLimit ?? 1;
         const containers: Container[] = [new Container(options)];
-        const volumes: Volume[] | undefined = options.secretMounts && options.secretMounts.map(m => new Volume(m))
+        const volumes: Volume[] | undefined = options.secretMounts?.map(m => new Volume(m))
 
 
         new CronJobApiObject(this, `cronjob-${jobname}`, {
@@ -63,7 +63,7 @@ export class CronJob extends Construct {
                 name: jobname,
                 namespace: 'default',
                 labels: label
-              },
+            },
             spec: {
                 schedule: schedule,
                 jobTemplate: {

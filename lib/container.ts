@@ -1,4 +1,4 @@
-import { Volume as VolumeInterface, Container as ContainerInterface, ContainerPort, EnvFromSource, EnvVar, Probe, VolumeMount, SecretVolumeSource } from '../imports/k8s';
+import { Volume as VolumeInterface, Container as ContainerInterface, ContainerPort, EnvFromSource, EnvVar, Probe as ProbeInterface, VolumeMount, SecretVolumeSource, HttpGetAction, ExecAction } from '../imports/k8s';
 
 
 export interface ContainerOptions {
@@ -64,6 +64,43 @@ export interface ContainerOptions {
     * 
     */
     readonly pullPolicy?: "IfNotPresent" | "Always" | "Never";
+
+    /**
+    * Liveliness Probe definitions for the container.
+    */
+    readonly livenessProbe?: probeOptions
+
+    /**
+    * Liveliness Probe definitions for the container.
+    */
+    readonly readinessProbe?: probeOptions
+
+}
+
+export interface probeOptions {
+    /**
+     * Sends a HTTP request to this path for the probe check. Only provide this OR a command.
+     */
+    readonly path?: string;
+
+    /**
+     * Comand to execute on the container for the probe. Only provide this OR a HTTP path.
+     */
+    readonly command?: string[];
+
+    /**
+     * Short for initialDelaySeconds: Number of seconds after the container has started before liveness or readiness probes are initiated. 
+     * 
+     * @default 0
+     */
+    readonly delay?: number;
+
+    /**
+     * Short for periodSeconds: How often (in seconds) to perform the probe. 
+     * 
+     * @default 10
+     */
+    readonly period?: number;
 }
 
 
@@ -95,11 +132,6 @@ export class Container implements ContainerInterface {
     readonly imagePullPolicy?: string;
 
     /**
-     * Periodic probe of container liveness. Container will be restarted if the probe fails.
-     */
-    readonly livenessProbe?: Probe;
-
-    /**
      * Name of the container specified as a DNS_LABEL.
      */
     readonly name: string;
@@ -111,14 +143,19 @@ export class Container implements ContainerInterface {
     readonly ports?: ContainerPort[];
 
     /**
+     * Pod volumes to mount into the container's filesystem.
+     */
+    readonly volumeMounts?: VolumeMount[];
+
+    /**
      * Periodic probe of container service readiness.
      */
     readonly readinessProbe?: Probe;
 
     /**
-     * Pod volumes to mount into the container's filesystem.
+     * Periodic probe of container liveness. 
      */
-    readonly volumeMounts?: VolumeMount[];
+    readonly livenessProbe?: Probe;
 
     constructor(options: ContainerOptions) {
 
@@ -129,18 +166,63 @@ export class Container implements ContainerInterface {
         this.command = options.cmd;
         this.volumeMounts = options.secretMounts;
         this.envFrom = options.secret ? [{ secretRef: { name: options.secret } }] : undefined;
-        this.env = options.extraEnv
-
+        this.env = options.extraEnv;
+        this.readinessProbe = options.readinessProbe && new Probe(options.readinessProbe);
+        this.livenessProbe = options.livenessProbe && new Probe(options.livenessProbe);
     }
 
 }
 
+export class Probe implements ProbeInterface {
+
+    /**
+     * One and only one of the following should be specified. Exec specifies the action to take.
+     */
+    readonly exec?: ExecAction;
+
+    /**
+     * HTTPGet specifies the http request to perform.
+     */
+    readonly httpGet?: HttpGetAction;
+
+    /**
+     * Number of seconds after the container has started before liveness probes are initiated. 
+     */
+    readonly initialDelaySeconds?: number;
+
+    /**
+     * How often (in seconds) to perform the probe. Default to 10 seconds.
+     *
+     */
+    readonly periodSeconds?: number;
+
+    constructor(options: probeOptions) {
+        this.initialDelaySeconds = options.delay ?? 1;
+        this.periodSeconds = options.period ?? 10;
+        if (options.command) {
+            this.exec = { command: options.command }
+        } else if (options.path) {
+            this.httpGet = { path: options.path, port: 80 }
+        } else throw new Error("Must provide either probe command or HTTP path")
+    }
+}
 
 export interface VolumeOptions {
 
-    readonly name: string,
-    readonly mountPath: string,
-    readonly subPath: string
+    /**
+     * Secret volume name. 
+     */
+    readonly name: string;
+
+    /**
+     * Secret volume mountPath. 
+     */
+    readonly mountPath: string;
+
+    /**
+     * Secret volume mountPath. 
+     */
+    readonly subPath: string;
 
 }
 
