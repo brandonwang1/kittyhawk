@@ -1,6 +1,6 @@
 import { Construct } from 'constructs';
 import { CronJob } from './lib/cronjob';
-import { Application, DjangoApplication } from './lib/application'
+import { Application, DjangoApplication, ReactApplication } from './lib/application'
 
 
 const release_name = "RELEASE_NAME";
@@ -11,7 +11,7 @@ export function buildChart(scope: Construct) {
     // new Application(scope, `${release_name}-serve`, {
     //     image: 'pennlabs/website',
     //     ingress: { hosts: [{ host: 'pennlabs.org', paths: ['/'] }] },
-    //     readinessProbe: { path: '/', delay: 5 },
+    //     readinessProbe: { path: '/', delay: 5 }, // Default on?
     //     livenessProbe: { command: ["test", "command"], period: 5 }
     // })
 
@@ -19,12 +19,13 @@ export function buildChart(scope: Construct) {
     new DjangoApplication(scope, `${release_name}-django-asgi`, {
         image: 'pennlabs/office-hours-queue-backend',
         secret: 'office-hours-queue',
+        // replicas: 32,
         cmd: ["/usr/local/bin/asgi-run"],
-        replicas: 2,
         extraEnv: [{ name: 'DOMAIN', value: 'ohq.io' },
         { name: 'DJANGO_SETTINGS_MODULE', value: 'officehoursqueue.settings.production' },
         { name: 'REDIS_URL', value: 'redis://office-hours-queue-redis:6379' }],
-        ingress: { hosts: [{ host: 'ohq.io', paths: ['/api/ws'] }] }
+        ingress: { hosts: [{ host: 'ohq.io', paths: ['/api/ws'] }] },
+        autoScalingOptions: {cpu: 10}
     })
 
 }
@@ -38,7 +39,7 @@ export function buildProductChart(scope: Construct) {
     })
 
     /** Penn Basics - Checked! **/
-    new Application(scope, `${release_name}-react`, {
+    new ReactApplication(scope, `${release_name}-react`, {
         image: 'pennlabs/penn-basics',
         secret: 'penn-basics',
         extraEnv: [{ name: 'PORT', value: '80' }],

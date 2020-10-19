@@ -13,7 +13,7 @@ export function buildChart(scope: Construct) {
         port: 80
     });
 
-    // Sample Application
+    // Sample Cronjob
     new CronJob(scope, `${release_name}-cronjob`, {
         schedule: "0 8 * * *",
         image: "pennlabs/cronjob:latest",

@@ -1,5 +1,6 @@
 import { Construct } from "constructs";
 import { Deployment as DeploymentApiObject } from "../imports/k8s";
+import { Autoscaler, AutoscalingOptions } from "./autoscaler";
 import { Container, ContainerOptions, Volume } from "./container";
 
 export interface DeploymentOptions extends ContainerOptions {
@@ -16,6 +17,13 @@ export interface DeploymentOptions extends ContainerOptions {
    * @default []
    */
   readonly secretMounts?: { name: string, mountPath: string, subPath: string }[]
+
+  /**
+   * Options for autoscaling. 
+   * @default - see default autoscaler options
+   */
+  readonly autoScalingOptions?: AutoscalingOptions;
+
 }
 
 export class Deployment extends Construct {
@@ -23,18 +31,22 @@ export class Deployment extends Construct {
     super(scope, `deployment-${appname}`);
 
     const label = { name: appname };
-    const replicas = options.replicas ?? 1;
     const containers: Container[] = [new Container(options)];
     const volumes: Volume[] | undefined = options.secretMounts?.map(m => new Volume(m))
+    const autoScalingOn : boolean = options.autoScalingOptions !== undefined
 
-    new DeploymentApiObject(this, `deployment-${appname}`, {
+    if (autoScalingOn && options.replicas !== undefined) {
+      throw new Error('Cannot specify "replicaCount" when auto-scaling is enabled');
+    }
+
+    const deployment = new DeploymentApiObject(this, `deployment-${appname}`, {
       metadata: {
         name: appname,
         namespace: 'default',
         labels: label
       },
       spec: {
-        replicas: replicas,
+        replicas: autoScalingOn ? undefined : (options.replicas ?? 1),
         selector: {
           matchLabels: label,
         },
@@ -54,5 +66,12 @@ export class Deployment extends Construct {
         },
       },
     });
+
+    if (autoScalingOn) {
+      new Autoscaler(this, `autoscaler-${appname}`, {
+        target: deployment,
+        ...options.autoScalingOptions
+      });
+    }
   }
 }

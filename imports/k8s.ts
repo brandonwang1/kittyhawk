@@ -468,13 +468,13 @@ export class SubjectAccessReview extends ApiObject {
 }
 
 /**
- * configuration of a horizontal pod autoscaler.
+ * HorizontalPodAutoscaler is the configuration for a horizontal pod autoscaler, which automatically manages the replica count of any resource implementing the scale subresource based on the metrics specified.
  *
- * @schema io.k8s.api.autoscaling.v1.HorizontalPodAutoscaler
+ * @schema io.k8s.api.autoscaling.v2beta2.HorizontalPodAutoscaler
  */
 export class HorizontalPodAutoscaler extends ApiObject {
   /**
-   * Defines a "io.k8s.api.autoscaling.v1.HorizontalPodAutoscaler" API object
+   * Defines a "io.k8s.api.autoscaling.v2beta2.HorizontalPodAutoscaler" API object
    * @param scope the scope in which to define this object
    * @param name a scope-local name for the object
    * @param options configuration options
@@ -483,7 +483,7 @@ export class HorizontalPodAutoscaler extends ApiObject {
     super(scope, name, {
       ...options,
       kind: 'HorizontalPodAutoscaler',
-      apiVersion: 'autoscaling/v1',
+      apiVersion: 'autoscaling/v2beta2',
     });
   }
 }
@@ -2616,22 +2616,22 @@ export interface SubjectAccessReviewOptions {
 }
 
 /**
- * configuration of a horizontal pod autoscaler.
+ * HorizontalPodAutoscaler is the configuration for a horizontal pod autoscaler, which automatically manages the replica count of any resource implementing the scale subresource based on the metrics specified.
  *
- * @schema io.k8s.api.autoscaling.v1.HorizontalPodAutoscaler
+ * @schema io.k8s.api.autoscaling.v2beta2.HorizontalPodAutoscaler
  */
 export interface HorizontalPodAutoscalerOptions {
   /**
-   * Standard object metadata. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata
+   * metadata is the standard object metadata. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#metadata
    *
-   * @schema io.k8s.api.autoscaling.v1.HorizontalPodAutoscaler#metadata
+   * @schema io.k8s.api.autoscaling.v2beta2.HorizontalPodAutoscaler#metadata
    */
   readonly metadata?: ObjectMeta;
 
   /**
-   * behaviour of autoscaler. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#spec-and-status.
+   * spec is the specification for the behaviour of the autoscaler. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#spec-and-status.
    *
-   * @schema io.k8s.api.autoscaling.v1.HorizontalPodAutoscaler#spec
+   * @schema io.k8s.api.autoscaling.v2beta2.HorizontalPodAutoscaler#spec
    */
   readonly spec?: HorizontalPodAutoscalerSpec;
 
@@ -5416,38 +5416,38 @@ export interface SelfSubjectRulesReviewSpec {
 }
 
 /**
- * specification of a horizontal pod autoscaler.
+ * HorizontalPodAutoscalerSpec describes the desired functionality of the HorizontalPodAutoscaler.
  *
- * @schema io.k8s.api.autoscaling.v1.HorizontalPodAutoscalerSpec
+ * @schema io.k8s.api.autoscaling.v2beta2.HorizontalPodAutoscalerSpec
  */
 export interface HorizontalPodAutoscalerSpec {
   /**
-   * upper limit for the number of pods that can be set by the autoscaler; cannot be smaller than MinReplicas.
+   * maxReplicas is the upper limit for the number of replicas to which the autoscaler can scale up. It cannot be less that minReplicas.
    *
-   * @schema io.k8s.api.autoscaling.v1.HorizontalPodAutoscalerSpec#maxReplicas
+   * @schema io.k8s.api.autoscaling.v2beta2.HorizontalPodAutoscalerSpec#maxReplicas
    */
   readonly maxReplicas: number;
 
   /**
-   * lower limit for the number of pods that can be set by the autoscaler, default 1.
+   * metrics contains the specifications for which to use to calculate the desired replica count (the maximum replica count across all metrics will be used).  The desired replica count is calculated multiplying the ratio between the target value and the current value by the current number of pods.  Ergo, metrics used must decrease as the pod count is increased, and vice-versa.  See the individual metric source types for more information about how each type of metric must respond. If not set, the default metric will be set to 80% average CPU utilization.
    *
-   * @schema io.k8s.api.autoscaling.v1.HorizontalPodAutoscalerSpec#minReplicas
+   * @schema io.k8s.api.autoscaling.v2beta2.HorizontalPodAutoscalerSpec#metrics
+   */
+  readonly metrics?: MetricSpec[];
+
+  /**
+   * minReplicas is the lower limit for the number of replicas to which the autoscaler can scale down. It defaults to 1 pod.
+   *
+   * @schema io.k8s.api.autoscaling.v2beta2.HorizontalPodAutoscalerSpec#minReplicas
    */
   readonly minReplicas?: number;
 
   /**
-   * reference to scaled resource; horizontal pod autoscaler will learn the current resource consumption and will set the desired number of pods by using its Scale subresource.
+   * scaleTargetRef points to the target resource to scale, and is used to the pods for which metrics should be collected, as well as to actually change the replica count.
    *
-   * @schema io.k8s.api.autoscaling.v1.HorizontalPodAutoscalerSpec#scaleTargetRef
+   * @schema io.k8s.api.autoscaling.v2beta2.HorizontalPodAutoscalerSpec#scaleTargetRef
    */
   readonly scaleTargetRef: CrossVersionObjectReference;
-
-  /**
-   * target average CPU utilization (represented as a percentage of requested CPU) over all the pods; if not specified the default autoscaling policy will be used.
-   *
-   * @schema io.k8s.api.autoscaling.v1.HorizontalPodAutoscalerSpec#targetCPUUtilizationPercentage
-   */
-  readonly targetCPUUtilizationPercentage?: number;
 
 }
 
@@ -7836,29 +7836,72 @@ export interface ResourceAttributes {
 }
 
 /**
+ * MetricSpec specifies how to scale based on a single metric (only `type` and one other matching field should be set at once).
+ *
+ * @schema io.k8s.api.autoscaling.v2beta2.MetricSpec
+ */
+export interface MetricSpec {
+  /**
+   * external refers to a global metric that is not associated with any Kubernetes object. It allows autoscaling based on information coming from components running outside of cluster (for example length of queue in cloud messaging service, or QPS from loadbalancer running outside of cluster).
+   *
+   * @schema io.k8s.api.autoscaling.v2beta2.MetricSpec#external
+   */
+  readonly external?: ExternalMetricSource;
+
+  /**
+   * object refers to a metric describing a single kubernetes object (for example, hits-per-second on an Ingress object).
+   *
+   * @schema io.k8s.api.autoscaling.v2beta2.MetricSpec#object
+   */
+  readonly object?: ObjectMetricSource;
+
+  /**
+   * pods refers to a metric describing each pod in the current scale target (for example, transactions-processed-per-second).  The values will be averaged together before being compared to the target value.
+   *
+   * @schema io.k8s.api.autoscaling.v2beta2.MetricSpec#pods
+   */
+  readonly pods?: PodsMetricSource;
+
+  /**
+   * resource refers to a resource metric (such as those specified in requests and limits) known to Kubernetes describing each pod in the current scale target (e.g. CPU or memory). Such metrics are built in to Kubernetes, and have special scaling options on top of those available to normal per-pod metrics using the "pods" source.
+   *
+   * @schema io.k8s.api.autoscaling.v2beta2.MetricSpec#resource
+   */
+  readonly resource?: ResourceMetricSource;
+
+  /**
+   * type is the type of metric source.  It should be one of "Object", "Pods" or "Resource", each mapping to a matching field in the object.
+   *
+   * @schema io.k8s.api.autoscaling.v2beta2.MetricSpec#type
+   */
+  readonly type: string;
+
+}
+
+/**
  * CrossVersionObjectReference contains enough information to let you identify the referred resource.
  *
- * @schema io.k8s.api.autoscaling.v1.CrossVersionObjectReference
+ * @schema io.k8s.api.autoscaling.v2beta2.CrossVersionObjectReference
  */
 export interface CrossVersionObjectReference {
   /**
    * API version of the referent
    *
-   * @schema io.k8s.api.autoscaling.v1.CrossVersionObjectReference#apiVersion
+   * @schema io.k8s.api.autoscaling.v2beta2.CrossVersionObjectReference#apiVersion
    */
   readonly apiVersion?: string;
 
   /**
    * Kind of the referent; More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds"
    *
-   * @schema io.k8s.api.autoscaling.v1.CrossVersionObjectReference#kind
+   * @schema io.k8s.api.autoscaling.v2beta2.CrossVersionObjectReference#kind
    */
   readonly kind: string;
 
   /**
    * Name of the referent; More info: http://kubernetes.io/docs/user-guide/identifiers#names
    *
-   * @schema io.k8s.api.autoscaling.v1.CrossVersionObjectReference#name
+   * @schema io.k8s.api.autoscaling.v2beta2.CrossVersionObjectReference#name
    */
   readonly name: string;
 
@@ -10724,6 +10767,99 @@ export interface WebhookThrottleConfig {
 }
 
 /**
+ * ExternalMetricSource indicates how to scale on a metric not associated with any Kubernetes object (for example length of queue in cloud messaging service, or QPS from loadbalancer running outside of cluster).
+ *
+ * @schema io.k8s.api.autoscaling.v2beta2.ExternalMetricSource
+ */
+export interface ExternalMetricSource {
+  /**
+   * metric identifies the target metric by name and selector
+   *
+   * @schema io.k8s.api.autoscaling.v2beta2.ExternalMetricSource#metric
+   */
+  readonly metric: MetricIdentifier;
+
+  /**
+   * target specifies the target value for the given metric
+   *
+   * @schema io.k8s.api.autoscaling.v2beta2.ExternalMetricSource#target
+   */
+  readonly target: MetricTarget;
+
+}
+
+/**
+ * ObjectMetricSource indicates how to scale on a metric describing a kubernetes object (for example, hits-per-second on an Ingress object).
+ *
+ * @schema io.k8s.api.autoscaling.v2beta2.ObjectMetricSource
+ */
+export interface ObjectMetricSource {
+  /**
+   * @schema io.k8s.api.autoscaling.v2beta2.ObjectMetricSource#describedObject
+   */
+  readonly describedObject: CrossVersionObjectReference;
+
+  /**
+   * metric identifies the target metric by name and selector
+   *
+   * @schema io.k8s.api.autoscaling.v2beta2.ObjectMetricSource#metric
+   */
+  readonly metric: MetricIdentifier;
+
+  /**
+   * target specifies the target value for the given metric
+   *
+   * @schema io.k8s.api.autoscaling.v2beta2.ObjectMetricSource#target
+   */
+  readonly target: MetricTarget;
+
+}
+
+/**
+ * PodsMetricSource indicates how to scale on a metric describing each pod in the current scale target (for example, transactions-processed-per-second). The values will be averaged together before being compared to the target value.
+ *
+ * @schema io.k8s.api.autoscaling.v2beta2.PodsMetricSource
+ */
+export interface PodsMetricSource {
+  /**
+   * metric identifies the target metric by name and selector
+   *
+   * @schema io.k8s.api.autoscaling.v2beta2.PodsMetricSource#metric
+   */
+  readonly metric: MetricIdentifier;
+
+  /**
+   * target specifies the target value for the given metric
+   *
+   * @schema io.k8s.api.autoscaling.v2beta2.PodsMetricSource#target
+   */
+  readonly target: MetricTarget;
+
+}
+
+/**
+ * ResourceMetricSource indicates how to scale on a resource metric known to Kubernetes, as specified in requests and limits, describing each pod in the current scale target (e.g. CPU or memory).  The values will be averaged together before being compared to the target.  Such metrics are built in to Kubernetes, and have special scaling options on top of those available to normal per-pod metrics using the "pods" source.  Only one "target" type should be set.
+ *
+ * @schema io.k8s.api.autoscaling.v2beta2.ResourceMetricSource
+ */
+export interface ResourceMetricSource {
+  /**
+   * name is the name of the resource in question.
+   *
+   * @schema io.k8s.api.autoscaling.v2beta2.ResourceMetricSource#name
+   */
+  readonly name: string;
+
+  /**
+   * target specifies the target value for the given metric
+   *
+   * @schema io.k8s.api.autoscaling.v2beta2.ResourceMetricSource#target
+   */
+  readonly target: MetricTarget;
+
+}
+
+/**
  * ConfigMapNodeConfigSource contains the information to reference a ConfigMap as a config source for the Node.
  *
  * @schema io.k8s.api.core.v1.ConfigMapNodeConfigSource
@@ -12363,6 +12499,64 @@ export interface JsonSchemaProps {
    * @schema io.k8s.apiextensions-apiserver.pkg.apis.apiextensions.v1beta1.JSONSchemaProps#uniqueItems
    */
   readonly uniqueItems?: boolean;
+
+}
+
+/**
+ * MetricIdentifier defines the name and optionally selector for a metric
+ *
+ * @schema io.k8s.api.autoscaling.v2beta2.MetricIdentifier
+ */
+export interface MetricIdentifier {
+  /**
+   * name is the name of the given metric
+   *
+   * @schema io.k8s.api.autoscaling.v2beta2.MetricIdentifier#name
+   */
+  readonly name: string;
+
+  /**
+   * selector is the string-encoded form of a standard kubernetes label selector for the given metric When set, it is passed as an additional parameter to the metrics server for more specific metrics scoping. When unset, just the metricName will be used to gather metrics.
+   *
+   * @schema io.k8s.api.autoscaling.v2beta2.MetricIdentifier#selector
+   */
+  readonly selector?: LabelSelector;
+
+}
+
+/**
+ * MetricTarget defines the target value, average value, or average utilization of a specific metric
+ *
+ * @schema io.k8s.api.autoscaling.v2beta2.MetricTarget
+ */
+export interface MetricTarget {
+  /**
+   * averageUtilization is the target value of the average of the resource metric across all relevant pods, represented as a percentage of the requested value of the resource for the pods. Currently only valid for Resource metric source type
+   *
+   * @schema io.k8s.api.autoscaling.v2beta2.MetricTarget#averageUtilization
+   */
+  readonly averageUtilization?: number;
+
+  /**
+   * averageValue is the target value of the average of the metric across all relevant pods (as a quantity)
+   *
+   * @schema io.k8s.api.autoscaling.v2beta2.MetricTarget#averageValue
+   */
+  readonly averageValue?: Quantity;
+
+  /**
+   * type represents whether the metric type is Utilization, Value, or AverageValue
+   *
+   * @schema io.k8s.api.autoscaling.v2beta2.MetricTarget#type
+   */
+  readonly type: string;
+
+  /**
+   * value is the target value of the metric (as a quantity).
+   *
+   * @schema io.k8s.api.autoscaling.v2beta2.MetricTarget#value
+   */
+  readonly value?: Quantity;
 
 }
 

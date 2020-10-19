@@ -7,6 +7,7 @@
   "private": true,
   "scripts": {
     "import": "cdk8s import",
+    "gen": "cdk8s import k8s --language typescript --include io.k8s.api.autoscaling.v2beta2.HorizontalPodAutoscaler",
     "synth": "npm run compile && cdk8s synth",
     "compile": "tsc",
     "watch": "tsc -w",

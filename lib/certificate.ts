@@ -5,12 +5,11 @@ import { IngressOptions } from './ingress';
 export class Certificate extends Construct {
   constructor(scope: Construct, appname: string, options: IngressOptions) {
     super(scope, `certificate-${appname}`);
-    const ingress = options.ingress;
 
     // Only generate certificates if an ingress is defined
-    if (ingress) {
+    if (options.ingress) {
       // We want to generate a certificate for each host
-      for (const h of ingress.hosts) {
+      for (const h of options.ingress.hosts) {
         // Regex to compute the apex domain
         const apex_domain = h.host.match(/[\w-]+\.[\w]+$/g)
         if (apex_domain != null) {
