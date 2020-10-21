@@ -1,5 +1,4 @@
-// Largely borrowed from https://github.com/awslabs/cdk8s/blob/master/examples/typescript/podinfo/lib/autoscaler.ts
-// Command: npm run gen
+// Mostly borrowed from https://github.com/awslabs/cdk8s/blob/master/examples/typescript/podinfo/lib/autoscaler.ts
 
 import { Construct } from 'constructs';
 import { HorizontalPodAutoscaler, MetricSpec, Quantity } from '../imports/k8s';
@@ -46,8 +45,8 @@ export interface AutoscalerOptions extends AutoscalingOptions {
 }
 
 export class Autoscaler extends Construct {
-    constructor(scope: Construct, id: string, options: AutoscalerOptions) {
-        super(scope, id);
+    constructor(scope: Construct, appname: string, options: AutoscalerOptions) {
+        super(scope, `autoscaler-${appname}`);
 
         const metrics = new Array<MetricSpec>();
 
@@ -94,7 +93,7 @@ export class Autoscaler extends Construct {
 
         new HorizontalPodAutoscaler(this, 'default', {
             metadata: {
-                name: id
+                name: appname
             },
             spec: {
                 scaleTargetRef: {

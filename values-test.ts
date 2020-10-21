@@ -2,51 +2,55 @@ import { Construct } from 'constructs';
 import { CronJob } from './lib/cronjob';
 import { Application, DjangoApplication, ReactApplication } from './lib/application'
 
-
 const release_name = "RELEASE_NAME";
 
-export function buildChart(scope: Construct) {
 
-    /** Probes test case **/
-    // new Application(scope, `${release_name}-serve`, {
-    //     image: 'pennlabs/website',
-    //     ingress: { hosts: [{ host: 'pennlabs.org', paths: ['/'] }] },
-    //     readinessProbe: { path: '/', delay: 5 }, // Default on?
-    //     livenessProbe: { command: ["test", "command"], period: 5 }
-    // })
+/** UNIT TEST CONFIGS */
+export function buildProbeChart(scope: Construct) {
 
-    /** OHQ (Part of it) - Checked! **/
-    new DjangoApplication(scope, `${release_name}-django-asgi`, {
-        image: 'pennlabs/office-hours-queue-backend',
-        secret: 'office-hours-queue',
-        // replicas: 32,
-        cmd: ["/usr/local/bin/asgi-run"],
-        extraEnv: [{ name: 'DOMAIN', value: 'ohq.io' },
-        { name: 'DJANGO_SETTINGS_MODULE', value: 'officehoursqueue.settings.production' },
-        { name: 'REDIS_URL', value: 'redis://office-hours-queue-redis:6379' }],
-        ingress: { hosts: [{ host: 'ohq.io', paths: ['/api/ws'] }] },
-        autoScalingOptions: {cpu: 10}
+    /** Probe tests **/
+    new Application(scope, `${release_name}-serve`, {
+        image: 'pennlabs/website',
+        readinessProbe: { path: '/', delay: 5 }, // Default on?
+        livenessProbe: { command: ["test", "command"], period: 5 }
     })
-
 }
 
-export function buildProductChart(scope: Construct) {
+export function buildAutoscalingChart(scope: Construct) {
 
-    /** Penn Labs Website - Checked! **/
+    /** Autoscaling test **/
+    new Application(scope, `${release_name}-serve`, {
+        image: 'pennlabs/website',
+        autoScalingOptions: { cpu: 80 }
+    })
+}
+
+
+/** INTEGRATION TEST CONFIGS */
+
+export function buildWebsiteChart(scope: Construct) {
+
+    /** Penn Labs Website **/
     new Application(scope, `${release_name}-serve`, {
         image: 'pennlabs/website',
         ingress: { hosts: [{ host: 'pennlabs.org', paths: ['/'] }] },
     })
+}
 
-    /** Penn Basics - Checked! **/
-    new ReactApplication(scope, `${release_name}-react`, {
+export function buildBasicsChart(scope: Construct) {
+
+    /** Penn Basics **/
+    new Application(scope, `${release_name}-react`, {
         image: 'pennlabs/penn-basics',
         secret: 'penn-basics',
         extraEnv: [{ name: 'PORT', value: '80' }],
         ingress: { hosts: [{ host: 'pennbasics.com', paths: ['/'] }] },
     })
+}
 
-    /** OHQ (Part of it) - Checked! **/
+export function buildOHQChart(scope: Construct) {
+
+    /** OHQ (Part of it) **/
     new DjangoApplication(scope, `${release_name}-django-asgi`, {
         image: 'pennlabs/office-hours-queue-backend',
         secret: 'office-hours-queue',
@@ -65,7 +69,11 @@ export function buildProductChart(scope: Construct) {
         cmd: ["python", "manage.py", "calculatewaittimes"],
     });
 
-    /** Penn Courses (Part of it) - Checked! **/
+}
+
+export function buildCoursesChart(scope: Construct) {
+
+    /** Penn Courses (Part of it) **/
     new Application(scope, `${release_name}-backend`, {
         image: 'pennlabs/penn-courses-backend',
         secret: 'penn-courses',
@@ -81,8 +89,11 @@ export function buildProductChart(scope: Construct) {
             ]
         },
     })
+}
 
-    /** Platform - Checked! **/
+export function buildPlatformChart(scope: Construct) {
+
+    /** Platform **/
     new DjangoApplication(scope, `${release_name}-platform`, {
         image: 'pennlabs/platform',
         secret: 'platform',
@@ -94,5 +105,33 @@ export function buildProductChart(scope: Construct) {
         secretMounts: [{ name: 'platform', subPath: 'SHIBBOLETH_CERT', mountPath: '/etc/shibboleth/sp-cert.pem' },
         { name: 'platform', subPath: 'SHIBBOLETH_KEY', mountPath: '/etc/shibboleth/sp-key.pem' }]
     })
+}
+
+export function buildClubsChart(scope: Construct) {
+
+    /** Penn Clubs **/
+    new DjangoApplication(scope, `${release_name}-django-asgi`, {
+        image: 'pennlabs/penn-clubs-backend',
+        secret: 'penn-clubs',
+        cmd: ["/usr/local/bin/asgi-run"],
+        replicas: 2,
+        extraEnv: [{ name: 'DOMAIN', value: "pennclubs.com" },
+        { name: "DJANGO_SETTINGS_MODULE", value: "pennclubs.settings.production" },
+        { name: "REDIS_HOST", value: "penn-clubs-redis" }],
+        ingress:
+            { hosts: [{ host: 'pennclubs.com', paths: ["/api/ws"] }] },
+    })
+
+    new ReactApplication(scope, `${release_name}-react`, {
+        image: 'pennlabs/penn-clubs-frontend',
+        replicas: 2,
+        extraEnv: [{ name: 'DOMAIN', value: "pennclubs.com" },
+        { name: "PORT", value: "80" }],
+        ingress:
+            { hosts: [{ host: 'pennclubs.com', paths: ["/"] }] },
+    })
+
+
 
 }
+

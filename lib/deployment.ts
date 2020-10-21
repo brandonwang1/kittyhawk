@@ -68,7 +68,7 @@ export class Deployment extends Construct {
     });
 
     if (autoScalingOn) {
-      new Autoscaler(this, `autoscaler-${appname}`, {
+      new Autoscaler(this, appname, {
         target: deployment,
         ...options.autoScalingOptions
       });

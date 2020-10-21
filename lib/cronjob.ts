@@ -2,7 +2,6 @@ import { Construct } from 'constructs';
 import { CronJob as CronJobApiObject } from '../imports/k8s';
 import { Container, ContainerOptions, Volume } from './container';
 
-
 export interface CronJobOptions extends ContainerOptions {
 
     /**
