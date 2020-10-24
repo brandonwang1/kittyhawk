@@ -1,32 +1,37 @@
 {
-  "name": "kittyhawk",
+  "name": "@pennlabs/kittyhawk",
   "version": "1.0.0",
+  "author": "Penn Labs",
+  "description": "Tool to generate Kubernetes YAML files from code.",
   "main": "main.js",
-  "types": "main.ts",
+  "types": "main.d.ts",
   "license": "Apache-2.0",
-  "private": true,
+  "homepage": "https://github.com/pennlabs/kittyhawk",
+  "private": false,
   "scripts": {
-    "import": "cdk8s import",
-    "gen": "cdk8s import k8s --language typescript --include io.k8s.api.autoscaling.v2beta2.HorizontalPodAutoscaler",
-    "synth": "npm run compile && cdk8s synth",
+    "import": "npx cdk8s import",
+    "gen": "npx cdk8s import k8s --language typescript --include io.k8s.api.autoscaling.v2beta2.HorizontalPodAutoscaler",
+    "synth": "npm run compile && npx cdk8s synth",
     "compile": "tsc",
     "watch": "tsc -w",
     "test": "jest",
+    "docs": "npx typedoc --out docs lib",
     "build": "npm run compile && npm run test && npm run synth",
     "upgrade": "npm i cdk8s@latest cdk8s-cli@latest",
     "upgrade:next": "npm i cdk8s@next cdk8s-cli@next"
   },
   "dependencies": {
-    "cdk8s": "^0.31.0",
+    "cdk8s": "^0.33.0",
     "cdk8s-plus": "^0.30.0",
     "constructs": "^3.0.4"
   },
   "devDependencies": {
     "@types/jest": "^26.0.14",
     "@types/node": "^14.11.2",
-    "cdk8s-cli": "^0.31.0",
+    "cdk8s-cli": "^0.33.0",
     "jest": "^26.4.2",
     "ts-jest": "^26.4.1",
+    "typedoc": "^0.19.2",
     "typescript": "^4.0.3"
   }
 }
