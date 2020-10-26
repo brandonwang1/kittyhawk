@@ -123,7 +123,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides Construct.__constructor</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/pennlabs/kittyhawk/blob/161ff2a/lib/autoscaler.ts#L47">lib/autoscaler.ts:47</a></li>
+									<li>Defined in <a href="https://github.com/pennlabs/kittyhawk/blob/21d6b52/lib/autoscaler.ts#L47">lib/autoscaler.ts:47</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -156,12 +156,12 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="_imports_k8s_.mutatingwebhookconfiguration.html">MutatingWebhookConfiguration</a>.<a href="_imports_k8s_.mutatingwebhookconfiguration.html#onprepare">onPrepare</a></p>
 								<ul>
-									<li>Defined in node_modules/constructs/lib/construct.d.ts:257</li>
+									<li>Defined in node_modules/constructs/lib/construct.d.ts:298</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Perform final modifications before synthesis</p>
+									<p>Perform final modifications before synthesis.</p>
 								</div>
 								<p>This method can be implemented by derived constructs in order to perform
 									final changes before synthesis. prepare() will be called after child
@@ -184,7 +184,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="_imports_k8s_.mutatingwebhookconfiguration.html">MutatingWebhookConfiguration</a>.<a href="_imports_k8s_.mutatingwebhookconfiguration.html#onsynthesize">onSynthesize</a></p>
 								<ul>
-									<li>Defined in node_modules/constructs/lib/construct.d.ts:266</li>
+									<li>Defined in node_modules/constructs/lib/construct.d.ts:307</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -218,15 +218,21 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="_imports_k8s_.mutatingwebhookconfiguration.html">MutatingWebhookConfiguration</a>.<a href="_imports_k8s_.mutatingwebhookconfiguration.html#onvalidate">onValidate</a></p>
 								<ul>
-									<li>Defined in node_modules/constructs/lib/construct.d.ts:246</li>
+									<li>Defined in node_modules/constructs/lib/construct.d.ts:287</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Validate the current construct.</p>
+									<p>(deprecated) Validate the current construct.</p>
 								</div>
 								<p>This method can be implemented by derived constructs in order to perform
 								validation logic. It is called on all constructs before synthesis.</p>
+								<dl class="tsd-comment-tags">
+									<dt>deprecated</dt>
+									<dd><p>use <code>Node.addValidation()</code> to subscribe validation functions on this construct
+										instead of overriding this method.</p>
+									</dd>
+								</dl>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h4>
 							<p>An array of validation error messages, or an empty array if there the construct is valid.</p>
@@ -244,7 +250,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="_imports_k8s_.mutatingwebhookconfiguration.html">MutatingWebhookConfiguration</a>.<a href="_imports_k8s_.mutatingwebhookconfiguration.html#tostring">toString</a></p>
 								<ul>
-									<li>Defined in node_modules/constructs/lib/construct.d.ts:237</li>
+									<li>Defined in node_modules/constructs/lib/construct.d.ts:276</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -277,6 +283,9 @@
 						<a href="../modules/_lib_certificate_.html">&quot;lib/certificate&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
+						<a href="../modules/_lib_chart_.html">&quot;lib/chart&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
 						<a href="../modules/_lib_container_.html">&quot;lib/container&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
@@ -284,6 +293,9 @@
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="../modules/_lib_deployment_.html">&quot;lib/deployment&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/_lib_index_.html">&quot;lib/index&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="../modules/_lib_ingress_.html">&quot;lib/ingress&quot;</a>
@@ -349,6 +361,9 @@
 			<ul class="tsd-legend">
 				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
 				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>

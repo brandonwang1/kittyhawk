@@ -1,9 +1,11 @@
+import { Chart } from '../lib';
+import { Testing } from 'cdk8s';
 import { Construct } from 'constructs';
-import { CronJob } from './lib/cronjob';
-import { Application, DjangoApplication, ReactApplication } from './lib/application'
+import { CronJob } from '../lib/cronjob';
+import { Application, DjangoApplication, ReactApplication } from '../lib/application'
+
 
 const release_name = "RELEASE_NAME";
-
 
 /** UNIT TEST CONFIGS */
 export function buildProbeChart(scope: Construct) {
@@ -131,7 +133,35 @@ export function buildClubsChart(scope: Construct) {
             { hosts: [{ host: 'pennclubs.com', paths: ["/"] }] },
     })
 
-
-
 }
 
+
+
+/** Helper function to run each chart test */
+const chartTest = (build: Function) => {
+  const app = Testing.app();
+  const chart = new Chart(app, 'kittyhawk', build);
+  const results = Testing.synth(chart)
+  expect(results).toMatchSnapshot();
+}
+
+describe('Unit Tests', () => {
+  test('Autoscaling', () => chartTest(buildAutoscalingChart));
+  
+  test('Readiness/Liveliness Probes', () => chartTest(buildProbeChart));
+});
+
+describe('Integration Tests', () => {
+  test('Penn Labs Website', () => chartTest(buildWebsiteChart));
+
+  test('Penn Basics', () => chartTest(buildBasicsChart));
+
+  test('OHQ', () => chartTest(buildOHQChart));
+
+  test('Penn Courses', () => chartTest(buildCoursesChart));
+
+  test('Platform API', () => chartTest(buildPlatformChart));
+
+  test('Penn Clubs', () => chartTest(buildClubsChart));
+
+});
