@@ -58,10 +58,11 @@ export function buildOHQChart(scope: Construct) {
         secret: 'office-hours-queue',
         cmd: ["/usr/local/bin/asgi-run"],
         replicas: 2,
-        extraEnv: [{ name: 'DOMAIN', value: 'ohq.io' },
+        domain: 'ohq.io',
+        ingressPaths: ['/api/ws'],
+        extraEnv: [
         { name: 'DJANGO_SETTINGS_MODULE', value: 'officehoursqueue.settings.production' },
         { name: 'REDIS_URL', value: 'redis://office-hours-queue-redis:6379' }],
-        ingress: { hosts: [{ host: 'ohq.io', paths: ['/api/ws'] }] },
     })
 
     new CronJob(scope, `${release_name}-calculate-waits`, {
@@ -100,10 +101,10 @@ export function buildPlatformChart(scope: Construct) {
         image: 'pennlabs/platform',
         secret: 'platform',
         port: 443,
-        extraEnv: [{ name: 'DOMAIN', value: "platform.pennlabs.org" },
+        domain: 'platform.pennlabs.org',
+        extraEnv: [
         { name: "DJANGO_SETTINGS_MODULE", value: "Platform.settings.production" }],
-        ingress:
-            { hosts: [{ host: 'platform.pennlabs.org', paths: ["/"] }] },
+        ingressPaths: ["/"],
         secretMounts: [{ name: 'platform', subPath: 'SHIBBOLETH_CERT', mountPath: '/etc/shibboleth/sp-cert.pem' },
         { name: 'platform', subPath: 'SHIBBOLETH_KEY', mountPath: '/etc/shibboleth/sp-key.pem' }]
     })
@@ -117,20 +118,19 @@ export function buildClubsChart(scope: Construct) {
         secret: 'penn-clubs',
         cmd: ["/usr/local/bin/asgi-run"],
         replicas: 2,
-        extraEnv: [{ name: 'DOMAIN', value: "pennclubs.com" },
+        domain: 'pennclubs.com',
+        ingressPaths: ["/api/ws"],
+        extraEnv: [
         { name: "DJANGO_SETTINGS_MODULE", value: "pennclubs.settings.production" },
         { name: "REDIS_HOST", value: "penn-clubs-redis" }],
-        ingress:
-            { hosts: [{ host: 'pennclubs.com', paths: ["/api/ws"] }] },
     })
 
     new ReactApplication(scope, `${release_name}-react`, {
         image: 'pennlabs/penn-clubs-frontend',
         replicas: 2,
-        extraEnv: [{ name: 'DOMAIN', value: "pennclubs.com" },
-        { name: "PORT", value: "80" }],
-        ingress:
-            { hosts: [{ host: 'pennclubs.com', paths: ["/"] }] },
+        domain: 'pennclubs.com',
+        ingressPaths: ["/"],
+        extraEnv: [{ name: "PORT", value: "80" }],
     })
 
 }

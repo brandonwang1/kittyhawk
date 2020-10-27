@@ -1,6 +1,6 @@
 import { Construct } from 'constructs';
 import { Deployment, DeploymentOptions } from "./deployment";
-import { Ingress, IngressOptions } from "./ingress";
+import { HostsConfig, Ingress, IngressOptions } from "./ingress";
 import { Service, ServiceOptions } from "./service"
 import { Certificate } from "./certificate";
 
@@ -25,19 +25,47 @@ export class Application extends Construct {
 }
 
 
+export interface DjangoApplicationOptions extends ApplicationOptions {
+  /**
+   * Domain of the application.
+   */
+  readonly domain: string;
+
+  /**
+   * Just the list of paths passed to the ingress since we already know the host.
+   */
+  readonly ingressPaths: string[];
+
+  /**
+   * Override extraEnv from ContainerOptions to make it mutable.
+   */
+  extraEnv?: { name: string, value: string }[];
+
+  /**
+   * Override ingress from IngressOptions to make it mutable.
+   *
+   * @default undefined
+   */
+  ingress?: HostsConfig;
+
+}
+
 export class DjangoApplication extends Application {
-  constructor(scope: Construct, appname: string, options: ApplicationOptions) {
+  constructor(scope: Construct, appname: string, options: DjangoApplicationOptions) {
+
+    // Add the domain as an env variable.
+    options.extraEnv = options.extraEnv || [];
+    options.extraEnv.push({ name: "DOMAIN", value: options.domain });
+
+    // Configure the ingress using ingressPaths.
+    options.ingress = {
+      hosts: [{ host: options.domain, paths: options.ingressPaths }]
+    }
 
     // Check if the env variables contains DOMAIN
     const envDomain = options.extraEnv?.filter(env => (env.name === "DOMAIN"));
-    if (envDomain?.length != 1) {
-      throw new Error("Django Application must define a DOMAIN enviroment variable.")
-    } else {
-      // Check if ingress contains a host that matches DOMAIN.
-      const ingressDomain = options.ingress?.hosts.filter(h => (h.host === envDomain[0].value))
-      if (!ingressDomain?.length) {
-        throw new Error("Ingress hosts must contain DOMAIN environment variable.")
-      }
+    if (envDomain?.length > 1) {
+      throw new Error("Django Application should not redefine a DOMAIN enviroment variable.")
     }
 
     // Check if the env variables contains DJANGO_SETTINGS_MODULE
@@ -51,19 +79,46 @@ export class DjangoApplication extends Application {
   }
 }
 
+export interface ReactApplicationOptions extends ApplicationOptions {
+  /**
+   * Domain of the application.
+   */
+  readonly domain: string;
+
+  /**
+   * Just the list of paths passed to the ingress since we already know the host.
+   */
+  readonly ingressPaths: string[];
+
+  /**
+   * Override extraEnv from ContainerOptions to make it mutable.
+   */
+  extraEnv?: { name: string, value: string }[];
+
+  /**
+   * Override ingress from IngressOptions to make it mutable.
+   *
+   * @default undefined
+   */
+  ingress?: HostsConfig;
+}
+
 export class ReactApplication extends Application {
-  constructor(scope: Construct, appname: string, options: ApplicationOptions) {
+  constructor(scope: Construct, appname: string, options: ReactApplicationOptions) {
+
+    // Add the domain as an env variable.
+    options.extraEnv = options.extraEnv || [];
+    options.extraEnv.push({ name: "DOMAIN", value: options.domain });
+
+    // Configure the ingress using ingressPaths.
+    options.ingress = {
+      hosts: [{ host: options.domain, paths: options.ingressPaths }]
+    }
 
     // Check if the env variables contains DOMAIN
     const envDomain = options.extraEnv?.filter(env => (env.name === "DOMAIN"));
-    if (envDomain?.length != 1) {
-      throw new Error("React Application must define a DOMAIN enviroment variable.")
-    } else {
-      // Check if ingress contains a host that matches DOMAIN.
-      const ingressDomain = options.ingress?.hosts.filter(h => (h.host === envDomain[0].value))
-      if (!ingressDomain?.length) {
-        throw new Error("Ingress hosts must contain DOMAIN environment variable.")
-      }
+    if (envDomain?.length > 1) {
+      throw new Error("React Application should not redefine a DOMAIN enviroment variable.")
     }
 
     // Check if the env variables contains PORT
