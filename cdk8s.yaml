@@ -3,3 +3,5 @@ app: node main.js
 imports:
   - k8s 
   - https://github.com/jetstack/cert-manager/releases/download/v1.0.2/cert-manager.yaml
+  # The following command was also run:
+  # cdk8s import k8s --language typescript --include io.k8s.api.autoscaling.v2beta2.HorizontalPodAutoscaler

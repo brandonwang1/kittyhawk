@@ -59,16 +59,16 @@ Array [
               ],
               "env": Array [
                 Object {
-                  "name": "DOMAIN",
-                  "value": "ohq.io",
-                },
-                Object {
                   "name": "DJANGO_SETTINGS_MODULE",
                   "value": "officehoursqueue.settings.production",
                 },
                 Object {
                   "name": "REDIS_URL",
                   "value": "redis://office-hours-queue-redis:6379",
+                },
+                Object {
+                  "name": "DOMAIN",
+                  "value": "ohq.io",
                 },
               ],
               "envFrom": Array [
@@ -393,16 +393,16 @@ Array [
               ],
               "env": Array [
                 Object {
-                  "name": "DOMAIN",
-                  "value": "pennclubs.com",
-                },
-                Object {
                   "name": "DJANGO_SETTINGS_MODULE",
                   "value": "pennclubs.settings.production",
                 },
                 Object {
                   "name": "REDIS_HOST",
                   "value": "penn-clubs-redis",
+                },
+                Object {
+                  "name": "DOMAIN",
+                  "value": "pennclubs.com",
                 },
               ],
               "envFrom": Array [
@@ -533,12 +533,12 @@ Array [
             Object {
               "env": Array [
                 Object {
-                  "name": "DOMAIN",
-                  "value": "pennclubs.com",
-                },
-                Object {
                   "name": "PORT",
                   "value": "80",
+                },
+                Object {
+                  "name": "DOMAIN",
+                  "value": "pennclubs.com",
                 },
               ],
               "image": "pennlabs/penn-clubs-frontend",
@@ -1089,12 +1089,12 @@ Array [
             Object {
               "env": Array [
                 Object {
-                  "name": "DOMAIN",
-                  "value": "platform.pennlabs.org",
-                },
-                Object {
                   "name": "DJANGO_SETTINGS_MODULE",
                   "value": "Platform.settings.production",
+                },
+                Object {
+                  "name": "DOMAIN",
+                  "value": "platform.pennlabs.org",
                 },
               ],
               "envFrom": Array [
@@ -1297,6 +1297,28 @@ Array [
             },
           },
           "type": "Resource",
+        },
+        Object {
+          "resource": Object {
+            "name": "memory",
+            "target": Object {
+              "averageValue": 80,
+              "type": "AverageValue",
+            },
+          },
+          "type": "Resource",
+        },
+        Object {
+          "pods": Object {
+            "metric": Object {
+              "name": "http_requests",
+            },
+            "target": Object {
+              "averageValue": 80,
+              "type": "AverageValue",
+            },
+          },
+          "type": "Pod",
         },
       ],
       "minReplicas": 2,

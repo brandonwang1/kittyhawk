@@ -67,24 +67,8 @@
 				<a href="#kittyhawk" id="kittyhawk" style="color: inherit; text-decoration: none;">
 					<h1>Kittyhawk</h1>
 				</a>
-				<p>Kittyhawk is the automated Kubernetes YAML synthesizer for Penn Labs (replacing Icarus).</p>
-				<a href="#getting-started" id="getting-started" style="color: inherit; text-decoration: none;">
-					<h2>Getting Started</h2>
-				</a>
-				<ol>
-					<li><p>Write a configuration for your project in the <a href="./values.ts">values.ts</a> file by changing the contents of the buildChart function. You can find a list of available classes in the <a href="./USER_GUIDE.md">user guide</a>. Sample configurations are provided in the values.ts and <a href="./values-test.ts">values-test.ts</a> files.</p>
-					</li>
-					<li><p>Install the cdk8s CLI package globally:</p>
-						<pre><code class="language-shell"><span class="hljs-meta">$</span><span class="bash"> npm install -g cdk8s-cli</span></code></pre>
-					</li>
-					<li><p>Compile and synthesize the Kubernetes YAML using the command below. It it saved at dist/kittyhawk.k8s.yaml. </p>
-						<pre><code class="language-shell"><span class="hljs-meta">$</span><span class="bash"> npm run synth</span></code></pre>
-					</li>
-					<li><p>Deploy the YAML (optionally using the --prune flag if needed).</p>
-						<pre><code class="language-shell"><span class="hljs-meta">$</span><span class="bash"> kubectl apply -f dist/kittyhawk.k8s.yaml</span></code></pre>
-					</li>
-				</ol>
-				<p>For more detailed information, check the <a href="./USER_GUIDE.md">user guide</a>.</p>
+				<p>Kittyhawk is the automated Kubernetes YAML generator for Penn Labs (replacing Icarus).</p>
+				<p>To get started, clone the template repo, where you can write your configuration. You can find a list of available classes and sample configurations in the <a href="./USER_GUIDE.md">user guide</a>.</p>
 			</div>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
@@ -106,6 +90,9 @@
 						<a href="modules/_lib_certificate_.html">&quot;lib/certificate&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
+						<a href="modules/_lib_chart_.html">&quot;lib/chart&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
 						<a href="modules/_lib_container_.html">&quot;lib/container&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
@@ -113,6 +100,9 @@
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="modules/_lib_deployment_.html">&quot;lib/deployment&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_lib_index_.html">&quot;lib/index&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="modules/_lib_ingress_.html">&quot;lib/ingress&quot;</a>
@@ -142,6 +132,9 @@
 	<div class="container">
 		<h2>Legend</h2>
 		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
+			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
 			</ul>

@@ -116,14 +116,14 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Django<wbr>Application<span class="tsd-signature-symbol">(</span>scope<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Construct</span>, appname<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, options<span class="tsd-signature-symbol">: </span><a href="../interfaces/_lib_application_.applicationoptions.html" class="tsd-signature-type">ApplicationOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_lib_application_.djangoapplication.html" class="tsd-signature-type">DjangoApplication</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Django<wbr>Application<span class="tsd-signature-symbol">(</span>scope<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Construct</span>, appname<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, options<span class="tsd-signature-symbol">: </span><a href="../interfaces/_lib_application_.djangoapplicationoptions.html" class="tsd-signature-type">DjangoApplicationOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_lib_application_.djangoapplication.html" class="tsd-signature-type">DjangoApplication</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<p>Overrides <a href="_lib_application_.application.html">Application</a>.<a href="_lib_application_.application.html#constructor">constructor</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/pennlabs/kittyhawk/blob/161ff2a/lib/application.ts#L28">lib/application.ts:28</a></li>
+									<li>Defined in <a href="https://github.com/pennlabs/kittyhawk/blob/759b28b/lib/application.ts#L53">lib/application.ts:53</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -135,7 +135,7 @@
 									<h5>appname: <span class="tsd-signature-type">string</span></h5>
 								</li>
 								<li>
-									<h5>options: <a href="../interfaces/_lib_application_.applicationoptions.html" class="tsd-signature-type">ApplicationOptions</a></h5>
+									<h5>options: <a href="../interfaces/_lib_application_.djangoapplicationoptions.html" class="tsd-signature-type">DjangoApplicationOptions</a></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="_lib_application_.djangoapplication.html" class="tsd-signature-type">DjangoApplication</a></h4>
@@ -156,12 +156,12 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="_imports_k8s_.mutatingwebhookconfiguration.html">MutatingWebhookConfiguration</a>.<a href="_imports_k8s_.mutatingwebhookconfiguration.html#onprepare">onPrepare</a></p>
 								<ul>
-									<li>Defined in node_modules/constructs/lib/construct.d.ts:257</li>
+									<li>Defined in node_modules/constructs/lib/construct.d.ts:298</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Perform final modifications before synthesis</p>
+									<p>Perform final modifications before synthesis.</p>
 								</div>
 								<p>This method can be implemented by derived constructs in order to perform
 									final changes before synthesis. prepare() will be called after child
@@ -184,7 +184,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="_imports_k8s_.mutatingwebhookconfiguration.html">MutatingWebhookConfiguration</a>.<a href="_imports_k8s_.mutatingwebhookconfiguration.html#onsynthesize">onSynthesize</a></p>
 								<ul>
-									<li>Defined in node_modules/constructs/lib/construct.d.ts:266</li>
+									<li>Defined in node_modules/constructs/lib/construct.d.ts:307</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -218,15 +218,21 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="_imports_k8s_.mutatingwebhookconfiguration.html">MutatingWebhookConfiguration</a>.<a href="_imports_k8s_.mutatingwebhookconfiguration.html#onvalidate">onValidate</a></p>
 								<ul>
-									<li>Defined in node_modules/constructs/lib/construct.d.ts:246</li>
+									<li>Defined in node_modules/constructs/lib/construct.d.ts:287</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Validate the current construct.</p>
+									<p>(deprecated) Validate the current construct.</p>
 								</div>
 								<p>This method can be implemented by derived constructs in order to perform
 								validation logic. It is called on all constructs before synthesis.</p>
+								<dl class="tsd-comment-tags">
+									<dt>deprecated</dt>
+									<dd><p>use <code>Node.addValidation()</code> to subscribe validation functions on this construct
+										instead of overriding this method.</p>
+									</dd>
+								</dl>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h4>
 							<p>An array of validation error messages, or an empty array if there the construct is valid.</p>
@@ -244,7 +250,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="_imports_k8s_.mutatingwebhookconfiguration.html">MutatingWebhookConfiguration</a>.<a href="_imports_k8s_.mutatingwebhookconfiguration.html#tostring">toString</a></p>
 								<ul>
-									<li>Defined in node_modules/constructs/lib/construct.d.ts:237</li>
+									<li>Defined in node_modules/constructs/lib/construct.d.ts:276</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -277,6 +283,9 @@
 						<a href="../modules/_lib_certificate_.html">&quot;lib/certificate&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
+						<a href="../modules/_lib_chart_.html">&quot;lib/chart&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
 						<a href="../modules/_lib_container_.html">&quot;lib/container&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
@@ -284,6 +293,9 @@
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="../modules/_lib_deployment_.html">&quot;lib/deployment&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="../modules/_lib_index_.html">&quot;lib/index&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="../modules/_lib_ingress_.html">&quot;lib/ingress&quot;</a>
@@ -337,6 +349,12 @@
 					<li class=" tsd-kind-interface tsd-parent-kind-module">
 						<a href="../interfaces/_lib_application_.applicationoptions.html" class="tsd-kind-icon">Application<wbr>Options</a>
 					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="../interfaces/_lib_application_.djangoapplicationoptions.html" class="tsd-kind-icon">Django<wbr>Application<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="../interfaces/_lib_application_.reactapplicationoptions.html" class="tsd-kind-icon">React<wbr>Application<wbr>Options</a>
+					</li>
 				</ul>
 			</nav>
 		</div>
@@ -349,6 +367,9 @@
 			<ul class="tsd-legend">
 				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
 				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
