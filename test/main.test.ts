@@ -23,10 +23,63 @@ export function buildAutoscalingChart(scope: Construct) {
     /** Autoscaling test **/
     new Application(scope, `${release_name}-serve`, {
         image: 'pennlabs/website',
+        autoScalingOptions: { cpu: 80, memory:80, requests:80 }
+    })
+}
+
+export function buildFailingDjangoChart(scope: Construct) {
+
+    /** Django Duplicated DOMAIN Env should fail **/
+    new DjangoApplication(scope, `${release_name}-platform`, {
+        image: 'pennlabs/platform',
+        domain: 'platform.pennlabs.org',
+        extraEnv: [ { name: "DOMAIN", value: "platform.pennlabs.org" },
+        { name: "DJANGO_SETTINGS_MODULE", value: "Platform.settings.production" }],
+        ingressPaths: ["/"]
+    })
+}
+
+export function buildFailingReactChart(scope: Construct) {
+
+    /** React Duplicated DOMAIN Env should fail **/
+    new ReactApplication(scope, `${release_name}-react`, {
+        image: 'pennlabs/penn-clubs-frontend',
+        replicas: 2,
+        domain: 'pennclubs.com',
+        ingressPaths: ["/"],
+        extraEnv: [ { name: "DOMAIN", value: "pennclubs.com" },
+        { name: "PORT", value: "80" }],
+    })
+}
+
+export function buildFailingIngressChart(scope: Construct) {
+
+    /** Incorrect ingress host string should fail**/
+    new Application(scope, `${release_name}-serve`, {
+        image: 'pennlabs/website',
+        ingress: { hosts: [{ host: 'pennlabsorg', paths: ['/'] }] },
+    })
+}
+
+export function buildFailingAutoscalingChart(scope: Construct) {
+
+    /** Autoscaling cannot be defined with replicas, should fail. **/
+    new Application(scope, `${release_name}-serve`, {
+        image: 'pennlabs/website',
+        replicas: 2,
         autoScalingOptions: { cpu: 80 }
     })
 }
 
+export function buildFailingProbeChart(scope: Construct) {
+
+    /** Probes should fail if neither command or path is defined **/
+    new Application(scope, `${release_name}-serve`, {
+        image: 'pennlabs/website',
+        readinessProbe: { delay: 5 }, 
+        livenessProbe: { period: 5 }
+    })
+}
 
 /** INTEGRATION TEST CONFIGS */
 
@@ -145,10 +198,27 @@ const chartTest = (build: Function) => {
   expect(results).toMatchSnapshot();
 }
 
+/** Helper function to run each chart test */
+const failingTest = (build: Function) => {
+    const app = Testing.app();
+    expect(() => {new Chart(app, 'kittyhawk', build)}).toThrowError();
+  }
+
 describe('Unit Tests', () => {
   test('Autoscaling', () => chartTest(buildAutoscalingChart));
   
   test('Readiness/Liveliness Probes', () => chartTest(buildProbeChart));
+
+  test('Django Application -- Failing', () => failingTest(buildFailingDjangoChart));
+  
+  test('React Application -- Failing', () => failingTest(buildFailingReactChart));
+
+  test('Ingress Regex -- Failing', () => failingTest(buildFailingIngressChart));
+
+  test('Autoscaling -- Failing', () => failingTest(buildFailingAutoscalingChart));
+
+  test('Probes -- Failing', () => failingTest(buildFailingProbeChart));
+
 });
 
 describe('Integration Tests', () => {

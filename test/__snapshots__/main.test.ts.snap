@@ -1298,6 +1298,28 @@ Array [
           },
           "type": "Resource",
         },
+        Object {
+          "resource": Object {
+            "name": "memory",
+            "target": Object {
+              "averageValue": 80,
+              "type": "AverageValue",
+            },
+          },
+          "type": "Resource",
+        },
+        Object {
+          "pods": Object {
+            "metric": Object {
+              "name": "http_requests",
+            },
+            "target": Object {
+              "averageValue": 80,
+              "type": "AverageValue",
+            },
+          },
+          "type": "Pod",
+        },
       ],
       "minReplicas": 2,
       "scaleTargetRef": Object {
