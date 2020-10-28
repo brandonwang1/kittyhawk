@@ -12,15 +12,15 @@ jobs:
           path: ~/ci
 
       - restore_cache:
-        keys:
-          - dependencies-cache-{{ checksum "package.json" }}
+          keys:
+            - dependencies-cache-{{ checksum "package.json" }}
 
       - run: npm install
 
       - save_cache:
-        paths:
-          - node_modules
-        key: dependencies-cache-{{ checksum "package.json" }}
+          paths:
+            - node_modules
+          key: dependencies-cache-{{ checksum "package.json" }}
 
       - run:
           name: Compile
