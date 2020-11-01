@@ -28,13 +28,13 @@ export class Service extends Construct {
 
     new ServiceApiObject(this, `service-${appname}`, {
       metadata: {
-        name: appname
+        name: appname,
       },
       spec: {
         type: 'ClusterIP',
         ports: [{ port, targetPort: IntOrString.fromNumber(containerPort) }],
-        selector: { name: appname }
-      }
+        selector: { name: appname },
+      },
     });
 
   }

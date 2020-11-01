@@ -1,7 +1,7 @@
-import { Construct } from "constructs";
-import { Deployment as DeploymentApiObject } from "../imports/k8s";
-import { Autoscaler, AutoscalingOptions } from "./autoscaler";
-import { Container, ContainerOptions, Volume } from "./container";
+import { Construct } from 'constructs';
+import { Deployment as DeploymentApiObject } from '../imports/k8s';
+import { Autoscaler, AutoscalingOptions } from './autoscaler';
+import { Container, ContainerOptions, Volume } from './container';
 
 export interface DeploymentOptions extends ContainerOptions {
   /**
@@ -43,7 +43,7 @@ export class Deployment extends Construct {
       metadata: {
         name: appname,
         namespace: 'default',
-        labels: label
+        labels: label,
       },
       spec: {
         replicas: autoScalingOn ? undefined : (options.replicas ?? 1),
@@ -51,7 +51,7 @@ export class Deployment extends Construct {
           matchLabels: label,
         },
         strategy: {
-          type: "RollingUpdate",
+          type: 'RollingUpdate',
           rollingUpdate: {
             maxSurge: 3,
             maxUnavailable: 0,
@@ -70,7 +70,7 @@ export class Deployment extends Construct {
     if (autoScalingOn) {
       new Autoscaler(this, appname, {
         target: deployment,
-        ...options.autoScalingOptions
+        ...options.autoScalingOptions,
       });
     }
   }
