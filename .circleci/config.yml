@@ -20,26 +20,31 @@ jobs:
 
       - restore_cache:
           keys:
-            - dependencies-cache-{{ checksum "package.json" }}
+            - dependencies-cache-{{ checksum "yarn.lock" }}
             # fallback to using the latest cache if no exact match is found
             - dependencies-cache-
 
-      - run: npm install
+      - run: yarn install
 
       - save_cache:
           paths:
             - node_modules
-          key: dependencies-cache-{{ checksum "package.json" }}
+          key: dependencies-cache-{{ checksum "yarn.lock" }}
+
+      - run:
+          name: Lint
+          command: |
+            yarn run eslint
 
       - run:
           name: Compile
           command: |
-            npm run compile
+            yarn run compile
 
       - run:
           name: Run tests
           command: |
-            npm run test
+            yarn run test
 
       - persist_to_workspace:
           root: ~/ci
@@ -57,7 +62,7 @@ jobs:
           name: Publish
           command: |
             echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/ci/.npmrc
-            npm publish --access=public
+            yarn publish --access=public
 
 workflows:
   version: 2
