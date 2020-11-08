@@ -1,6 +1,6 @@
 {
   "name": "@pennlabs/kittyhawk",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "Penn Labs",
   "description": "Tool to generate Kubernetes YAML files from typescript code.",
   "main": "lib/index.js",
@@ -13,23 +13,22 @@
     "url": "https://github.com/pennlabs/kittyhawk.git"
   },
   "scripts": {
-    "import": "npx cdk8s import",
-    "gen": "npx cdk8s import k8s --language typescript --include io.k8s.api.autoscaling.v2beta2.HorizontalPodAutoscaler",
-    "synth": "npm run build && npx cdk8s synth",
+    "import": "yarn run cdk8s import",
+    "gen": "yarn run cdk8s import k8s --language typescript --include io.k8s.api.autoscaling.v2beta2.HorizontalPodAutoscaler",
+    "synth": "yarn run build && yarn run cdk8s synth",
     "compile": "tsc",
     "watch": "tsc -w",
     "test": "jest",
-    "docs": "npx typedoc --out docs lib && touch docs/.nojekyll",
-    "build": "npm run compile && npm run test",
-    "upgrade": "npm i cdk8s@latest cdk8s-cli@latest",
-    "upgrade:next": "npm i cdk8s@next cdk8s-cli@next"
+    "eslint": "eslint . --ext .ts",
+    "docs": "rm -rf docs/ && yarn run typedoc lib --out docs --theme minimal && touch docs/.nojekyll",
+    "build": "yarn run eslint && yarn run compile && yarn run test",
+    "upgrade": "yarn add cdk8s@latest && yarn add cdk8s-cli@latest -D"
   },
   "files": [
     "lib/*",
     "imports/*",
     "test/*",
-    "*.md",
-    "cdk8s.yaml"
+    "*.md"
   ],
   "dependencies": {
     "cdk8s": "^0.33.0",
@@ -39,7 +38,11 @@
   "devDependencies": {
     "@types/jest": "^26.0.15",
     "@types/node": "^14.14.3",
+    "@typescript-eslint/eslint-plugin": "^4.6.0",
+    "@typescript-eslint/parser": "^4.6.0",
     "cdk8s-cli": "^0.33.0",
+    "eslint": "^6.8.0",
+    "eslint-plugin-import": "^2.22.1",
     "jest": "^26.6.1",
     "ts-jest": "^26.4.2",
     "typedoc": "^0.19.2",

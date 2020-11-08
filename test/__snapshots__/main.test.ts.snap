@@ -78,7 +78,7 @@ Array [
                   },
                 },
               ],
-              "image": "pennlabs/office-hours-queue-backend",
+              "image": "pennlabs/office-hours-queue-backend:latest",
               "imagePullPolicy": "IfNotPresent",
               "name": "worker",
               "ports": Array [
@@ -175,7 +175,7 @@ Array [
                       },
                     },
                   ],
-                  "image": "pennlabs/office-hours-queue-backend",
+                  "image": "pennlabs/office-hours-queue-backend:latest",
                   "imagePullPolicy": "IfNotPresent",
                   "name": "worker",
                   "ports": Array [
@@ -264,7 +264,7 @@ Array [
                   },
                 },
               ],
-              "image": "pennlabs/penn-basics",
+              "image": "pennlabs/penn-basics:latest",
               "imagePullPolicy": "IfNotPresent",
               "name": "worker",
               "ports": Array [
@@ -412,7 +412,7 @@ Array [
                   },
                 },
               ],
-              "image": "pennlabs/penn-clubs-backend",
+              "image": "pennlabs/penn-clubs-backend:latest",
               "imagePullPolicy": "IfNotPresent",
               "name": "worker",
               "ports": Array [
@@ -541,7 +541,7 @@ Array [
                   "value": "pennclubs.com",
                 },
               ],
-              "image": "pennlabs/penn-clubs-frontend",
+              "image": "pennlabs/penn-clubs-frontend:latest",
               "imagePullPolicy": "IfNotPresent",
               "name": "worker",
               "ports": Array [
@@ -691,7 +691,7 @@ Array [
                   },
                 },
               ],
-              "image": "pennlabs/penn-courses-backend",
+              "image": "pennlabs/penn-courses-backend:latest",
               "imagePullPolicy": "IfNotPresent",
               "name": "worker",
               "ports": Array [
@@ -963,7 +963,7 @@ Array [
         "spec": Object {
           "containers": Array [
             Object {
-              "image": "pennlabs/website",
+              "image": "pennlabs/website:latest",
               "imagePullPolicy": "IfNotPresent",
               "name": "worker",
               "ports": Array [
@@ -1104,7 +1104,7 @@ Array [
                   },
                 },
               ],
-              "image": "pennlabs/platform",
+              "image": "pennlabs/platform:latest",
               "imagePullPolicy": "IfNotPresent",
               "name": "worker",
               "ports": Array [
@@ -1265,7 +1265,7 @@ Array [
         "spec": Object {
           "containers": Array [
             Object {
-              "image": "pennlabs/website",
+              "image": "pennlabs/website:latest",
               "imagePullPolicy": "IfNotPresent",
               "name": "worker",
               "ports": Array [
@@ -1386,7 +1386,7 @@ Array [
         "spec": Object {
           "containers": Array [
             Object {
-              "image": "pennlabs/website",
+              "image": "pennlabs/website:latest",
               "imagePullPolicy": "IfNotPresent",
               "livenessProbe": Object {
                 "exec": Object {
