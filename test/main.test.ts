@@ -13,6 +13,7 @@ export function buildProbeChart(scope: Construct) {
   /** Probe tests **/
   new Application(scope, `${release_name}-serve`, {
     image: 'pennlabs/website',
+    tag: 'latest',
     readinessProbe: { path: '/', delay: 5 }, // Default on?
     livenessProbe: { command: ['test', 'command'], period: 5 },
   })
@@ -57,6 +58,7 @@ export function buildFailingIngressChart(scope: Construct) {
   /** Incorrect ingress host string should fail**/
   new Application(scope, `${release_name}-serve`, {
     image: 'pennlabs/website',
+    tag: 'latest',
     ingress: { hosts: [{ host: 'pennlabsorg', paths: ['/'] }] },
   })
 }
@@ -66,6 +68,7 @@ export function buildFailingAutoscalingChart(scope: Construct) {
   /** Autoscaling cannot be defined with replicas, should fail. **/
   new Application(scope, `${release_name}-serve`, {
     image: 'pennlabs/website',
+    tag: 'latest',
     replicas: 2,
     autoScalingOptions: { cpu: 80 },
   })
@@ -76,6 +79,7 @@ export function buildFailingProbeChart(scope: Construct) {
   /** Probes should fail if neither command or path is defined **/
   new Application(scope, `${release_name}-serve`, {
     image: 'pennlabs/website',
+    tag: 'latest',
     readinessProbe: { delay: 5 }, 
     livenessProbe: { period: 5 },
   })
@@ -88,6 +92,7 @@ export function buildWebsiteChart(scope: Construct) {
   /** Penn Labs Website **/
   new Application(scope, `${release_name}-serve`, {
     image: 'pennlabs/website',
+    tag: 'latest',
     ingress: { hosts: [{ host: 'pennlabs.org', paths: ['/'] }] },
   })
 }
@@ -97,6 +102,7 @@ export function buildBasicsChart(scope: Construct) {
   /** Penn Basics **/
   new Application(scope, `${release_name}-react`, {
     image: 'pennlabs/penn-basics',
+    tag: 'latest',
     secret: 'penn-basics',
     extraEnv: [{ name: 'PORT', value: '80' }],
     ingress: { hosts: [{ host: 'pennbasics.com', paths: ['/'] }] },
@@ -108,6 +114,7 @@ export function buildOHQChart(scope: Construct) {
   /** OHQ (Part of it) **/
   new DjangoApplication(scope, `${release_name}-django-asgi`, {
     image: 'pennlabs/office-hours-queue-backend',
+    tag: 'latest',
     secret: 'office-hours-queue',
     cmd: ['/usr/local/bin/asgi-run'],
     replicas: 2,
@@ -121,6 +128,7 @@ export function buildOHQChart(scope: Construct) {
   new CronJob(scope, `${release_name}-calculate-waits`, {
     schedule: '*/5 * * * *',
     image: 'pennlabs/office-hours-queue-backend',
+    tag: 'latest',
     secret: 'office-hours-queue',
     cmd: ['python', 'manage.py', 'calculatewaittimes'],
   });
@@ -132,6 +140,7 @@ export function buildCoursesChart(scope: Construct) {
   /** Penn Courses (Part of it) **/
   new Application(scope, `${release_name}-backend`, {
     image: 'pennlabs/penn-courses-backend',
+    tag: 'latest',
     secret: 'penn-courses',
     cmd: ['celery', 'worker', '-A', 'PennCourses', '-Q', 'alerts,celery', '-linfo'],
     replicas: 3,
@@ -152,6 +161,7 @@ export function buildPlatformChart(scope: Construct) {
   /** Platform **/
   new DjangoApplication(scope, `${release_name}-platform`, {
     image: 'pennlabs/platform',
+    tag: 'latest',
     secret: 'platform',
     port: 443,
     domain: 'platform.pennlabs.org',
@@ -168,6 +178,7 @@ export function buildClubsChart(scope: Construct) {
   /** Penn Clubs **/
   new DjangoApplication(scope, `${release_name}-django-asgi`, {
     image: 'pennlabs/penn-clubs-backend',
+    tag: 'latest',
     secret: 'penn-clubs',
     cmd: ['/usr/local/bin/asgi-run'],
     replicas: 2,
@@ -180,6 +191,7 @@ export function buildClubsChart(scope: Construct) {
 
   new ReactApplication(scope, `${release_name}-react`, {
     image: 'pennlabs/penn-clubs-frontend',
+    tag: 'latest',
     replicas: 2,
     domain: 'pennclubs.com',
     ingressPaths: ['/'],

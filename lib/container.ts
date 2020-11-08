@@ -8,6 +8,11 @@ export interface ContainerOptions {
   readonly image: string;
 
   /**
+    * The tag for the docker image.
+    */
+  readonly tag?: string;
+
+  /**
      * Number of replicas to start.
      *
      * @default 1
@@ -160,7 +165,8 @@ export class Container implements ContainerInterface {
   constructor(options: ContainerOptions) {
 
     this.name = 'worker'
-    this.image = options.image
+    const tag = options.tag || 'latest';
+    this.image = `${options.image}:${tag}`;
     this.ports = [{ containerPort: options.port ?? 80 }]
     this.imagePullPolicy = options.pullPolicy || 'IfNotPresent';
     this.command = options.cmd;
