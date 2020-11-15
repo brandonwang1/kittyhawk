@@ -6,6 +6,9 @@ Array [
     "apiVersion": "v1",
     "kind": "Service",
     "metadata": Object {
+      "labels": Object {
+        "release": "RELEASE_NAME",
+      },
       "name": "RELEASE_NAME-django-asgi",
     },
     "spec": Object {
@@ -27,6 +30,7 @@ Array [
     "metadata": Object {
       "labels": Object {
         "name": "RELEASE_NAME-django-asgi",
+        "release": "RELEASE_NAME",
       },
       "name": "RELEASE_NAME-django-asgi",
       "namespace": "default",
@@ -96,6 +100,9 @@ Array [
     "apiVersion": "networking.k8s.io/v1beta1",
     "kind": "Ingress",
     "metadata": Object {
+      "labels": Object {
+        "release": "RELEASE_NAME",
+      },
       "name": "RELEASE_NAME-django-asgi",
       "namespace": "default",
     },
@@ -130,6 +137,9 @@ Array [
     "apiVersion": "cert-manager.io/v1alpha2",
     "kind": "Certificate",
     "metadata": Object {
+      "labels": Object {
+        "release": "RELEASE_NAME",
+      },
       "name": "ohq-io-tls",
     },
     "spec": Object {
@@ -151,6 +161,7 @@ Array [
     "metadata": Object {
       "labels": Object {
         "name": "RELEASE_NAME-calculate-waits",
+        "release": "RELEASE_NAME",
       },
       "name": "RELEASE_NAME-calculate-waits",
       "namespace": "default",
@@ -203,6 +214,9 @@ Array [
     "apiVersion": "v1",
     "kind": "Service",
     "metadata": Object {
+      "labels": Object {
+        "release": "RELEASE_NAME",
+      },
       "name": "RELEASE_NAME-react",
     },
     "spec": Object {
@@ -224,6 +238,7 @@ Array [
     "metadata": Object {
       "labels": Object {
         "name": "RELEASE_NAME-react",
+        "release": "RELEASE_NAME",
       },
       "name": "RELEASE_NAME-react",
       "namespace": "default",
@@ -282,6 +297,9 @@ Array [
     "apiVersion": "networking.k8s.io/v1beta1",
     "kind": "Ingress",
     "metadata": Object {
+      "labels": Object {
+        "release": "RELEASE_NAME",
+      },
       "name": "RELEASE_NAME-react",
       "namespace": "default",
     },
@@ -316,6 +334,9 @@ Array [
     "apiVersion": "cert-manager.io/v1alpha2",
     "kind": "Certificate",
     "metadata": Object {
+      "labels": Object {
+        "release": "RELEASE_NAME",
+      },
       "name": "pennbasics-com-tls",
     },
     "spec": Object {
@@ -340,6 +361,9 @@ Array [
     "apiVersion": "v1",
     "kind": "Service",
     "metadata": Object {
+      "labels": Object {
+        "release": "RELEASE_NAME",
+      },
       "name": "RELEASE_NAME-django-asgi",
     },
     "spec": Object {
@@ -361,6 +385,7 @@ Array [
     "metadata": Object {
       "labels": Object {
         "name": "RELEASE_NAME-django-asgi",
+        "release": "RELEASE_NAME",
       },
       "name": "RELEASE_NAME-django-asgi",
       "namespace": "default",
@@ -430,6 +455,9 @@ Array [
     "apiVersion": "networking.k8s.io/v1beta1",
     "kind": "Ingress",
     "metadata": Object {
+      "labels": Object {
+        "release": "RELEASE_NAME",
+      },
       "name": "RELEASE_NAME-django-asgi",
       "namespace": "default",
     },
@@ -464,6 +492,9 @@ Array [
     "apiVersion": "cert-manager.io/v1alpha2",
     "kind": "Certificate",
     "metadata": Object {
+      "labels": Object {
+        "release": "RELEASE_NAME",
+      },
       "name": "pennclubs-com-tls",
     },
     "spec": Object {
@@ -483,6 +514,9 @@ Array [
     "apiVersion": "v1",
     "kind": "Service",
     "metadata": Object {
+      "labels": Object {
+        "release": "RELEASE_NAME",
+      },
       "name": "RELEASE_NAME-react",
     },
     "spec": Object {
@@ -504,6 +538,7 @@ Array [
     "metadata": Object {
       "labels": Object {
         "name": "RELEASE_NAME-react",
+        "release": "RELEASE_NAME",
       },
       "name": "RELEASE_NAME-react",
       "namespace": "default",
@@ -559,6 +594,9 @@ Array [
     "apiVersion": "networking.k8s.io/v1beta1",
     "kind": "Ingress",
     "metadata": Object {
+      "labels": Object {
+        "release": "RELEASE_NAME",
+      },
       "name": "RELEASE_NAME-react",
       "namespace": "default",
     },
@@ -593,6 +631,9 @@ Array [
     "apiVersion": "cert-manager.io/v1alpha2",
     "kind": "Certificate",
     "metadata": Object {
+      "labels": Object {
+        "release": "RELEASE_NAME",
+      },
       "name": "pennclubs-com-tls",
     },
     "spec": Object {
@@ -617,6 +658,9 @@ Array [
     "apiVersion": "v1",
     "kind": "Service",
     "metadata": Object {
+      "labels": Object {
+        "release": "RELEASE_NAME",
+      },
       "name": "RELEASE_NAME-backend",
     },
     "spec": Object {
@@ -638,6 +682,7 @@ Array [
     "metadata": Object {
       "labels": Object {
         "name": "RELEASE_NAME-backend",
+        "release": "RELEASE_NAME",
       },
       "name": "RELEASE_NAME-backend",
       "namespace": "default",
@@ -709,6 +754,9 @@ Array [
     "apiVersion": "networking.k8s.io/v1beta1",
     "kind": "Ingress",
     "metadata": Object {
+      "labels": Object {
+        "release": "RELEASE_NAME",
+      },
       "name": "RELEASE_NAME-backend",
       "namespace": "default",
     },
@@ -853,6 +901,9 @@ Array [
     "apiVersion": "cert-manager.io/v1alpha2",
     "kind": "Certificate",
     "metadata": Object {
+      "labels": Object {
+        "release": "RELEASE_NAME",
+      },
       "name": "penncourseplan-com-tls",
     },
     "spec": Object {
@@ -872,6 +923,9 @@ Array [
     "apiVersion": "cert-manager.io/v1alpha2",
     "kind": "Certificate",
     "metadata": Object {
+      "labels": Object {
+        "release": "RELEASE_NAME",
+      },
       "name": "penncoursealert-com-tls",
     },
     "spec": Object {
@@ -891,6 +945,9 @@ Array [
     "apiVersion": "cert-manager.io/v1alpha2",
     "kind": "Certificate",
     "metadata": Object {
+      "labels": Object {
+        "release": "RELEASE_NAME",
+      },
       "name": "penncourses-org-tls",
     },
     "spec": Object {
@@ -915,6 +972,9 @@ Array [
     "apiVersion": "v1",
     "kind": "Service",
     "metadata": Object {
+      "labels": Object {
+        "release": "RELEASE_NAME",
+      },
       "name": "RELEASE_NAME-serve",
     },
     "spec": Object {
@@ -936,6 +996,7 @@ Array [
     "metadata": Object {
       "labels": Object {
         "name": "RELEASE_NAME-serve",
+        "release": "RELEASE_NAME",
       },
       "name": "RELEASE_NAME-serve",
       "namespace": "default",
@@ -981,6 +1042,9 @@ Array [
     "apiVersion": "networking.k8s.io/v1beta1",
     "kind": "Ingress",
     "metadata": Object {
+      "labels": Object {
+        "release": "RELEASE_NAME",
+      },
       "name": "RELEASE_NAME-serve",
       "namespace": "default",
     },
@@ -1015,6 +1079,9 @@ Array [
     "apiVersion": "cert-manager.io/v1alpha2",
     "kind": "Certificate",
     "metadata": Object {
+      "labels": Object {
+        "release": "RELEASE_NAME",
+      },
       "name": "pennlabs-org-tls",
     },
     "spec": Object {
@@ -1039,6 +1106,9 @@ Array [
     "apiVersion": "v1",
     "kind": "Service",
     "metadata": Object {
+      "labels": Object {
+        "release": "RELEASE_NAME",
+      },
       "name": "RELEASE_NAME-platform",
     },
     "spec": Object {
@@ -1060,6 +1130,7 @@ Array [
     "metadata": Object {
       "labels": Object {
         "name": "RELEASE_NAME-platform",
+        "release": "RELEASE_NAME",
       },
       "name": "RELEASE_NAME-platform",
       "namespace": "default",
@@ -1160,6 +1231,9 @@ Array [
     "apiVersion": "networking.k8s.io/v1beta1",
     "kind": "Ingress",
     "metadata": Object {
+      "labels": Object {
+        "release": "RELEASE_NAME",
+      },
       "name": "RELEASE_NAME-platform",
       "namespace": "default",
     },
@@ -1194,6 +1268,9 @@ Array [
     "apiVersion": "cert-manager.io/v1alpha2",
     "kind": "Certificate",
     "metadata": Object {
+      "labels": Object {
+        "release": "RELEASE_NAME",
+      },
       "name": "pennlabs-org-tls",
     },
     "spec": Object {
@@ -1218,6 +1295,9 @@ Array [
     "apiVersion": "v1",
     "kind": "Service",
     "metadata": Object {
+      "labels": Object {
+        "release": "RELEASE_NAME",
+      },
       "name": "RELEASE_NAME-serve",
     },
     "spec": Object {
@@ -1239,6 +1319,7 @@ Array [
     "metadata": Object {
       "labels": Object {
         "name": "RELEASE_NAME-serve",
+        "release": "RELEASE_NAME",
       },
       "name": "RELEASE_NAME-serve",
       "namespace": "default",
@@ -1283,6 +1364,9 @@ Array [
     "apiVersion": "autoscaling/v2beta2",
     "kind": "HorizontalPodAutoscaler",
     "metadata": Object {
+      "labels": Object {
+        "release": "RELEASE_NAME",
+      },
       "name": "RELEASE_NAME-serve",
     },
     "spec": Object {
@@ -1338,6 +1422,9 @@ Array [
     "apiVersion": "v1",
     "kind": "Service",
     "metadata": Object {
+      "labels": Object {
+        "release": "RELEASE_NAME",
+      },
       "name": "RELEASE_NAME-serve",
     },
     "spec": Object {
@@ -1359,6 +1446,7 @@ Array [
     "metadata": Object {
       "labels": Object {
         "name": "RELEASE_NAME-serve",
+        "release": "RELEASE_NAME",
       },
       "name": "RELEASE_NAME-serve",
       "namespace": "default",

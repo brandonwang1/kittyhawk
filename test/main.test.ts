@@ -205,7 +205,7 @@ export function buildClubsChart(scope: Construct) {
 /** Helper function to run each chart test */
 const chartTest = (build: (scope: Construct) => void) => {
   const app = Testing.app();
-  const chart = new Chart(app, 'kittyhawk', build);
+  const chart = new Chart(app, 'kittyhawk', build, release_name);
   const results = Testing.synth(chart)
   expect(results).toMatchSnapshot();
 }
@@ -213,7 +213,7 @@ const chartTest = (build: (scope: Construct) => void) => {
 /** Helper function to run each chart test */
 const failingTest = (build: (scope: Construct) => void) => {
   const app = Testing.app();
-  expect(() => {new Chart(app, 'kittyhawk', build)}).toThrowError();
+  expect(() => {new Chart(app, 'kittyhawk', build, release_name)}).toThrowError();
 }
 
 describe('Unit Tests', () => {
