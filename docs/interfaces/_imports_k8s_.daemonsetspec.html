@@ -61,6 +61,9 @@
 					<a href="_imports_k8s_.daemonsetspec.html#template" class="tsd-kind-icon">template</a>
 				</li>
 				<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-external">
+					<a href="_imports_k8s_.daemonsetspec.html#templategeneration" class="tsd-kind-icon">template<wbr>Generation</a>
+				</li>
+				<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-external">
 					<a href="_imports_k8s_.daemonsetspec.html#updatestrategy" class="tsd-kind-icon">update<wbr>Strategy</a>
 				</li>
 			</ul>
@@ -76,7 +79,7 @@
 				</div>
 				<dl class="tsd-comment-tags">
 					<dt>schema</dt>
-					<dd><p>io.k8s.api.apps.v1.DaemonSetSpec</p>
+					<dd><p>io.k8s.api.extensions.v1beta1.DaemonSetSpec</p>
 					</dd>
 				</dl>
 			</div>
@@ -100,6 +103,7 @@
 							<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a href="_imports_k8s_.daemonsetspec.html#revisionhistorylimit" class="tsd-kind-icon">revision<wbr>History<wbr>Limit</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a href="_imports_k8s_.daemonsetspec.html#selector" class="tsd-kind-icon">selector</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a href="_imports_k8s_.daemonsetspec.html#template" class="tsd-kind-icon">template</a></li>
+							<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a href="_imports_k8s_.daemonsetspec.html#templategeneration" class="tsd-kind-icon">template<wbr>Generation</a></li>
 							<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a href="_imports_k8s_.daemonsetspec.html#updatestrategy" class="tsd-kind-icon">update<wbr>Strategy</a></li>
 						</ul>
 					</section>
@@ -114,7 +118,7 @@
 				<div class="tsd-signature tsd-kind-icon">min<wbr>Ready<wbr>Seconds<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/pennlabs/kittyhawk/blob/463442a/imports/k8s.ts#L5071">imports/k8s.ts:5071</a></li>
+						<li>Defined in <a href="https://github.com/pennlabs/kittyhawk/blob/833d59f/imports/k8s.ts#L8266">imports/k8s.ts:8266</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -126,7 +130,7 @@
 						<dd><p>0 (pod will be considered available as soon as it is ready).</p>
 						</dd>
 						<dt>schema</dt>
-						<dd><p>io.k8s.api.apps.v1.DaemonSetSpec#minReadySeconds</p>
+						<dd><p>io.k8s.api.extensions.v1beta1.DaemonSetSpec#minReadySeconds</p>
 						</dd>
 					</dl>
 				</div>
@@ -137,7 +141,7 @@
 				<div class="tsd-signature tsd-kind-icon">revision<wbr>History<wbr>Limit<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/pennlabs/kittyhawk/blob/463442a/imports/k8s.ts#L5079">imports/k8s.ts:5079</a></li>
+						<li>Defined in <a href="https://github.com/pennlabs/kittyhawk/blob/833d59f/imports/k8s.ts#L8274">imports/k8s.ts:8274</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -149,27 +153,27 @@
 						<dd><p>10.</p>
 						</dd>
 						<dt>schema</dt>
-						<dd><p>io.k8s.api.apps.v1.DaemonSetSpec#revisionHistoryLimit</p>
+						<dd><p>io.k8s.api.extensions.v1beta1.DaemonSetSpec#revisionHistoryLimit</p>
 						</dd>
 					</dl>
 				</div>
 			</section>
 			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-external">
 				<a name="selector" class="tsd-anchor"></a>
-				<h3><span class="tsd-flag ts-flagReadonly">Readonly</span> selector</h3>
+				<h3><span class="tsd-flag ts-flagOptional">Optional</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> selector</h3>
 				<div class="tsd-signature tsd-kind-icon">selector<span class="tsd-signature-symbol">:</span> <a href="_imports_k8s_.labelselector.html" class="tsd-signature-type">LabelSelector</a></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/pennlabs/kittyhawk/blob/463442a/imports/k8s.ts#L5086">imports/k8s.ts:5086</a></li>
+						<li>Defined in <a href="https://github.com/pennlabs/kittyhawk/blob/833d59f/imports/k8s.ts#L8281">imports/k8s.ts:8281</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>A label query over pods that are managed by the daemon set. Must match in order to be controlled. It must match the pod template&#39;s labels. More info: <a href="https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/#label-selectors">https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/#label-selectors</a></p>
+						<p>A label query over pods that are managed by the daemon set. Must match in order to be controlled. If empty, defaulted to labels on Pod template. More info: <a href="https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/#label-selectors">https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/#label-selectors</a></p>
 					</div>
 					<dl class="tsd-comment-tags">
 						<dt>schema</dt>
-						<dd><p>io.k8s.api.apps.v1.DaemonSetSpec#selector</p>
+						<dd><p>io.k8s.api.extensions.v1beta1.DaemonSetSpec#selector</p>
 						</dd>
 					</dl>
 				</div>
@@ -180,7 +184,7 @@
 				<div class="tsd-signature tsd-kind-icon">template<span class="tsd-signature-symbol">:</span> <a href="_imports_k8s_.podtemplatespec.html" class="tsd-signature-type">PodTemplateSpec</a></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/pennlabs/kittyhawk/blob/463442a/imports/k8s.ts#L5093">imports/k8s.ts:5093</a></li>
+						<li>Defined in <a href="https://github.com/pennlabs/kittyhawk/blob/833d59f/imports/k8s.ts#L8288">imports/k8s.ts:8288</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -189,7 +193,27 @@
 					</div>
 					<dl class="tsd-comment-tags">
 						<dt>schema</dt>
-						<dd><p>io.k8s.api.apps.v1.DaemonSetSpec#template</p>
+						<dd><p>io.k8s.api.extensions.v1beta1.DaemonSetSpec#template</p>
+						</dd>
+					</dl>
+				</div>
+			</section>
+			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-external">
+				<a name="templategeneration" class="tsd-anchor"></a>
+				<h3><span class="tsd-flag ts-flagOptional">Optional</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> template<wbr>Generation</h3>
+				<div class="tsd-signature tsd-kind-icon">template<wbr>Generation<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></div>
+				<aside class="tsd-sources">
+					<ul>
+						<li>Defined in <a href="https://github.com/pennlabs/kittyhawk/blob/833d59f/imports/k8s.ts#L8295">imports/k8s.ts:8295</a></li>
+					</ul>
+				</aside>
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>DEPRECATED. A sequence number representing a specific generation of the template. Populated by the system. It can be set only during the creation.</p>
+					</div>
+					<dl class="tsd-comment-tags">
+						<dt>schema</dt>
+						<dd><p>io.k8s.api.extensions.v1beta1.DaemonSetSpec#templateGeneration</p>
 						</dd>
 					</dl>
 				</div>
@@ -200,7 +224,7 @@
 				<div class="tsd-signature tsd-kind-icon">update<wbr>Strategy<span class="tsd-signature-symbol">:</span> <a href="_imports_k8s_.daemonsetupdatestrategy.html" class="tsd-signature-type">DaemonSetUpdateStrategy</a></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/pennlabs/kittyhawk/blob/463442a/imports/k8s.ts#L5100">imports/k8s.ts:5100</a></li>
+						<li>Defined in <a href="https://github.com/pennlabs/kittyhawk/blob/833d59f/imports/k8s.ts#L8302">imports/k8s.ts:8302</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -209,7 +233,7 @@
 					</div>
 					<dl class="tsd-comment-tags">
 						<dt>schema</dt>
-						<dd><p>io.k8s.api.apps.v1.DaemonSetSpec#updateStrategy</p>
+						<dd><p>io.k8s.api.extensions.v1beta1.DaemonSetSpec#updateStrategy</p>
 						</dd>
 					</dl>
 				</div>

@@ -66,7 +66,7 @@
 			</ul>
 		</li>
 		<li class=" tsd-kind-interface tsd-parent-kind-module">
-			<a href="../interfaces/_lib_deployment_.deploymentoptions.html" class="tsd-kind-icon">Deployment<wbr>Options</a>
+			<a href="../interfaces/_lib_deployment_.deploymentprops.html" class="tsd-kind-icon">Deployment<wbr>Props</a>
 		</li>
 	</ul>
 </nav>
@@ -119,14 +119,14 @@
 				<a name="constructor" class="tsd-anchor"></a>
 				<h3>constructor</h3>
 				<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite">
-					<li class="tsd-signature tsd-kind-icon">new <wbr>Deployment<span class="tsd-signature-symbol">(</span>scope<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Construct</span>, appname<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, options<span class="tsd-signature-symbol">: </span><a href="../interfaces/_lib_deployment_.deploymentoptions.html" class="tsd-signature-type">DeploymentOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_lib_deployment_.deployment.html" class="tsd-signature-type">Deployment</a></li>
+					<li class="tsd-signature tsd-kind-icon">new <wbr>Deployment<span class="tsd-signature-symbol">(</span>scope<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Construct</span>, appname<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, props<span class="tsd-signature-symbol">: </span><a href="../interfaces/_lib_deployment_.deploymentprops.html" class="tsd-signature-type">DeploymentProps</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="_lib_deployment_.deployment.html" class="tsd-signature-type">Deployment</a></li>
 				</ul>
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
 							<p>Overrides Construct.__constructor</p>
 							<ul>
-								<li>Defined in <a href="https://github.com/pennlabs/kittyhawk/blob/463442a/lib/deployment.ts#L29">lib/deployment.ts:29</a></li>
+								<li>Defined in <a href="https://github.com/pennlabs/kittyhawk/blob/833d59f/lib/deployment.ts#L29">lib/deployment.ts:29</a></li>
 							</ul>
 						</aside>
 						<h4 class="tsd-parameters-title">Parameters</h4>
@@ -138,7 +138,7 @@
 								<h5>appname: <span class="tsd-signature-type">string</span></h5>
 							</li>
 							<li>
-								<h5>options: <a href="../interfaces/_lib_deployment_.deploymentoptions.html" class="tsd-signature-type">DeploymentOptions</a></h5>
+								<h5>props: <a href="../interfaces/_lib_deployment_.deploymentprops.html" class="tsd-signature-type">DeploymentProps</a></h5>
 							</li>
 						</ul>
 						<h4 class="tsd-returns-title">Returns <a href="_lib_deployment_.deployment.html" class="tsd-signature-type">Deployment</a></h4>
@@ -157,9 +157,9 @@
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
-							<p>Inherited from <a href="_imports_k8s_.mutatingwebhookconfiguration.html">MutatingWebhookConfiguration</a>.<a href="_imports_k8s_.mutatingwebhookconfiguration.html#onprepare">onPrepare</a></p>
+							<p>Inherited from <a href="_imports_k8s_.kubemutatingwebhookconfigurationv1beta1.html">KubeMutatingWebhookConfigurationV1Beta1</a>.<a href="_imports_k8s_.kubemutatingwebhookconfigurationv1beta1.html#onprepare">onPrepare</a></p>
 							<ul>
-								<li>Defined in node_modules/constructs/lib/construct.d.ts:333</li>
+								<li>Defined in node_modules/constructs/lib/construct.d.ts:387</li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -171,6 +171,11 @@
 							constructs have been prepared.</p>
 							<p>This is an advanced framework feature. Only use this if you
 							understand the implications.</p>
+							<dl class="tsd-comment-tags">
+								<dt>stability</dt>
+								<dd><p>stable</p>
+								</dd>
+							</dl>
 						</div>
 						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 					</li>
@@ -185,9 +190,9 @@
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
-							<p>Inherited from <a href="_imports_k8s_.mutatingwebhookconfiguration.html">MutatingWebhookConfiguration</a>.<a href="_imports_k8s_.mutatingwebhookconfiguration.html#onsynthesize">onSynthesize</a></p>
+							<p>Inherited from <a href="_imports_k8s_.kubemutatingwebhookconfigurationv1beta1.html">KubeMutatingWebhookConfigurationV1Beta1</a>.<a href="_imports_k8s_.kubemutatingwebhookconfigurationv1beta1.html#onsynthesize">onSynthesize</a></p>
 							<ul>
-								<li>Defined in node_modules/constructs/lib/construct.d.ts:342</li>
+								<li>Defined in node_modules/constructs/lib/construct.d.ts:397</li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -196,6 +201,11 @@
 							</div>
 							<p>This method is usually implemented by framework-level constructs such as <code>Stack</code> and <code>Asset</code>
 							as they participate in synthesizing the cloud assembly.</p>
+							<dl class="tsd-comment-tags">
+								<dt>stability</dt>
+								<dd><p>stable</p>
+								</dd>
+							</dl>
 						</div>
 						<h4 class="tsd-parameters-title">Parameters</h4>
 						<ul class="tsd-parameters">
@@ -219,9 +229,9 @@
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
-							<p>Inherited from <a href="_imports_k8s_.mutatingwebhookconfiguration.html">MutatingWebhookConfiguration</a>.<a href="_imports_k8s_.mutatingwebhookconfiguration.html#onvalidate">onValidate</a></p>
+							<p>Inherited from <a href="_imports_k8s_.kubemutatingwebhookconfigurationv1beta1.html">KubeMutatingWebhookConfigurationV1Beta1</a>.<a href="_imports_k8s_.kubemutatingwebhookconfigurationv1beta1.html#onvalidate">onValidate</a></p>
 							<ul>
-								<li>Defined in node_modules/constructs/lib/construct.d.ts:322</li>
+								<li>Defined in node_modules/constructs/lib/construct.d.ts:374</li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
@@ -251,15 +261,20 @@
 				<ul class="tsd-descriptions">
 					<li class="tsd-description">
 						<aside class="tsd-sources">
-							<p>Inherited from <a href="_imports_k8s_.mutatingwebhookconfiguration.html">MutatingWebhookConfiguration</a>.<a href="_imports_k8s_.mutatingwebhookconfiguration.html#tostring">toString</a></p>
+							<p>Inherited from <a href="_imports_k8s_.kubemutatingwebhookconfigurationv1beta1.html">KubeMutatingWebhookConfigurationV1Beta1</a>.<a href="_imports_k8s_.kubemutatingwebhookconfigurationv1beta1.html#tostring">toString</a></p>
 							<ul>
-								<li>Defined in node_modules/constructs/lib/construct.d.ts:311</li>
+								<li>Defined in node_modules/constructs/lib/construct.d.ts:363</li>
 							</ul>
 						</aside>
 						<div class="tsd-comment tsd-typography">
 							<div class="lead">
 								<p>Returns a string representation of this construct.</p>
 							</div>
+							<dl class="tsd-comment-tags">
+								<dt>stability</dt>
+								<dd><p>stable</p>
+								</dd>
+							</dl>
 						</div>
 						<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
 					</li>

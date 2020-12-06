@@ -67,7 +67,7 @@
 				</div>
 				<dl class="tsd-comment-tags">
 					<dt>schema</dt>
-					<dd><p>io.k8s.api.apps.v1.RollingUpdateDeployment</p>
+					<dd><p>io.k8s.api.apps.v1beta2.RollingUpdateDeployment</p>
 					</dd>
 				</dl>
 			</div>
@@ -102,7 +102,7 @@
 				<div class="tsd-signature tsd-kind-icon">max<wbr>Surge<span class="tsd-signature-symbol">:</span> <a href="../classes/_imports_k8s_.intorstring.html" class="tsd-signature-type">IntOrString</a></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/pennlabs/kittyhawk/blob/463442a/imports/k8s.ts#L10720">imports/k8s.ts:10720</a></li>
+						<li>Defined in <a href="https://github.com/pennlabs/kittyhawk/blob/833d59f/imports/k8s.ts#L13933">imports/k8s.ts:13933</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -114,7 +114,7 @@
 						<dd><p>25%. Example: when this is set to 30%, the new ReplicaSet can be scaled up immediately when the rolling update starts, such that the total number of old and new pods do not exceed 130% of desired pods. Once old pods have been killed, new ReplicaSet can be scaled up further, ensuring that total number of pods running at any time during the update is at most 130% of desired pods.</p>
 						</dd>
 						<dt>schema</dt>
-						<dd><p>io.k8s.api.apps.v1.RollingUpdateDeployment#maxSurge</p>
+						<dd><p>io.k8s.api.apps.v1beta2.RollingUpdateDeployment#maxSurge</p>
 						</dd>
 					</dl>
 				</div>
@@ -125,7 +125,7 @@
 				<div class="tsd-signature tsd-kind-icon">max<wbr>Unavailable<span class="tsd-signature-symbol">:</span> <a href="../classes/_imports_k8s_.intorstring.html" class="tsd-signature-type">IntOrString</a></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/pennlabs/kittyhawk/blob/463442a/imports/k8s.ts#L10728">imports/k8s.ts:10728</a></li>
+						<li>Defined in <a href="https://github.com/pennlabs/kittyhawk/blob/833d59f/imports/k8s.ts#L13941">imports/k8s.ts:13941</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -137,7 +137,7 @@
 						<dd><p>25%. Example: when this is set to 30%, the old ReplicaSet can be scaled down to 70% of desired pods immediately when the rolling update starts. Once new pods are ready, old ReplicaSet can be scaled down further, followed by scaling up the new ReplicaSet, ensuring that the total number of pods available at all times during the update is at least 70% of desired pods.</p>
 						</dd>
 						<dt>schema</dt>
-						<dd><p>io.k8s.api.apps.v1.RollingUpdateDeployment#maxUnavailable</p>
+						<dd><p>io.k8s.api.apps.v1beta2.RollingUpdateDeployment#maxUnavailable</p>
 						</dd>
 					</dl>
 				</div>
