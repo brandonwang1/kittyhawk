@@ -1,9 +1,9 @@
 import { Construct } from 'constructs';
-import { Deployment as DeploymentApiObject } from '../imports/k8s';
-import { Autoscaler, AutoscalingOptions } from './autoscaler';
-import { Container, ContainerOptions, Volume } from './container';
+import { KubeDeployment as DeploymentApiObject } from '../imports/k8s';
+import { Autoscaler, AutoscalingProps } from './autoscaler';
+import { Container, ContainerProps, Volume } from './container';
 
-export interface DeploymentOptions extends ContainerOptions {
+export interface DeploymentProps extends ContainerProps {
   /**
    * Number of replicas to start.
    *
@@ -19,23 +19,23 @@ export interface DeploymentOptions extends ContainerOptions {
   readonly secretMounts?: { name: string, mountPath: string, subPath: string }[]
 
   /**
-   * Options for autoscaling. 
-   * @default - see default autoscaler options
+   * Properties for autoscaling. 
+   * @default - see default autoscaler props
    */
-  readonly autoScalingOptions?: AutoscalingOptions;
+  readonly autoScalingProps?: AutoscalingProps;
 
 }
 
 export class Deployment extends Construct {
-  constructor(scope: Construct, appname: string, options: DeploymentOptions) {
+  constructor(scope: Construct, appname: string, props: DeploymentProps) {
     super(scope, `deployment-${appname}`);
 
     const label = { name: appname };
-    const containers: Container[] = [new Container(options)];
-    const volumes: Volume[] | undefined = options.secretMounts?.map(m => new Volume(m))
-    const autoScalingOn : boolean = options.autoScalingOptions !== undefined
+    const containers: Container[] = [new Container(props)];
+    const volumes: Volume[] | undefined = props.secretMounts?.map(m => new Volume(m))
+    const autoScalingOn : boolean = props.autoScalingProps !== undefined
 
-    if (autoScalingOn && options.replicas !== undefined) {
+    if (autoScalingOn && props.replicas !== undefined) {
       throw new Error('Cannot specify "replicaCount" when auto-scaling is enabled');
     }
 
@@ -46,7 +46,7 @@ export class Deployment extends Construct {
         labels: label,
       },
       spec: {
-        replicas: autoScalingOn ? undefined : (options.replicas ?? 1),
+        replicas: autoScalingOn ? undefined : (props.replicas ?? 1),
         selector: {
           matchLabels: label,
         },
@@ -70,7 +70,7 @@ export class Deployment extends Construct {
     if (autoScalingOn) {
       new Autoscaler(this, appname, {
         target: deployment,
-        ...options.autoScalingOptions,
+        ...props.autoScalingProps,
       });
     }
   }

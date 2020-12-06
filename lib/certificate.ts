@@ -1,15 +1,15 @@
 import { Construct } from 'constructs';
 import { Certificate as CertApiObject } from '../imports/cert-manager.io/certificate';
-import { IngressOptions } from './ingress';
+import { IngressProps } from './ingress';
 
 export class Certificate extends Construct {
-  constructor(scope: Construct, appname: string, options: IngressOptions) {
+  constructor(scope: Construct, appname: string, props: IngressProps) {
     super(scope, `certificate-${appname}`);
 
     // Only generate certificates if an ingress is defined
-    if (options.ingress) {
+    if (props.ingress) {
       // We want to generate a certificate for each host
-      for (const h of options.ingress.hosts) {
+      for (const h of props.ingress.hosts) {
         // Regex to compute the apex domain
         const apex_domain = h.host.match(/[\w-]+\.[\w]+$/g)
         if (apex_domain != null) {

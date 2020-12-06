@@ -1,8 +1,8 @@
 import { Construct } from 'constructs';
-import { Ingress as IngressApiObject, IntOrString } from '../imports/k8s';
+import { KubeIngressV1Beta1 as IngressApiObject, IntOrString } from '../imports/k8s';
 
 
-export interface IngressOptions {
+export interface IngressProps {
   /**
      * External port.
      *
@@ -11,7 +11,7 @@ export interface IngressOptions {
   readonly port?: number;
 
   /**
-     * Configuration options to define the ingress.
+     * Configuration properties to define the ingress.
      *
      * @default undefined
      */
@@ -28,11 +28,11 @@ export interface HostsConfig {
 
 
 export class Ingress extends Construct {
-  constructor(scope: Construct, appname: string, options: IngressOptions) {
+  constructor(scope: Construct, appname: string, props: IngressProps) {
     super(scope, `ingress-${appname}`);
 
-    const port = options.port || 80;
-    const ingress = options.ingress;
+    const port = props.port || 80;
+    const ingress = props.ingress;
 
     if (ingress) {
       let tls = ingress.hosts.map(h => {

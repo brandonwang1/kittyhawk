@@ -24,7 +24,7 @@ export function buildAutoscalingChart(scope: Construct) {
   /** Autoscaling test **/
   new Application(scope, `${release_name}-serve`, {
     image: 'pennlabs/website',
-    autoScalingOptions: { cpu: 80, memory:80, requests:80 },
+    autoScalingProps: { cpu: 80, memory:80, requests:80 },
   })
 }
 
@@ -70,7 +70,7 @@ export function buildFailingAutoscalingChart(scope: Construct) {
     image: 'pennlabs/website',
     tag: 'latest',
     replicas: 2,
-    autoScalingOptions: { cpu: 80 },
+    autoScalingProps: { cpu: 80 },
   })
 }
 

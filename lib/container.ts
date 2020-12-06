@@ -1,7 +1,7 @@
 import { Volume as VolumeInterface, Container as ContainerInterface, ContainerPort, EnvFromSource, EnvVar, Probe as ProbeInterface, VolumeMount, SecretVolumeSource, HttpGetAction, ExecAction } from '../imports/k8s';
 
 
-export interface ContainerOptions {
+export interface ContainerProps {
   /**
      * The Docker image to use for this service.
      */
@@ -73,16 +73,16 @@ export interface ContainerOptions {
   /**
     * Liveliness Probe definitions for the container.
     */
-  readonly livenessProbe?: probeOptions
+  readonly livenessProbe?: probeProps
 
   /**
     * Liveliness Probe definitions for the container.
     */
-  readonly readinessProbe?: probeOptions
+  readonly readinessProbe?: probeProps
 
 }
 
-export interface probeOptions {
+export interface probeProps {
   /**
      * Sends a HTTP request to this path for the probe check. Only provide this OR a command.
      */
@@ -162,19 +162,19 @@ export class Container implements ContainerInterface {
      */
   readonly livenessProbe?: Probe;
 
-  constructor(options: ContainerOptions) {
+  constructor(props: ContainerProps) {
 
     this.name = 'worker'
-    const tag = options.tag || 'latest';
-    this.image = `${options.image}:${tag}`;
-    this.ports = [{ containerPort: options.port ?? 80 }]
-    this.imagePullPolicy = options.pullPolicy || 'IfNotPresent';
-    this.command = options.cmd;
-    this.volumeMounts = options.secretMounts;
-    this.envFrom = options.secret ? [{ secretRef: { name: options.secret } }] : undefined;
-    this.env = options.extraEnv;
-    this.readinessProbe = options.readinessProbe && new Probe(options.readinessProbe);
-    this.livenessProbe = options.livenessProbe && new Probe(options.livenessProbe);
+    const tag = props.tag || 'latest';
+    this.image = `${props.image}:${tag}`;
+    this.ports = [{ containerPort: props.port ?? 80 }]
+    this.imagePullPolicy = props.pullPolicy || 'IfNotPresent';
+    this.command = props.cmd;
+    this.volumeMounts = props.secretMounts;
+    this.envFrom = props.secret ? [{ secretRef: { name: props.secret } }] : undefined;
+    this.env = props.extraEnv;
+    this.readinessProbe = props.readinessProbe && new Probe(props.readinessProbe);
+    this.livenessProbe = props.livenessProbe && new Probe(props.livenessProbe);
   }
 
 }
@@ -202,18 +202,18 @@ export class Probe implements ProbeInterface {
      */
   readonly periodSeconds?: number;
 
-  constructor(options: probeOptions) {
-    this.initialDelaySeconds = options.delay ?? 1;
-    this.periodSeconds = options.period ?? 10;
-    if (options.command) {
-      this.exec = { command: options.command }
-    } else if (options.path) {
-      this.httpGet = { path: options.path, port: 80 }
+  constructor(props: probeProps) {
+    this.initialDelaySeconds = props.delay ?? 1;
+    this.periodSeconds = props.period ?? 10;
+    if (props.command) {
+      this.exec = { command: props.command }
+    } else if (props.path) {
+      this.httpGet = { path: props.path, port: 80 }
     } else throw new Error('Must provide either probe command or HTTP path')
   }
 }
 
-export interface VolumeOptions {
+export interface VolumeProps {
 
   /**
      * Secret volume name. 
@@ -246,15 +246,15 @@ export class Volume implements VolumeInterface {
      */
   readonly secret?: SecretVolumeSource
 
-  constructor(options: VolumeOptions) {
+  constructor(props: VolumeProps) {
     let mountString = (a: string) => a.toLowerCase().split('_').join('-');
 
-    this.name = `${mountString(options.name)}-${mountString(options.subPath)}`
+    this.name = `${mountString(props.name)}-${mountString(props.subPath)}`
     this.secret = {
-      secretName: options.name,
+      secretName: props.name,
       items: [{
-        key: options.subPath,
-        path: options.subPath,
+        key: props.subPath,
+        path: props.subPath,
       }],
     }
   }
