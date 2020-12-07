@@ -48,7 +48,10 @@ export class CronJob extends Construct {
   constructor(scope: Construct, jobname: string, props: CronJobProps) {
     super(scope, jobname);
 
-    const label = { name: jobname };
+    // We want to prepend the project name to the name of each component
+    const release_name = process.env.RELEASE_NAME || 'undefined_release';
+    const fullname = `${release_name}-${jobname}`
+    const label = { name: fullname };
     const schedule = props.schedule;
     const restartPolicy = props.restartPolicy || 'Never';
     const failureLimit = props.failureLimit ?? 1;
@@ -57,9 +60,9 @@ export class CronJob extends Construct {
     const volumes: Volume[] | undefined = props.secretMounts?.map(m => new Volume(m))
 
 
-    new CronJobApiObject(this, `cronjob-${jobname}`, {
+    new CronJobApiObject(this, `cronjob-${fullname}`, {
       metadata: {
-        name: jobname,
+        name: fullname,
         namespace: 'default',
         labels: label,
       },

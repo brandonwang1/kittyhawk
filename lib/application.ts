@@ -12,14 +12,18 @@ export class Application extends Construct {
   constructor(scope: Construct, appname: string, props: ApplicationProps) {
     super(scope, appname);
 
-    new Service(this, appname, props);
+    // We want to prepend the project name to the name of each component
+    const release_name = process.env.RELEASE_NAME || 'undefined_release';
+    const fullname = `${release_name}-${appname}`
 
-    new Deployment(this, appname, props);
+    new Service(this, fullname, props);
+
+    new Deployment(this, fullname, props);
 
     if (props.ingress) {
-      new Ingress(this, appname, props)
+      new Ingress(this, fullname, props)
 
-      new Certificate(this, appname, props)
+      new Certificate(this, fullname, props)
     }
   }
 }

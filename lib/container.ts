@@ -165,7 +165,8 @@ export class Container implements ContainerInterface {
   constructor(props: ContainerProps) {
 
     this.name = 'worker'
-    const tag = props.tag || 'latest';
+    // Priority is tag set, RELEASE_NAME env var, 'latest'
+    const tag = props.tag || (process.env.IMAGE_TAG || 'latest'); 
     this.image = `${props.image}:${tag}`;
     this.ports = [{ containerPort: props.port ?? 80 }]
     this.imagePullPolicy = props.pullPolicy || 'IfNotPresent';
