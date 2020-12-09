@@ -1102,13 +1102,6 @@ cdk8s-cli@^1.0.0-beta.3:
     yaml "^1.7.2"
     yargs "^15.1.0"
 
-cdk8s-plus-17@^1.0.0-beta.3:
-  version "1.0.0-beta.3"
-  resolved "https://registry.yarnpkg.com/cdk8s-plus-17/-/cdk8s-plus-17-1.0.0-beta.3.tgz#00daf6cfa4b47fce837ea627e28d3c674b2812a7"
-  integrity sha512-0VJQYHNT4yS8y29qwq4w1Ht7mORWnrGWIklGJYc11/sn6sUk8vDJ2w8hUKjImYfB56fU4oFlk0glD/jIVaO6Bg==
-  dependencies:
-    minimatch "^3.0.4"
-
 cdk8s@1.0.0-beta.3, cdk8s@^1.0.0-beta.3:
   version "1.0.0-beta.3"
   resolved "https://registry.yarnpkg.com/cdk8s/-/cdk8s-1.0.0-beta.3.tgz#4de75c0d2ae8817e36cde4296cbef6de96a017c0"
@@ -1293,10 +1286,15 @@ concat-map@0.0.1:
   resolved "https://registry.yarnpkg.com/concat-map/-/concat-map-0.0.1.tgz#d8a96bd77fd68df7793a73036a3ba0d5405d477b"
   integrity sha1-2Klr13/Wjfd5OnMDajug1UBdR3s=
 
-constructs@^3.1.3, constructs@^3.2.34:
+constructs@^3.2.34:
   version "3.2.60"
   resolved "https://registry.yarnpkg.com/constructs/-/constructs-3.2.60.tgz#442b7c62629c31c464d7c472294c7f276fb98fc5"
   integrity sha512-ZGTNvUUsQSPbiK2IySzXQMqa5GtC6pRGKCUu6iwj61on700n4XDf09wE0UX9d5iFoRUNdHDNVaD8Kgjq1rR/mQ==
+
+constructs@^3.2.62:
+  version "3.2.62"
+  resolved "https://registry.yarnpkg.com/constructs/-/constructs-3.2.62.tgz#5b42596703f17b427395b9a11449439a02cf6364"
+  integrity sha512-3kIIetsMGwOx9KNzckWVIlJ4bOBdT05fCz1JJTfXj9mwmqkNBENaQeN2LdX4+q4DXp+Z6Aox5ylnbrm5oG84Dw==
 
 contains-path@^0.1.0:
   version "0.1.0"

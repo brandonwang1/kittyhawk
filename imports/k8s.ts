@@ -13449,7 +13449,7 @@ export interface EnvFromSource {
  */
 export interface VolumeMount {
   /**
-   * Path within the container at which the volume should be mounted.  Must not contain ':'.
+   * secretMounts  Must not contain ':'.
    *
    * @schema io.k8s.api.core.v1.VolumeMount#mountPath
    */

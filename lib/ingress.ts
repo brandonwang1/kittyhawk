@@ -36,6 +36,23 @@ export class Ingress extends Construct {
           throw new Error(`Ingress construction failed: apex domain regex failed on ${h}`)
       })
 
+      let rules = ingress.map(h => {
+        return {
+          host: h.host,
+          http: {
+            paths: h.paths.map(path => {
+              return {
+                path: path,
+                backend: {
+                  serviceName: appname,
+                  servicePort: IntOrString.fromNumber(port),
+                },
+              }
+            }),
+          },
+        }
+      })
+
       new IngressApiObject(this, `ingress-${appname}`, {
         metadata: {
           name: appname,
@@ -43,23 +60,7 @@ export class Ingress extends Construct {
         },
         spec: {
           tls,
-          rules:
-                        ingress.map(h => {
-                          return {
-                            host: h.host,
-                            http: {
-                              paths: h.paths.map(path => {
-                                return {
-                                  path: path,
-                                  backend: {
-                                    serviceName: appname,
-                                    servicePort: IntOrString.fromNumber(port),
-                                  },
-                                }
-                              }),
-                            },
-                          }
-                        }),
+          rules,
         },
       });
     }

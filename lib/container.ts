@@ -58,7 +58,7 @@ export interface ContainerProps {
   /**
      * Internal port.
      *
-     * @default 8080
+     * @default port
      */
   readonly containerPort?: number;
 
@@ -237,12 +237,12 @@ export interface VolumeProps {
 export class Volume implements VolumeInterface {
 
   /**
-     * Name of the container specified as a DNS_LABEL.
+     * Name of the volume
      */
   readonly name: string;
 
   /**
-     * List of ports to expose from the container. 
+     * Secret, stored as a volume
      *
      */
   readonly secret?: SecretVolumeSource

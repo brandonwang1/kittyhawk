@@ -27,7 +27,7 @@ export interface CronJobProps extends ContainerProps {
   readonly successLimit?: number;
 
   /**
-    * The number of failed finished jobs to retain.
+    * The number of failed jobs to retain.
     * 
     * @default 1
     * 
