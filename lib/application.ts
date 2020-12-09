@@ -1,6 +1,6 @@
 import { Construct } from 'constructs';
 import { Deployment, DeploymentProps } from './deployment';
-import { HostsConfig, Ingress, IngressProps } from './ingress';
+import { Ingress, IngressProps } from './ingress';
 import { Service, ServiceProps } from './service'
 import { Certificate } from './certificate';
 
@@ -46,12 +46,11 @@ export interface DjangoApplicationProps extends ApplicationProps {
   extraEnv?: { name: string, value: string }[];
 
   /**
-   * Override ingress from IngressOptions to make it mutable.
-   *
-   * @default undefined
-   */
-  ingress?: HostsConfig;
-
+     * A list of host rules used to configure the Ingress.
+     *
+     * @default undefined
+     */
+  ingress?: { host: string, paths: string[] }[];
 }
 
 export class DjangoApplication extends Application {
@@ -62,9 +61,8 @@ export class DjangoApplication extends Application {
     props.extraEnv.push({ name: 'DOMAIN', value: props.domain });
 
     // Configure the ingress using ingressPaths.
-    props.ingress = {
-      hosts: [{ host: props.domain, paths: props.ingressPaths }],
-    }
+    props.ingress = [{ host: props.domain, paths: props.ingressPaths }]
+
 
     // Check if the env variables contains DOMAIN
     const envDomain = props.extraEnv?.filter(env => (env.name === 'DOMAIN'));
@@ -100,11 +98,11 @@ export interface ReactApplicationProps extends ApplicationProps {
   extraEnv?: { name: string, value: string }[];
 
   /**
-   * Override ingress from IngressProps to make it mutable.
-   *
-   * @default undefined
-   */
-  ingress?: HostsConfig;
+     * A list of host rules used to configure the Ingress.
+     *
+     * @default undefined
+     */
+  ingress?: { host: string, paths: string[] }[];
 }
 
 export class ReactApplication extends Application {
@@ -115,9 +113,7 @@ export class ReactApplication extends Application {
     props.extraEnv.push({ name: 'DOMAIN', value: props.domain });
 
     // Configure the ingress using ingressPaths.
-    props.ingress = {
-      hosts: [{ host: props.domain, paths: props.ingressPaths }],
-    }
+    props.ingress = [{ host: props.domain, paths: props.ingressPaths }]
 
     // Check if the env variables contains DOMAIN
     const envDomain = props.extraEnv?.filter(env => (env.name === 'DOMAIN'));

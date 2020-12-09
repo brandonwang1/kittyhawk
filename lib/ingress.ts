@@ -11,21 +11,12 @@ export interface IngressProps {
   readonly port?: number;
 
   /**
-     * Configuration properties to define the ingress.
+     * A list of host rules used to configure the Ingress.
      *
      * @default undefined
      */
-  readonly ingress?: HostsConfig;
+  readonly ingress?: { host: string, paths: string[] }[];
 }
-
-
-export interface HostsConfig {
-  /**
-     * A list of host rules used to configure the Ingress.
-     */
-  readonly hosts: { host: string, paths: string[] }[];
-}
-
 
 export class Ingress extends Construct {
   constructor(scope: Construct, appname: string, props: IngressProps) {
@@ -35,7 +26,7 @@ export class Ingress extends Construct {
     const ingress = props.ingress;
 
     if (ingress) {
-      let tls = ingress.hosts.map(h => {
+      let tls = ingress.map(h => {
         // Regex to compute the apex domain
         const apex_domain = h.host.match(/[\w-]+\.[\w]+$/g)
         if (apex_domain) {
@@ -53,7 +44,7 @@ export class Ingress extends Construct {
         spec: {
           tls,
           rules:
-                        ingress.hosts.map(h => {
+                        ingress.map(h => {
                           return {
                             host: h.host,
                             http: {

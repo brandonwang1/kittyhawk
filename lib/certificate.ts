@@ -9,7 +9,7 @@ export class Certificate extends Construct {
     // Only generate certificates if an ingress is defined
     if (props.ingress) {
       // We want to generate a certificate for each host
-      for (const h of props.ingress.hosts) {
+      for (const h of props.ingress) {
         // Regex to compute the apex domain
         const apex_domain = h.host.match(/[\w-]+\.[\w]+$/g)
         if (apex_domain != null) {

@@ -1,48 +1,74 @@
 # Kittyhawk
 
 Kittyhawk is the automated Kubernetes YAML generator for Penn Labs. 
-With Kittyhawk, you can define an application's deployment configuration in Typescript by calling [constructs](https://cdk8s.io/docs/v1.0.0-beta.3/concepts/constructs/).
+With Kittyhawk, you can define an application's deployment configuration in Typescript using objects called [constructs](https://cdk8s.io/docs/v1.0.0-beta.3/concepts/constructs/).
 
 ## Getting Started
 
-The easiest way to get started is by creating a `k8s` folder in your project, and cloning the [Kittyhawk template](https://github.com/pennlabs/kittyhawk-template) inside. 
+The easiest way to get started is by creating a `k8s` folder in your project, and cloning the [Kittyhawk template](https://github.com/pennlabs/kittyhawk-template) inside. You will also need to add the circleCI orb (WIP).
 
-Afterwards, you can write your configuration. 
+To initialize the project, run
+'''
+npx projen
+'''
+
+Afterwards, write your configuration in the buildChart function in the main.ts file. 
+
+This is a sample configuration deploying a Django Application and a React Application for Penn Clubs:
 
 ```
-import { Application, synth } from '@pennlabs/kittyhawk';
+import { DjangoApplication, ReactApplication, synth } from '@pennlabs/kittyhawk';
 import { Construct } from 'constructs'; 
-
-const release_name = process.env.RELEASE_NAME || "undefined_release";
-const image_tag = process.env.IMAGE_TAG || "latest";
 
 export function buildChart(scope: Construct) {
 
-  // 2048 Game configuration
-  new Application(scope, `${release_name}-tfegame`, {
-      image: 'alexwhen/docker-2048',
-      port: 80,
-      ingress: { hosts: [{ host: 'tfegame.pennlabs.org', paths: ['/'] }] },
+  /** Penn Clubs **/
+  new DjangoApplication(scope, 'django-asgi', {
+    image: 'pennlabs/penn-clubs-backend',
+    tag: 'latest',
+    secret: 'penn-clubs',
+    cmd: ['/usr/local/bin/asgi-run'],
+    replicas: 2,
+    domain: 'pennclubs.com',
+    ingressPaths: ['/api/ws'],
+    extraEnv: [
+      { name: 'DJANGO_SETTINGS_MODULE', value: 'pennclubs.settings.production' },
+      { name: 'REDIS_HOST', value: 'penn-clubs-redis' }],
+  })
 
-  });
+  new ReactApplication(scope, 'react', {
+    image: 'pennlabs/penn-clubs-frontend',
+    tag: 'latest',
+    replicas: 2,
+    domain: 'pennclubs.com',
+    ingressPaths: ['/'],
+    extraEnv: [{ name: 'PORT', value: '80' }],
+  })
 
 }
 
-// Synthesizes the chart (run "npm run build")
-synth(buildChart, release_name);
+// Synthesizes the chart
+synth(buildChart);
 
 ```
 
-NOTE: If you are using Circle CI the following steps will be automatically done for you when you push to the master branch, and xxxx will run when you push to any other branch.
+Next, run `yarn run build` to synthesize your configuration. The generated YAML will be saved to a file located at `k8s/dist/kittyhawk.k8s.yaml`. On every push to a PR branch, Circle CI will automatically generate the configuration. On every push to the master branch, CircleCI will also automatically apply/deploy the generated YAML to production.
 
-Next, run `yarn run synth` to synthesize your configuration. It will be saved to the directory `k8s/dist/kittyhawk.k8s.yaml`.
 
 
 ## Available Constructs
 
+COPY DOCS FROM: https://github.com/pennlabs/icarus/blob/master/USER_GUIDE.md
+
 You can find the full API reference [here:](https://pennlabs.github.io/kittyhawk/index.html) 
 
 - [Application](lib/application.ts) - the base class for deploying a general application, containing a deployment, service, and optionally an ingress and certificate. To create an Application, it must be passed a scope, name and a properties object containing a valid configuration. 
-    -- ReactApplication and DjangoApplication are its two subclasses, which have additional checks to make sure the configuration is correct.
+    -- ReactApplication and DjangoApplication both subclass Application, and contain additional checks to make sure the configuration is correct.
+
+
+### Options
+- image (string) - The Docker image to use.
+- port
+- TODO
 
 - [Cronjob](lib/cronjob.ts) - the class for deploying a cronjob. To create an cronjob, it must be passed a scope, name and a properties object containing a valid configuration. 
