@@ -1,6 +1,6 @@
 {
   "name": "@pennlabs/kittyhawk",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "author": "Penn Labs",
   "description": "Tool to generate Kubernetes YAML files from typescript code.",
   "main": "lib/index.js",

@@ -49,4 +49,4 @@ export function buildChart(scope: Construct) {
 synth(buildChart);
 
 ```
-The [tfegame repository]() contains another example of an application being deployed with Kittyhawk. 
+The [tfegame repository](https://github.com/pennlabs/tfegame) contains another example of an application being deployed with Kittyhawk. 
