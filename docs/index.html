@@ -53,8 +53,49 @@
 			<a href="#kittyhawk" id="kittyhawk" style="color: inherit; text-decoration: none;">
 				<h1>Kittyhawk</h1>
 			</a>
-			<p>Kittyhawk is the automated Kubernetes YAML generator for Penn Labs (replacing Icarus).</p>
-			<p>To get started, make a repo using the <a href="https://github.com/pennlabs/kittyhawk-template">Kittyhawk template</a>, where you can write your configuration. You can find a list of available classes and sample configurations in the <a href="./USER_GUIDE.md">user guide</a>.</p>
+			<p>Kittyhawk is the automated Kubernetes YAML generator for Penn Labs.
+			With Kittyhawk, you can define an application&#39;s deployment configuration in Typescript using objects called <a href="https://cdk8s.io/docs/v1.0.0-beta.3/concepts/constructs/">constructs</a>.</p>
+			<a href="#getting-started" id="getting-started" style="color: inherit; text-decoration: none;">
+				<h2>Getting Started</h2>
+			</a>
+			<p>The easiest way to get started is by creating a <code>k8s</code> folder in your project, and cloning the <a href="https://github.com/pennlabs/kittyhawk-template">Kittyhawk starter code</a> inside. You will also need to add the circleCI orb (WIP) to your <code>.circleci</code> folder.</p>
+			<p>To initialize the project, run <code>yarn install</code> </p>
+			<p>Next, write your configuration in the <code>buildChart</code> function in the <code>main.ts</code> file. Check the <a href="API.md">API docs</a> for a list of available properties. </p>
+			<p>You can now run <code>yarn run build</code> to try to synthesize your configuration. The generated YAML will be saved to a file located at <code>k8s/dist/kittyhawk.k8s.yaml</code>. You should not commit this file. On every push, Circle CI will automatically generate the YAML configuration. On every push to the master branch, CircleCI will also automatically deploy the generated YAML to production.</p>
+			<p>This is a sample configuration deploying a Django Application and a React Application for Penn Clubs:</p>
+			<pre><code><span class="hljs-keyword">import</span> { DjangoApplication, ReactApplication, synth } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@pennlabs/kittyhawk&#x27;</span>;
+<span class="hljs-keyword">import</span> { Construct } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;constructs&#x27;</span>; 
+
+export <span class="hljs-keyword">function</span> buildChart(scope: Construct) {
+
+  <span class="hljs-comment">/** This creates a Django Application named django-asgi **/</span>
+  <span class="hljs-built_in">new</span> DjangoApplication(scope, <span class="hljs-string">&#x27;django-asgi&#x27;</span>, {
+    image: <span class="hljs-string">&#x27;pennlabs/penn-clubs-backend&#x27;</span>,
+    secret: <span class="hljs-string">&#x27;penn-clubs&#x27;</span>,
+    cmd: [<span class="hljs-string">&#x27;/usr/local/bin/asgi-run&#x27;</span>],
+    replicas: <span class="hljs-number">2</span>,
+    <span class="hljs-keyword">domain</span>: <span class="hljs-string">&#x27;pennclubs.com&#x27;</span>,
+    ingressPaths: [<span class="hljs-string">&#x27;/api/ws&#x27;</span>],
+    extraEnv: [
+      { <span class="hljs-type">name</span>: <span class="hljs-string">&#x27;DJANGO_SETTINGS_MODULE&#x27;</span>, <span class="hljs-keyword">value</span>: <span class="hljs-string">&#x27;pennclubs.settings.production&#x27;</span> },
+      { <span class="hljs-type">name</span>: <span class="hljs-string">&#x27;REDIS_HOST&#x27;</span>, <span class="hljs-keyword">value</span>: <span class="hljs-string">&#x27;penn-clubs-redis&#x27;</span> }],
+  })
+
+  <span class="hljs-comment">/** This creates a React Application named react **/</span>
+  <span class="hljs-built_in">new</span> ReactApplication(scope, <span class="hljs-string">&#x27;react&#x27;</span>, {
+    image: <span class="hljs-string">&#x27;pennlabs/penn-clubs-frontend&#x27;</span>,
+    replicas: <span class="hljs-number">2</span>,
+    <span class="hljs-keyword">domain</span>: <span class="hljs-string">&#x27;pennclubs.com&#x27;</span>,
+    ingressPaths: [<span class="hljs-string">&#x27;/&#x27;</span>],
+    extraEnv: [{ <span class="hljs-type">name</span>: <span class="hljs-string">&#x27;PORT&#x27;</span>, <span class="hljs-keyword">value</span>: <span class="hljs-string">&#x27;80&#x27;</span> }],
+  })
+
+}
+
+// Synthesizes the chart
+synth(buildChart);
+</code></pre>
+			<p>The <a href="">tfegame repository</a> contains another example of an application being deployed with Kittyhawk. </p>
 		</div>
 		<div style="position:relative;"><a name="typedoc-main-index" class="tsd-anchor"></a></div>
 		<section class="tsd-panel-group tsd-index-group">

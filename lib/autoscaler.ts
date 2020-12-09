@@ -1,7 +1,7 @@
 // Mostly borrowed from https://github.com/awslabs/cdk8s/blob/master/examples/typescript/podinfo/lib/autoscaler.ts
 
 import { Construct } from 'constructs';
-import { HorizontalPodAutoscaler, MetricSpec, Quantity } from '../imports/k8s';
+import { KubeHorizontalPodAutoscalerV2Beta2 as HorizontalPodAutoscalerApiObject, MetricSpec, Quantity } from '../imports/k8s';
 
 export interface ScaleTarget {
   readonly apiVersion: string;
@@ -9,7 +9,7 @@ export interface ScaleTarget {
   readonly name: string;
 }
 
-export interface AutoscalingOptions {
+export interface AutoscalingProps {
 
   /**
      * target CPU usage per pod
@@ -37,7 +37,7 @@ export interface AutoscalingOptions {
   readonly minReplicas?: number;
 }
 
-export interface AutoscalerOptions extends AutoscalingOptions {
+export interface AutoscalerProps extends AutoscalingProps {
   /**
      * The scaling target.
      */
@@ -45,38 +45,38 @@ export interface AutoscalerOptions extends AutoscalingOptions {
 }
 
 export class Autoscaler extends Construct {
-  constructor(scope: Construct, appname: string, options: AutoscalerOptions) {
+  constructor(scope: Construct, appname: string, props: AutoscalerProps) {
     super(scope, `autoscaler-${appname}`);
 
     const metrics = new Array<MetricSpec>();
 
-    if (options.cpu) {
+    if (props.cpu) {
       metrics.push({
         type: 'Resource',
         resource: {
           name: 'cpu',
           target: {
             type: 'Utilization',
-            averageUtilization: options.cpu,
+            averageUtilization: props.cpu,
           },
         },
       });
     }
 
-    if (options.memory) {
+    if (props.memory) {
       metrics.push({
         type: 'Resource',
         resource: {
           name: 'memory',
           target: {
             type: 'AverageValue',
-            averageValue: Quantity.fromNumber(options.memory),
+            averageValue: Quantity.fromNumber(props.memory),
           },
         },
       });
     }
 
-    if (options.requests) {
+    if (props.requests) {
       metrics.push({
         type: 'Pod',
         pods: {
@@ -85,24 +85,24 @@ export class Autoscaler extends Construct {
           },
           target: {
             type: 'AverageValue',
-            averageValue: Quantity.fromNumber(options.requests),
+            averageValue: Quantity.fromNumber(props.requests),
           },
         },
       });
     }
 
-    new HorizontalPodAutoscaler(this, 'default', {
+    new HorizontalPodAutoscalerApiObject(this, 'default', {
       metadata: {
         name: appname,
       },
       spec: {
         scaleTargetRef: {
-          apiVersion: options.target.apiVersion,
-          kind: options.target.kind,
-          name: options.target.name,
+          apiVersion: props.target.apiVersion,
+          kind: props.target.kind,
+          name: props.target.name,
         },
-        minReplicas: options.minReplicas || 2,
-        maxReplicas: options.maxReplicas || 10,
+        minReplicas: props.minReplicas || 2,
+        maxReplicas: props.maxReplicas || 10,
         metrics,
       },
     });

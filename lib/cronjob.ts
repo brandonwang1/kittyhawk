@@ -1,8 +1,8 @@
 import { Construct } from 'constructs';
-import { CronJob as CronJobApiObject } from '../imports/k8s';
-import { Container, ContainerOptions, Volume } from './container';
+import { KubeCronJobV1Beta1 as CronJobApiObject } from '../imports/k8s';
+import { Container, ContainerProps, Volume } from './container';
 
-export interface CronJobOptions extends ContainerOptions {
+export interface CronJobProps extends ContainerProps {
 
   /**
      * The schedule in Cron format.
@@ -27,7 +27,7 @@ export interface CronJobOptions extends ContainerOptions {
   readonly successLimit?: number;
 
   /**
-    * The number of failed finished jobs to retain.
+    * The number of failed jobs to retain.
     * 
     * @default 1
     * 
@@ -45,21 +45,24 @@ export interface CronJobOptions extends ContainerOptions {
 
 
 export class CronJob extends Construct {
-  constructor(scope: Construct, jobname: string, options: CronJobOptions) {
+  constructor(scope: Construct, jobname: string, props: CronJobProps) {
     super(scope, jobname);
 
-    const label = { name: jobname };
-    const schedule = options.schedule;
-    const restartPolicy = options.restartPolicy || 'Never';
-    const failureLimit = options.failureLimit ?? 1;
-    const successLimit = options.successLimit ?? 1;
-    const containers: Container[] = [new Container(options)];
-    const volumes: Volume[] | undefined = options.secretMounts?.map(m => new Volume(m))
+    // We want to prepend the project name to the name of each component
+    const release_name = process.env.RELEASE_NAME || 'undefined_release';
+    const fullname = `${release_name}-${jobname}`
+    const label = { name: fullname };
+    const schedule = props.schedule;
+    const restartPolicy = props.restartPolicy || 'Never';
+    const failureLimit = props.failureLimit ?? 1;
+    const successLimit = props.successLimit ?? 1;
+    const containers: Container[] = [new Container(props)];
+    const volumes: Volume[] | undefined = props.secretMounts?.map(m => new Volume(m))
 
 
-    new CronJobApiObject(this, `cronjob-${jobname}`, {
+    new CronJobApiObject(this, `cronjob-${fullname}`, {
       metadata: {
-        name: jobname,
+        name: fullname,
         namespace: 'default',
         labels: label,
       },

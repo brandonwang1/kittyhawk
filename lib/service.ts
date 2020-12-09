@@ -1,8 +1,8 @@
 import { Construct } from 'constructs';
-import { Service as ServiceApiObject, IntOrString } from '../imports/k8s';
+import { KubeService as ServiceApiObject, IntOrString } from '../imports/k8s';
 
 
-export interface ServiceOptions {
+export interface ServiceProps {
   /**
    * External port.
    *
@@ -20,11 +20,11 @@ export interface ServiceOptions {
 
 
 export class Service extends Construct {
-  constructor(scope: Construct, appname: string, options: ServiceOptions) {
+  constructor(scope: Construct, appname: string, props: ServiceProps) {
     super(scope, `service-${appname}`);
 
-    const port = options.port || 80;
-    const containerPort = options.containerPort || port;
+    const port = props.port || 80;
+    const containerPort = props.containerPort || port;
 
     new ServiceApiObject(this, `service-${appname}`, {
       metadata: {

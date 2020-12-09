@@ -73,7 +73,7 @@
 				</div>
 				<dl class="tsd-comment-tags">
 					<dt>schema</dt>
-					<dd><p>io.k8s.api.apps.v1.ReplicaSetSpec</p>
+					<dd><p>io.k8s.api.extensions.v1beta1.ReplicaSetSpec</p>
 					</dd>
 				</dl>
 			</div>
@@ -110,7 +110,7 @@
 				<div class="tsd-signature tsd-kind-icon">min<wbr>Ready<wbr>Seconds<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/pennlabs/kittyhawk/blob/463442a/imports/k8s.ts#L5184">imports/k8s.ts:5184</a></li>
+						<li>Defined in <a href="https://github.com/pennlabs/kittyhawk/blob/cfaa875/imports/k8s.ts#L8386">imports/k8s.ts:8386</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -122,7 +122,7 @@
 						<dd><p>0 (pod will be considered available as soon as it is ready)</p>
 						</dd>
 						<dt>schema</dt>
-						<dd><p>io.k8s.api.apps.v1.ReplicaSetSpec#minReadySeconds</p>
+						<dd><p>io.k8s.api.extensions.v1beta1.ReplicaSetSpec#minReadySeconds</p>
 						</dd>
 					</dl>
 				</div>
@@ -133,7 +133,7 @@
 				<div class="tsd-signature tsd-kind-icon">replicas<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/pennlabs/kittyhawk/blob/463442a/imports/k8s.ts#L5192">imports/k8s.ts:5192</a></li>
+						<li>Defined in <a href="https://github.com/pennlabs/kittyhawk/blob/cfaa875/imports/k8s.ts#L8394">imports/k8s.ts:8394</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -147,27 +147,27 @@
 							</ol>
 						</dd>
 						<dt>schema</dt>
-						<dd><p>io.k8s.api.apps.v1.ReplicaSetSpec#replicas</p>
+						<dd><p>io.k8s.api.extensions.v1beta1.ReplicaSetSpec#replicas</p>
 						</dd>
 					</dl>
 				</div>
 			</section>
 			<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-external">
 				<a name="selector" class="tsd-anchor"></a>
-				<h3><span class="tsd-flag ts-flagReadonly">Readonly</span> selector</h3>
+				<h3><span class="tsd-flag ts-flagOptional">Optional</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> selector</h3>
 				<div class="tsd-signature tsd-kind-icon">selector<span class="tsd-signature-symbol">:</span> <a href="_imports_k8s_.labelselector.html" class="tsd-signature-type">LabelSelector</a></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/pennlabs/kittyhawk/blob/463442a/imports/k8s.ts#L5199">imports/k8s.ts:5199</a></li>
+						<li>Defined in <a href="https://github.com/pennlabs/kittyhawk/blob/cfaa875/imports/k8s.ts#L8401">imports/k8s.ts:8401</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>Selector is a label query over pods that should match the replica count. Label keys and values that must match in order to be controlled by this replica set. It must match the pod template&#39;s labels. More info: <a href="https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/#label-selectors">https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/#label-selectors</a></p>
+						<p>Selector is a label query over pods that should match the replica count. If the selector is empty, it is defaulted to the labels present on the pod template. Label keys and values that must match in order to be controlled by this replica set. More info: <a href="https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/#label-selectors">https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/#label-selectors</a></p>
 					</div>
 					<dl class="tsd-comment-tags">
 						<dt>schema</dt>
-						<dd><p>io.k8s.api.apps.v1.ReplicaSetSpec#selector</p>
+						<dd><p>io.k8s.api.extensions.v1beta1.ReplicaSetSpec#selector</p>
 						</dd>
 					</dl>
 				</div>
@@ -178,7 +178,7 @@
 				<div class="tsd-signature tsd-kind-icon">template<span class="tsd-signature-symbol">:</span> <a href="_imports_k8s_.podtemplatespec.html" class="tsd-signature-type">PodTemplateSpec</a></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/pennlabs/kittyhawk/blob/463442a/imports/k8s.ts#L5206">imports/k8s.ts:5206</a></li>
+						<li>Defined in <a href="https://github.com/pennlabs/kittyhawk/blob/cfaa875/imports/k8s.ts#L8408">imports/k8s.ts:8408</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -187,7 +187,7 @@
 					</div>
 					<dl class="tsd-comment-tags">
 						<dt>schema</dt>
-						<dd><p>io.k8s.api.apps.v1.ReplicaSetSpec#template</p>
+						<dd><p>io.k8s.api.extensions.v1beta1.ReplicaSetSpec#template</p>
 						</dd>
 					</dl>
 				</div>

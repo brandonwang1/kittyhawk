@@ -76,7 +76,7 @@
 				</div>
 				<dl class="tsd-comment-tags">
 					<dt>schema</dt>
-					<dd><p>io.k8s.api.rbac.v1.PolicyRule</p>
+					<dd><p>io.k8s.api.rbac.v1beta1.PolicyRule</p>
 					</dd>
 				</dl>
 			</div>
@@ -114,7 +114,7 @@
 				<div class="tsd-signature tsd-kind-icon">api<wbr>Groups<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/pennlabs/kittyhawk/blob/463442a/imports/k8s.ts#L7006">imports/k8s.ts:7006</a></li>
+						<li>Defined in <a href="https://github.com/pennlabs/kittyhawk/blob/cfaa875/imports/k8s.ts#L10221">imports/k8s.ts:10221</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -123,7 +123,7 @@
 					</div>
 					<dl class="tsd-comment-tags">
 						<dt>schema</dt>
-						<dd><p>io.k8s.api.rbac.v1.PolicyRule#apiGroups</p>
+						<dd><p>io.k8s.api.rbac.v1beta1.PolicyRule#apiGroups</p>
 						</dd>
 					</dl>
 				</div>
@@ -134,7 +134,7 @@
 				<div class="tsd-signature tsd-kind-icon">non<wbr>ResourceURLs<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/pennlabs/kittyhawk/blob/463442a/imports/k8s.ts#L7013">imports/k8s.ts:7013</a></li>
+						<li>Defined in <a href="https://github.com/pennlabs/kittyhawk/blob/cfaa875/imports/k8s.ts#L10228">imports/k8s.ts:10228</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -143,7 +143,7 @@
 					</div>
 					<dl class="tsd-comment-tags">
 						<dt>schema</dt>
-						<dd><p>io.k8s.api.rbac.v1.PolicyRule#nonResourceURLs</p>
+						<dd><p>io.k8s.api.rbac.v1beta1.PolicyRule#nonResourceURLs</p>
 						</dd>
 					</dl>
 				</div>
@@ -154,7 +154,7 @@
 				<div class="tsd-signature tsd-kind-icon">resource<wbr>Names<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/pennlabs/kittyhawk/blob/463442a/imports/k8s.ts#L7020">imports/k8s.ts:7020</a></li>
+						<li>Defined in <a href="https://github.com/pennlabs/kittyhawk/blob/cfaa875/imports/k8s.ts#L10235">imports/k8s.ts:10235</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -163,7 +163,7 @@
 					</div>
 					<dl class="tsd-comment-tags">
 						<dt>schema</dt>
-						<dd><p>io.k8s.api.rbac.v1.PolicyRule#resourceNames</p>
+						<dd><p>io.k8s.api.rbac.v1beta1.PolicyRule#resourceNames</p>
 						</dd>
 					</dl>
 				</div>
@@ -174,16 +174,16 @@
 				<div class="tsd-signature tsd-kind-icon">resources<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/pennlabs/kittyhawk/blob/463442a/imports/k8s.ts#L7027">imports/k8s.ts:7027</a></li>
+						<li>Defined in <a href="https://github.com/pennlabs/kittyhawk/blob/cfaa875/imports/k8s.ts#L10242">imports/k8s.ts:10242</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>Resources is a list of resources this rule applies to.  ResourceAll represents all resources.</p>
+						<p>Resources is a list of resources this rule applies to.  &#39;*&#39; represents all resources in the specified apiGroups. &#39;_/foo&#39; represents the subresource &#39;foo&#39; for all resources in the specified apiGroups.</p>
 					</div>
 					<dl class="tsd-comment-tags">
 						<dt>schema</dt>
-						<dd><p>io.k8s.api.rbac.v1.PolicyRule#resources</p>
+						<dd><p>io.k8s.api.rbac.v1beta1.PolicyRule#resources</p>
 						</dd>
 					</dl>
 				</div>
@@ -194,7 +194,7 @@
 				<div class="tsd-signature tsd-kind-icon">verbs<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></div>
 				<aside class="tsd-sources">
 					<ul>
-						<li>Defined in <a href="https://github.com/pennlabs/kittyhawk/blob/463442a/imports/k8s.ts#L7034">imports/k8s.ts:7034</a></li>
+						<li>Defined in <a href="https://github.com/pennlabs/kittyhawk/blob/cfaa875/imports/k8s.ts#L10249">imports/k8s.ts:10249</a></li>
 					</ul>
 				</aside>
 				<div class="tsd-comment tsd-typography">
@@ -203,7 +203,7 @@
 					</div>
 					<dl class="tsd-comment-tags">
 						<dt>schema</dt>
-						<dd><p>io.k8s.api.rbac.v1.PolicyRule#verbs</p>
+						<dd><p>io.k8s.api.rbac.v1beta1.PolicyRule#verbs</p>
 						</dd>
 					</dl>
 				</div>
