@@ -140,7 +140,7 @@ Array [
       "labels": Object {
         "release": "RELEASE_NAME",
       },
-      "name": "ohq-io-tls",
+      "name": "ohq-io",
     },
     "spec": Object {
       "dnsNames": Array [
@@ -337,7 +337,7 @@ Array [
       "labels": Object {
         "release": "RELEASE_NAME",
       },
-      "name": "pennbasics-com-tls",
+      "name": "pennbasics-com",
     },
     "spec": Object {
       "dnsNames": Array [
@@ -495,7 +495,7 @@ Array [
       "labels": Object {
         "release": "RELEASE_NAME",
       },
-      "name": "pennclubs-com-tls",
+      "name": "pennclubs-com",
     },
     "spec": Object {
       "dnsNames": Array [
@@ -634,7 +634,7 @@ Array [
       "labels": Object {
         "release": "RELEASE_NAME",
       },
-      "name": "pennclubs-com-tls",
+      "name": "pennclubs-com",
     },
     "spec": Object {
       "dnsNames": Array [
@@ -904,7 +904,7 @@ Array [
       "labels": Object {
         "release": "RELEASE_NAME",
       },
-      "name": "penncourseplan-com-tls",
+      "name": "penncourseplan-com",
     },
     "spec": Object {
       "dnsNames": Array [
@@ -926,7 +926,7 @@ Array [
       "labels": Object {
         "release": "RELEASE_NAME",
       },
-      "name": "penncoursealert-com-tls",
+      "name": "penncoursealert-com",
     },
     "spec": Object {
       "dnsNames": Array [
@@ -948,7 +948,7 @@ Array [
       "labels": Object {
         "release": "RELEASE_NAME",
       },
-      "name": "penncourses-org-tls",
+      "name": "penncourses-org",
     },
     "spec": Object {
       "dnsNames": Array [
@@ -1082,7 +1082,7 @@ Array [
       "labels": Object {
         "release": "RELEASE_NAME",
       },
-      "name": "pennlabs-org-tls",
+      "name": "pennlabs-org",
     },
     "spec": Object {
       "dnsNames": Array [
@@ -1271,7 +1271,7 @@ Array [
       "labels": Object {
         "release": "RELEASE_NAME",
       },
-      "name": "pennlabs-org-tls",
+      "name": "pennlabs-org",
     },
     "spec": Object {
       "dnsNames": Array [

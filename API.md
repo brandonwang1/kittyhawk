@@ -9,7 +9,7 @@ There are two main constructs, Application (which has ReactApplication and Djang
 ### Application
 
 [Application](lib/application.ts) is the basic construct for deploying a general application, containing a deployment, service, and optionally an ingress and certificate. To create an Application, it must be passed a scope, name and a properties object containing a valid configuration. 
-    - ReactApplication and DjangoApplication both subclass Application, and contain additional checks to make sure the configuration is correct.
+  - ReactApplication and DjangoApplication both subclass Application, and contain additional checks to make sure the configuration is correct.
 
 
 ### Properties for Application

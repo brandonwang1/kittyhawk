@@ -13,13 +13,13 @@ export class Certificate extends Construct {
         // Regex to compute the apex domain
         const apex_domain = h.host.match(/[\w-]+\.[\w]+$/g)
         if (apex_domain != null) {
-          const host_string = apex_domain[0].split('.').join('-').concat('-tls');
+          let host_string = apex_domain[0].split('.').join('-');
           new CertApiObject(this, `certificate-${appname}-${host_string}`, {
             metadata: {
               name: host_string,
             },
             spec: {
-              secretName: host_string,
+              secretName: host_string.concat('-tls'),
               dnsNames: [`${apex_domain[0]}`, `*.${apex_domain[0]}`],
               issuerRef: {
                 name: 'wildcard-letsencrypt-prod',
