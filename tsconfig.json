@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "outDir": "lib",
     "alwaysStrict": true,
     "charset": "utf8",
     "declaration": true,
@@ -8,7 +9,7 @@
     "inlineSourceMap": true,
     "inlineSources": true,
     "lib": [
-      "es2016"
+      "es2018"
     ],
     "module": "CommonJS",
     "noEmitOnError": true,
@@ -23,12 +24,13 @@
     "strictNullChecks": true,
     "strictPropertyInitialization": true,
     "stripInternal": true,
-    "target": "ES2017"
+    "target": "ES2018"
   },
   "include": [
     "**/*.ts"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "lib"
   ]
 }

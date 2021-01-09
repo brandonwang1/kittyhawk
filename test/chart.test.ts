@@ -1,5 +1,5 @@
 import { Construct } from 'constructs';
-import { Application, synth } from '../lib';
+import { Application, synth } from '../src';
 
 export function buildWebsiteChart(scope: Construct) {
 

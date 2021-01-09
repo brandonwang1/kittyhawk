@@ -1,6 +1,6 @@
 import { Testing } from 'cdk8s';
 import { Construct } from 'constructs';
-import { Chart} from '../lib';
+import { Chart} from '../src';
 
 /**
  * Helper function to run each chart test 

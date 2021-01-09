@@ -1,5 +1,5 @@
 import { Construct } from 'constructs';
-import { Application, DjangoApplication, ReactApplication } from '../lib/application'
+import { Application, DjangoApplication, ReactApplication } from '../src/application'
 import { chartTest, failingTest} from './utils'
 
 

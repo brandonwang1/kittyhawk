@@ -1,5 +1,5 @@
 import { Construct } from 'constructs';
-import { Application } from '../lib/application';
+import { Application } from '../src/application';
 import { failingTest } from './utils'
 
 export function buildFailingIngressChart(scope: Construct) {

@@ -1,6 +1,6 @@
 import { Construct } from 'constructs';
-import { CronJob } from '../lib/cronjob';
-import { Application, DjangoApplication, ReactApplication } from '../lib/application'
+import { CronJob } from '../src/cronjob';
+import { Application, DjangoApplication, ReactApplication } from '../src/application'
 import { chartTest } from './utils'
 import cronTime from 'cron-time-generator';
 

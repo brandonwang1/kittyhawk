@@ -1,6 +1,6 @@
 
 import { Construct } from 'constructs';
-import { Application } from '../lib/application'
+import { Application } from '../src/application'
 import { failingTest, chartTest } from './utils'
 
 export function buildAutoscalingChart(scope: Construct) {
