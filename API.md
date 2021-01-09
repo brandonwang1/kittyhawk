@@ -57,3 +57,8 @@ You can find the full reference [here](https://pennlabs.github.io/kittyhawk/inte
 - failureLimit (number) - The number of failed jobs to retain. (**Optional**, default 1)
 
 The following properties from Application are also available: ```tag, cmd, containerPort, extraEnv, livelinessProbe, port, pullPolicy, readinessProbe, replicas, secret, secretMounts```
+
+
+## Escape Hatches
+
+Escape Hatches are an advanced feature that allow for constructs to be modified after they are synthesized. Instructions can be found [here](https://github.com/awslabs/cdk8s/blob/master/docs/concepts/escape-hatches.md).

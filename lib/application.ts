@@ -4,6 +4,11 @@ import { Ingress, IngressProps } from './ingress';
 import { Service, ServiceProps } from './service'
 import { Certificate } from './certificate';
 
+/**
+ * Warning: Before editing any interfaces, make sure that none of the interfaces will have 
+ * property names that conflict with each other. Typescript may not throw an error and it 
+ * could cause problems.
+ */
 export interface ApplicationProps extends IngressProps, DeploymentProps,
   ServiceProps { }
 

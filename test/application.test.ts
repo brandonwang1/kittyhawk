@@ -1,0 +1,45 @@
+import { Construct } from 'constructs';
+import { Application, DjangoApplication, ReactApplication } from '../lib/application'
+import { chartTest, failingTest} from './utils'
+
+
+export function buildTagOverrideChart(scope: Construct) {
+
+  /** Overrides the image tag set as env var **/
+  new Application(scope, 'serve', {
+    image: 'pennlabs/website',
+    tag: 'latest',
+  })
+}
+
+
+export function buildFailingDjangoChart(scope: Construct) {
+
+  /** Django Duplicated DOMAIN Env should fail **/
+  new DjangoApplication(scope, 'platform', {
+    image: 'pennlabs/platform',
+    domain: 'platform.pennlabs.org',
+    extraEnv: [ { name: 'DOMAIN', value: 'platform.pennlabs.org' },
+      { name: 'DJANGO_SETTINGS_MODULE', value: 'Platform.settings.production' }],
+    ingressPaths: ['/'],
+  })
+}
+  
+export function buildFailingReactChart(scope: Construct) {
+  
+  /** React Duplicated DOMAIN Env should fail **/
+  new ReactApplication(scope, 'react', {
+    image: 'pennlabs/penn-clubs-frontend',
+    replicas: 2,
+    domain: 'pennclubs.com',
+    ingressPaths: ['/'],
+    extraEnv: [ { name: 'DOMAIN', value: 'pennclubs.com' },
+      { name: 'PORT', value: '80' }],
+  })
+}
+
+test('Tag Override', () => chartTest(buildTagOverrideChart));
+  
+test('Django Application -- Failing', () => failingTest(buildFailingDjangoChart));
+  
+test('React Application -- Failing', () => failingTest(buildFailingReactChart));
