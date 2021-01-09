@@ -1,5 +1,3 @@
-
-
 ## Available Constructs
 
 You can find the full API reference [here:](https://pennlabs.github.io/kittyhawk/index.html) 
