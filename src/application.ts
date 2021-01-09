@@ -130,7 +130,7 @@ export class RedisApplication extends Application {
   constructor(scope: Construct, appname: string, redisProps: Partial<ApplicationProps>) {
     super(scope, appname, {
       ...redisProps,
-      image: redisProps.image || 'redis',
+      image: 'redis',
       tag: redisProps.tag || '6.0',
       port: redisProps.port || 6379,
     });

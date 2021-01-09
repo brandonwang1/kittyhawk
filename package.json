@@ -18,7 +18,7 @@
     "watch": "tsc -w",
     "test": "jest",
     "eslint": "eslint . --ext .ts",
-    "docs": "rm -rf docs/ && yarn run typedoc src --out docs --theme minimal && touch docs/.nojekyll",
+    "docgen": "rm -rf docs/ && yarn run typedoc src --out docs --theme minimal && touch docs/.nojekyll",
     "build": "yarn run eslint && yarn run compile && yarn run test",
     "upgrade": "yarn add cdk8s@latest && yarn add cdk8s-cli@latest -D"
   },

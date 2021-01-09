@@ -4,12 +4,12 @@
 
 You can find the full API reference [here:](https://pennlabs.github.io/kittyhawk/index.html) 
 
-There are two main constructs, Application (which has ReactApplication and DjangoApplication subclasses) and Cronjob. There are also constructs for defining individual deployments, services, ingresses, etc. 
+There are two main constructs, Application and Cronjob. Application has multiple subclasses, including  RedisApplication, ReactApplication and DjangoApplication. There are also constructs for defining individual deployments, services, ingresses, etc. 
 
 ### Application
 
 [Application](lib/application.ts) is the basic construct for deploying a general application, containing a deployment, service, and optionally an ingress and certificate. To create an Application, it must be passed a scope, name and a properties object containing a valid configuration. 
-  - ReactApplication and DjangoApplication both subclass Application, and contain additional checks to make sure the configuration is correct.
+  - ReactApplication and DjangoApplication both subclass Application, and contain additional checks to make sure the configuration is correct. RedisApplication can be used to quickly configure Redis. 
 
 
 ### Properties for Application
@@ -38,12 +38,28 @@ You can find the full reference [here](https://pennlabs.github.io/kittyhawk/inte
 
 ### Properties for ReactApplication and DjangoApplication
 DjangoApplication and ReactApplication have special properties that override properties from Application.
+
+For DjangoApplication:
 - domain (string) - Domain for the application. (**Required**)
 - ingressPaths (Array\<String\>) - List of paths that should be available on the domain. (**Required**)
+- djangoSettingsModule (string) - DJANGO_SETTINGS_MODULE environment variable. (**Required**)
 
-Use these two properties instead of defining an ingress, and the ingress will be auto-configured. Additionally, do not set a DOMAIN environment variable in extraEnv, since it will automatically be set. Finally, make sure to define a PORT environment variable.
+For ReactApplication:
+- domain (string) - Domain for the application. (**Required**)
+- ingressPaths (Array\<String\>) - List of paths that should be available on the domain. (**Required**)
+- portEnv (string) - PORT environment variable. (**Optional**, default '80')
+
+Use these properties instead of defining an ingress, and the ingress will be auto-configured. Additionally, do not set a DOMAIN environment variable in extraEnv, since it will automatically be set. 
 
 You can also check out the full API reference for [DjangoApplication](https://pennlabs.github.io/kittyhawk/interfaces/_lib_application_.djangoapplicationprops.html) and [ReactApplication](https://pennlabs.github.io/kittyhawk/interfaces/_lib_application_.reactapplicationprops.html).
+
+### Properties for RedisApplication
+
+RedisApplication accepts the same properties as Application, however some default values are different.
+- tag (string) - version tag to use for redis  (**Optional**, defaults to '6.0')
+- port (number) - Port exposed by the application. (**Optional**, defaults to 6379)
+
+Additionally, the image is set to 'redis'.
 
 ### Cronjob
 
