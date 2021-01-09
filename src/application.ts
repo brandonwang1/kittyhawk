@@ -68,7 +68,8 @@ export interface DjangoApplicationProps extends ApplicationProps {
 export class DjangoApplication extends Application {
   constructor(scope: Construct, appname: string, props: DjangoApplicationProps) {
 
-    let djangoExtraEnv = props.extraEnv || [];
+    // Have to be careful here with references when mutating things
+    let djangoExtraEnv = Array.from(props.extraEnv || []);
 
     // Insert DJANGO_SETTINGS_MODULE and DOMAIN
     insertIfNotPresent(djangoExtraEnv, 'DJANGO_SETTINGS_MODULE', props.djangoSettingsModule)
@@ -96,21 +97,22 @@ export interface ReactApplicationProps extends ApplicationProps {
    * Just the list of paths passed to the ingress since we already know the host.
    */
   readonly ingressPaths: string[];
+
+  /**
+   * PORT environment variable for react. Default '80'.
+   */
+  readonly portEnv?: string;
 }
 
 export class ReactApplication extends Application {
   constructor(scope: Construct, appname: string, props: ReactApplicationProps) {
 
-    let reactExtraEnv = props.extraEnv || [];
+    // Have to be careful here with references when mutating things
+    let reactExtraEnv = Array.from(props.extraEnv || []);
 
-    // Insert DOMAIN as an env variable.
+    // Insert DOMAIN and PORT as env vars.
     insertIfNotPresent(reactExtraEnv, 'DOMAIN', props.domain)
-
-    // Check if the env variables contains PORT
-    const envSettingsModule = props.extraEnv?.filter(env => (env.name === 'PORT'));
-    if (!envSettingsModule?.length) {
-      throw new Error('React Application must define a PORT enviroment variable.')
-    }
+    insertIfNotPresent(reactExtraEnv, 'PORT', props.portEnv || '80')
 
     // Configure the ingress using ingressPaths.
     const reactIngress = [{ host: props.domain, paths: props.ingressPaths }]
@@ -125,7 +127,7 @@ export class ReactApplication extends Application {
 }
 
 export class RedisApplication extends Application {
-  constructor(scope: Construct, appname: string, redisProps: ApplicationProps) {
+  constructor(scope: Construct, appname: string, redisProps: Partial<ApplicationProps>) {
     super(scope, appname, {
       ...redisProps,
       image: redisProps.image || 'redis',

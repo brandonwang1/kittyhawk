@@ -33,8 +33,8 @@ export function buildFailingReactChart(scope: Construct) {
     replicas: 2,
     domain: 'pennclubs.com',
     ingressPaths: ['/'],
-    extraEnv: [ { name: 'DOMAIN', value: 'pennclubs.com' },
-      { name: 'PORT', value: '80' }],
+    extraEnv: [ { name: 'DOMAIN', value: 'pennclubs.com' }],
+    portEnv: '80',
   })
 }
 

@@ -13,6 +13,9 @@ Next, write your configuration in the ```buildChart``` function in the ```main.t
 
 You can now run `yarn run build` to try to synthesize your configuration. The generated YAML will be saved to a file located at `k8s/dist/kittyhawk.k8s.yaml`. You should not commit this file. On every push, CircleCI will automatically generate the YAML configuration. On every push to the master branch, CircleCI will also automatically deploy the generated YAML to production.
 
+
+## Examples
+
 This is a sample configuration deploying a Django Application and a React Application for Penn Clubs:
 
 ```
@@ -49,4 +52,5 @@ export function buildChart(scope: Construct) {
 synth(buildChart);
 
 ```
-The [tfegame repository](https://github.com/pennlabs/tfegame) contains another example of an application deployed with Kittyhawk. 
+
+The [tfegame repository](https://github.com/pennlabs/tfegame) contains another example of an application deployed with Kittyhawk. Finally, the `test/integration/` directory contains many examples of current Penn Labs product configurations written with Kittyhawk.
