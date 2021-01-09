@@ -19,8 +19,8 @@ export function buildFailingDjangoChart(scope: Construct) {
   new DjangoApplication(scope, 'platform', {
     image: 'pennlabs/platform',
     domain: 'platform.pennlabs.org',
-    extraEnv: [ { name: 'DOMAIN', value: 'platform.pennlabs.org' },
-      { name: 'DJANGO_SETTINGS_MODULE', value: 'Platform.settings.production' }],
+    djangoSettingsModule: 'Platform.settings.production',
+    extraEnv: [ { name: 'DOMAIN', value: 'platform.pennlabs.org' }],
     ingressPaths: ['/'],
   })
 }

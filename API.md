@@ -51,7 +51,7 @@ You can also check out the full API reference for [DjangoApplication](https://pe
 ### Properties for Cronjob
 You can find the full reference [here](https://pennlabs.github.io/kittyhawk/interfaces/_lib_cronjob_.cronjobprops.html). A summary of the properties is listed below:
 - image (string) - Docker image to use. (**Required**)
-- schedule (string) - The schedule to run the job at, in Cron format. (**Required**)
+- schedule (string) - The schedule to run the job at, in Cron format. Use the [cron-time-generator](https://www.npmjs.com/package/cron-time-generator) package to ensure that the cron schedule is written correctly.  (**Required**)
 - restartPolicy (string) - [Policy](https://kubernetes.io/docs/concepts/workloads/controllers/job/#handling-pod-and-container-failures) for when the job should be restarted, either 'Always', 'OnFailure', or 'Never' (**Optional**, default 'Never')
 - successLimit (number) - The number of successful finished jobs to retain. (**Optional**, default 1)
 - failureLimit (number) - The number of failed jobs to retain. (**Optional**, default 1)

@@ -33,7 +33,21 @@ export class Application extends Construct {
   }
 }
 
+/**
+ * Helper function that first checks to make sure that the environment variable array 
+ * doesn't already contain the env var, then inserts it into the array.
+ * @param envArray array of environment variables to insert into 
+ * @param envKey name of the environment variable to insert
+ * @param envValue value of the environment variable
+ */
+function insertIfNotPresent(envArray: { name: string, value: string }[], envKey: string, envValue: any) {
+  const envSettingsModule = envArray?.filter(env => (env.name === envKey));
+  if (envSettingsModule?.length > 0) {
+    throw new Error(`${envKey} should not be redefined as an enviroment variable.`)
+  }
+  envArray.push({ name: envKey, value: envValue });
 
+}
 export interface DjangoApplicationProps extends ApplicationProps {
   /**
    * Domain of the application.
@@ -44,6 +58,11 @@ export interface DjangoApplicationProps extends ApplicationProps {
    * Just the list of paths passed to the ingress since we already know the host.
    */
   readonly ingressPaths: string[];
+
+  /**
+   * DJANGO_SETTINGS_MODULE environment variable.
+   */
+  readonly djangoSettingsModule: string;
 
   /**
    * Override extraEnv from ContainerOptions to make it mutable.
@@ -61,25 +80,14 @@ export interface DjangoApplicationProps extends ApplicationProps {
 export class DjangoApplication extends Application {
   constructor(scope: Construct, appname: string, props: DjangoApplicationProps) {
 
-    // Add the domain as an env variable.
     props.extraEnv = props.extraEnv || [];
-    props.extraEnv.push({ name: 'DOMAIN', value: props.domain });
+
+    // Insert DJANGO_SETTINGS_MODULE and DOMAIN
+    insertIfNotPresent(props.extraEnv, 'DJANGO_SETTINGS_MODULE', props.djangoSettingsModule)
+    insertIfNotPresent(props.extraEnv, 'DOMAIN', props.domain)
 
     // Configure the ingress using ingressPaths.
     props.ingress = [{ host: props.domain, paths: props.ingressPaths }]
-
-
-    // Check if the env variables contains DOMAIN
-    const envDomain = props.extraEnv?.filter(env => (env.name === 'DOMAIN'));
-    if (envDomain?.length > 1) {
-      throw new Error('Django Application should not redefine a DOMAIN enviroment variable.')
-    }
-
-    // Check if the env variables contains DJANGO_SETTINGS_MODULE
-    const envSettingsModule = props.extraEnv?.filter(env => (env.name === 'DJANGO_SETTINGS_MODULE'));
-    if (!envSettingsModule?.length) {
-      throw new Error('Django Application must define a DJANGO_SETTINGS_MODULE enviroment variable.')
-    }
 
     // If everything passes, construct the Application.
     super(scope, appname, props);
@@ -113,24 +121,19 @@ export interface ReactApplicationProps extends ApplicationProps {
 export class ReactApplication extends Application {
   constructor(scope: Construct, appname: string, props: ReactApplicationProps) {
 
-    // Add the domain as an env variable.
     props.extraEnv = props.extraEnv || [];
-    props.extraEnv.push({ name: 'DOMAIN', value: props.domain });
 
-    // Configure the ingress using ingressPaths.
-    props.ingress = [{ host: props.domain, paths: props.ingressPaths }]
-
-    // Check if the env variables contains DOMAIN
-    const envDomain = props.extraEnv?.filter(env => (env.name === 'DOMAIN'));
-    if (envDomain?.length > 1) {
-      throw new Error('React Application should not redefine a DOMAIN enviroment variable.')
-    }
+    // Insert DOMAIN as an env variable.
+    insertIfNotPresent(props.extraEnv, 'DOMAIN', props.domain)
 
     // Check if the env variables contains PORT
     const envSettingsModule = props.extraEnv?.filter(env => (env.name === 'PORT'));
     if (!envSettingsModule?.length) {
       throw new Error('React Application must define a PORT enviroment variable.')
     }
+
+    // Configure the ingress using ingressPaths.
+    props.ingress = [{ host: props.domain, paths: props.ingressPaths }]
 
     // If everything passes, construct the Application.
     super(scope, appname, props);

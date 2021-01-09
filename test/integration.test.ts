@@ -2,6 +2,7 @@ import { Construct } from 'constructs';
 import { CronJob } from '../lib/cronjob';
 import { Application, DjangoApplication, ReactApplication } from '../lib/application'
 import { chartTest } from './utils'
+import cronTime from 'cron-time-generator';
 
 /** INTEGRATION TEST CONFIGS */
 
@@ -35,13 +36,13 @@ export function buildOHQChart(scope: Construct) {
     replicas: 2,
     domain: 'ohq.io',
     ingressPaths: ['/api/ws'],
+    djangoSettingsModule: 'officehoursqueue.settings.production',
     extraEnv: [
-      { name: 'DJANGO_SETTINGS_MODULE', value: 'officehoursqueue.settings.production' },
       { name: 'REDIS_URL', value: 'redis://office-hours-queue-redis:6379' }],
   })
 
   new CronJob(scope, 'calculate-waits', {
-    schedule: '*/5 * * * *',
+    schedule: cronTime.every(5).minutes(),
     image: 'pennlabs/office-hours-queue-backend',
     secret: 'office-hours-queue',
     cmd: ['python', 'manage.py', 'calculatewaittimes'],
@@ -75,8 +76,7 @@ export function buildPlatformChart(scope: Construct) {
     secret: 'platform',
     port: 443,
     domain: 'platform.pennlabs.org',
-    extraEnv: [
-      { name: 'DJANGO_SETTINGS_MODULE', value: 'Platform.settings.production' }],
+    djangoSettingsModule: 'Platform.settings.production',
     ingressPaths: ['/'],
     secretMounts: [{ name: 'platform', subPath: 'SHIBBOLETH_CERT', mountPath: '/etc/shibboleth/sp-cert.pem' },
       { name: 'platform', subPath: 'SHIBBOLETH_KEY', mountPath: '/etc/shibboleth/sp-key.pem' }],
@@ -93,8 +93,8 @@ export function buildClubsChart(scope: Construct) {
     replicas: 2,
     domain: 'pennclubs.com',
     ingressPaths: ['/api/ws'],
+    djangoSettingsModule: 'pennclubs.settings.production',
     extraEnv: [
-      { name: 'DJANGO_SETTINGS_MODULE', value: 'pennclubs.settings.production' },
       { name: 'REDIS_HOST', value: 'penn-clubs-redis' }],
   })
 

@@ -1354,6 +1354,11 @@ core-util-is@1.0.2:
   resolved "https://registry.yarnpkg.com/core-util-is/-/core-util-is-1.0.2.tgz#b5fd54220aa2bc5ab57aab7140c940754503c1a7"
   integrity sha1-tf1UIgqivFq1eqtxQMlAdUUDwac=
 
+cron-time-generator@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/cron-time-generator/-/cron-time-generator-1.1.1.tgz#4ddcb99b33bf96d72b291b413da4188b1d766e16"
+  integrity sha512-wGZ4NmwVXByviUKOS+nCPmPLLUr0wYWD1poLkP0u4HPevc9eCDvfO+1rNsG0sucA8ZNTcfr5U++hZthHKvpLTQ==
+
 cross-spawn@^6.0.0:
   version "6.0.5"
   resolved "https://registry.yarnpkg.com/cross-spawn/-/cross-spawn-6.0.5.tgz#4a5ec7c64dfae22c3a14124dbacdee846d80cbc4"
