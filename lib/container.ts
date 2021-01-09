@@ -76,7 +76,7 @@ export interface ContainerProps {
   readonly livenessProbe?: probeProps
 
   /**
-    * Liveliness Probe definitions for the container.
+    * Readiness Probe definitions for the container.
     */
   readonly readinessProbe?: probeProps
 
@@ -227,7 +227,7 @@ export interface VolumeProps {
   readonly mountPath: string;
 
   /**
-     * Secret volume mountPath. 
+     * Secret volume subPath. 
      */
   readonly subPath: string;
 
