@@ -67,6 +67,10 @@ Array [
                   "name": "DOMAIN",
                   "value": "penncfa.com",
                 },
+                Object {
+                  "name": "GIT_SHA",
+                  "value": "TAG_FROM_CI",
+                },
               ],
               "envFrom": Array [
                 Object {
@@ -217,6 +221,10 @@ Array [
                 Object {
                   "name": "PORT",
                   "value": "80",
+                },
+                Object {
+                  "name": "GIT_SHA",
+                  "value": "TAG_FROM_CI",
                 },
               ],
               "envFrom": Array [
@@ -369,6 +377,10 @@ Array [
                   "name": "PORT",
                   "value": "80",
                 },
+                Object {
+                  "name": "GIT_SHA",
+                  "value": "TAG_FROM_CI",
+                },
               ],
               "image": "pennlabs/website:TAG_FROM_CI",
               "imagePullPolicy": "IfNotPresent",
@@ -513,6 +525,10 @@ Array [
                   "name": "DOMAIN",
                   "value": "platform.pennlabs.org",
                 },
+                Object {
+                  "name": "GIT_SHA",
+                  "value": "TAG_FROM_CI",
+                },
               ],
               "envFrom": Array [
                 Object {
@@ -655,6 +671,12 @@ Array [
                     "python3",
                     "manage.py",
                     "cleartokens",
+                  ],
+                  "env": Array [
+                    Object {
+                      "name": "GIT_SHA",
+                      "value": "TAG_FROM_CI",
+                    },
                   ],
                   "envFrom": Array [
                     Object {

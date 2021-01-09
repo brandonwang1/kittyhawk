@@ -9,7 +9,7 @@ import { Chart} from '../src';
 export const chartTest = (build: (scope: Construct) => void) => {
   // Overriding env vars for testing purposes
   process.env.RELEASE_NAME = 'RELEASE_NAME';
-  process.env.IMAGE_TAG = 'TAG_FROM_CI';
+  process.env.GIT_SHA = 'TAG_FROM_CI';
 
   const app = Testing.app();
   const chart = new Chart(app, 'kittyhawk', build);
@@ -23,7 +23,7 @@ export const chartTest = (build: (scope: Construct) => void) => {
 export const failingTest = (build: (scope: Construct) => void) => {
   // Overriding env vars for testing purposes
   process.env.RELEASE_NAME = 'RELEASE_NAME';
-  process.env.IMAGE_TAG = 'TAG_FROM_CI';
+  process.env.GIT_SHA = 'TAG_FROM_CI';
 
   const app = Testing.app();
   expect(() => {new Chart(app, 'kittyhawk', build)}).toThrowError();

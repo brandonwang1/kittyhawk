@@ -58,6 +58,12 @@ Array [
         "spec": Object {
           "containers": Array [
             Object {
+              "env": Array [
+                Object {
+                  "name": "GIT_SHA",
+                  "value": "TAG_FROM_CI",
+                },
+              ],
               "image": "redis:4.0",
               "imagePullPolicy": "IfNotPresent",
               "name": "worker",
@@ -141,6 +147,10 @@ Array [
                 Object {
                   "name": "DJANGO_SETTINGS_MODULE",
                   "value": "PennCourses.settings.production",
+                },
+                Object {
+                  "name": "GIT_SHA",
+                  "value": "TAG_FROM_CI",
                 },
               ],
               "envFrom": Array [
@@ -237,6 +247,10 @@ Array [
                 Object {
                   "name": "DJANGO_SETTINGS_MODULE",
                   "value": "PennCourses.settings.production",
+                },
+                Object {
+                  "name": "GIT_SHA",
+                  "value": "TAG_FROM_CI",
                 },
               ],
               "envFrom": Array [
@@ -538,6 +552,10 @@ Array [
                   "name": "PORT",
                   "value": "80",
                 },
+                Object {
+                  "name": "GIT_SHA",
+                  "value": "TAG_FROM_CI",
+                },
               ],
               "image": "pennlabs/pcp-frontend:TAG_FROM_CI",
               "imagePullPolicy": "IfNotPresent",
@@ -676,6 +694,10 @@ Array [
                 Object {
                   "name": "PORT",
                   "value": "80",
+                },
+                Object {
+                  "name": "GIT_SHA",
+                  "value": "TAG_FROM_CI",
                 },
               ],
               "image": "pennlabs/pcp-frontend:TAG_FROM_CI",
@@ -816,6 +838,10 @@ Array [
                   "name": "PORT",
                   "value": "80",
                 },
+                Object {
+                  "name": "GIT_SHA",
+                  "value": "TAG_FROM_CI",
+                },
               ],
               "image": "pennlabs/pcp-frontend:TAG_FROM_CI",
               "imagePullPolicy": "IfNotPresent",
@@ -914,6 +940,12 @@ Array [
                     "manage.py",
                     "registrarimport",
                   ],
+                  "env": Array [
+                    Object {
+                      "name": "GIT_SHA",
+                      "value": "TAG_FROM_CI",
+                    },
+                  ],
                   "envFrom": Array [
                     Object {
                       "secretRef": Object {
@@ -965,6 +997,12 @@ Array [
                     "alertstats",
                     "1",
                     "--slack",
+                  ],
+                  "env": Array [
+                    Object {
+                      "name": "GIT_SHA",
+                      "value": "TAG_FROM_CI",
+                    },
                   ],
                   "envFrom": Array [
                     Object {

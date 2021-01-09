@@ -58,6 +58,12 @@ Array [
         "spec": Object {
           "containers": Array [
             Object {
+              "env": Array [
+                Object {
+                  "name": "GIT_SHA",
+                  "value": "TAG_FROM_CI",
+                },
+              ],
               "image": "pennlabs/website:latest",
               "imagePullPolicy": "IfNotPresent",
               "name": "worker",

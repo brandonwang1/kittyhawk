@@ -26,6 +26,12 @@ Array [
                     "manage.py",
                     "calculatewaittimes",
                   ],
+                  "env": Array [
+                    Object {
+                      "name": "GIT_SHA",
+                      "value": "TAG_FROM_CI",
+                    },
+                  ],
                   "envFrom": Array [
                     Object {
                       "secretRef": Object {

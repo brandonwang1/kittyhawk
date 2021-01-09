@@ -58,6 +58,12 @@ Array [
         "spec": Object {
           "containers": Array [
             Object {
+              "env": Array [
+                Object {
+                  "name": "GIT_SHA",
+                  "value": "TAG_FROM_CI",
+                },
+              ],
               "image": "redis:6.0",
               "imagePullPolicy": "IfNotPresent",
               "name": "worker",
@@ -143,6 +149,10 @@ Array [
                 Object {
                   "name": "DOMAIN",
                   "value": "pennclubs.com",
+                },
+                Object {
+                  "name": "GIT_SHA",
+                  "value": "TAG_FROM_CI",
                 },
               ],
               "envFrom": Array [
@@ -294,6 +304,10 @@ Array [
                   "name": "DOMAIN",
                   "value": "pennclubs.com",
                 },
+                Object {
+                  "name": "GIT_SHA",
+                  "value": "TAG_FROM_CI",
+                },
               ],
               "envFrom": Array [
                 Object {
@@ -440,6 +454,10 @@ Array [
                   "name": "PORT",
                   "value": "80",
                 },
+                Object {
+                  "name": "GIT_SHA",
+                  "value": "TAG_FROM_CI",
+                },
               ],
               "image": "pennlabs/penn-clubs-frontend:TAG_FROM_CI",
               "imagePullPolicy": "IfNotPresent",
@@ -570,6 +588,12 @@ Array [
         "spec": Object {
           "containers": Array [
             Object {
+              "env": Array [
+                Object {
+                  "name": "GIT_SHA",
+                  "value": "TAG_FROM_CI",
+                },
+              ],
               "image": "redis:6.0",
               "imagePullPolicy": "IfNotPresent",
               "name": "worker",
@@ -659,6 +683,10 @@ Array [
                 Object {
                   "name": "DOMAIN",
                   "value": "hub.provost.upenn.edu",
+                },
+                Object {
+                  "name": "GIT_SHA",
+                  "value": "TAG_FROM_CI",
                 },
               ],
               "envFrom": Array [
@@ -814,6 +842,10 @@ Array [
                   "name": "DOMAIN",
                   "value": "hub.provost.upenn.edu",
                 },
+                Object {
+                  "name": "GIT_SHA",
+                  "value": "TAG_FROM_CI",
+                },
               ],
               "envFrom": Array [
                 Object {
@@ -964,6 +996,10 @@ Array [
                   "name": "PORT",
                   "value": "80",
                 },
+                Object {
+                  "name": "GIT_SHA",
+                  "value": "TAG_FROM_CI",
+                },
               ],
               "image": "pennlabs/penn-clubs-frontend:TAG_FROM_CI",
               "imagePullPolicy": "IfNotPresent",
@@ -1062,6 +1098,12 @@ Array [
                     "manage.py",
                     "rank",
                   ],
+                  "env": Array [
+                    Object {
+                      "name": "GIT_SHA",
+                      "value": "TAG_FROM_CI",
+                    },
+                  ],
                   "envFrom": Array [
                     Object {
                       "secretRef": Object {
@@ -1111,6 +1153,12 @@ Array [
                     "python",
                     "manage.py",
                     "daily_notifications",
+                  ],
+                  "env": Array [
+                    Object {
+                      "name": "GIT_SHA",
+                      "value": "TAG_FROM_CI",
+                    },
                   ],
                   "envFrom": Array [
                     Object {
@@ -1162,6 +1210,12 @@ Array [
                     "manage.py",
                     "daily_notifications",
                   ],
+                  "env": Array [
+                    Object {
+                      "name": "GIT_SHA",
+                      "value": "TAG_FROM_CI",
+                    },
+                  ],
                   "envFrom": Array [
                     Object {
                       "secretRef": Object {
@@ -1212,6 +1266,12 @@ Array [
                     "manage.py",
                     "import_calendar_events",
                   ],
+                  "env": Array [
+                    Object {
+                      "name": "GIT_SHA",
+                      "value": "TAG_FROM_CI",
+                    },
+                  ],
                   "envFrom": Array [
                     Object {
                       "secretRef": Object {
@@ -1261,6 +1321,12 @@ Array [
                     "python",
                     "manage.py",
                     "import_calendar_events",
+                  ],
+                  "env": Array [
+                    Object {
+                      "name": "GIT_SHA",
+                      "value": "TAG_FROM_CI",
+                    },
                   ],
                   "envFrom": Array [
                     Object {
