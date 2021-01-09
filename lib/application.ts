@@ -63,34 +63,26 @@ export interface DjangoApplicationProps extends ApplicationProps {
    * DJANGO_SETTINGS_MODULE environment variable.
    */
   readonly djangoSettingsModule: string;
-
-  /**
-   * Override extraEnv from ContainerOptions to make it mutable.
-   */
-  extraEnv?: { name: string, value: string }[];
-
-  /**
-     * A list of host rules used to configure the Ingress.
-     *
-     * @default undefined
-     */
-  ingress?: { host: string, paths: string[] }[];
 }
 
 export class DjangoApplication extends Application {
   constructor(scope: Construct, appname: string, props: DjangoApplicationProps) {
 
-    props.extraEnv = props.extraEnv || [];
+    let djangoExtraEnv = props.extraEnv || [];
 
     // Insert DJANGO_SETTINGS_MODULE and DOMAIN
-    insertIfNotPresent(props.extraEnv, 'DJANGO_SETTINGS_MODULE', props.djangoSettingsModule)
-    insertIfNotPresent(props.extraEnv, 'DOMAIN', props.domain)
+    insertIfNotPresent(djangoExtraEnv, 'DJANGO_SETTINGS_MODULE', props.djangoSettingsModule)
+    insertIfNotPresent(djangoExtraEnv, 'DOMAIN', props.domain)
 
     // Configure the ingress using ingressPaths.
-    props.ingress = [{ host: props.domain, paths: props.ingressPaths }]
+    const djangoIngress = [{ host: props.domain, paths: props.ingressPaths }]
 
     // If everything passes, construct the Application.
-    super(scope, appname, props);
+    super(scope, appname, {
+      ...props,
+      extraEnv: djangoExtraEnv,
+      ingress: djangoIngress,
+    });
   }
 }
 
@@ -104,27 +96,15 @@ export interface ReactApplicationProps extends ApplicationProps {
    * Just the list of paths passed to the ingress since we already know the host.
    */
   readonly ingressPaths: string[];
-
-  /**
-   * Override extraEnv from ContainerProps to make it mutable.
-   */
-  extraEnv?: { name: string, value: string }[];
-
-  /**
-     * A list of host rules used to configure the Ingress.
-     *
-     * @default undefined
-     */
-  ingress?: { host: string, paths: string[] }[];
 }
 
 export class ReactApplication extends Application {
   constructor(scope: Construct, appname: string, props: ReactApplicationProps) {
 
-    props.extraEnv = props.extraEnv || [];
+    let reactExtraEnv = props.extraEnv || [];
 
     // Insert DOMAIN as an env variable.
-    insertIfNotPresent(props.extraEnv, 'DOMAIN', props.domain)
+    insertIfNotPresent(reactExtraEnv, 'DOMAIN', props.domain)
 
     // Check if the env variables contains PORT
     const envSettingsModule = props.extraEnv?.filter(env => (env.name === 'PORT'));
@@ -133,9 +113,24 @@ export class ReactApplication extends Application {
     }
 
     // Configure the ingress using ingressPaths.
-    props.ingress = [{ host: props.domain, paths: props.ingressPaths }]
+    const reactIngress = [{ host: props.domain, paths: props.ingressPaths }]
 
     // If everything passes, construct the Application.
-    super(scope, appname, props);
+    super(scope, appname, {
+      ...props,
+      extraEnv: reactExtraEnv,
+      ingress: reactIngress,
+    });
+  }
+}
+
+export class RedisApplication extends Application {
+  constructor(scope: Construct, appname: string, redisProps: ApplicationProps) {
+    super(scope, appname, {
+      ...redisProps,
+      image: redisProps.image || 'redis',
+      tag: redisProps.tag || '6.0',
+      port: redisProps.port || 6379,
+    });
   }
 }
